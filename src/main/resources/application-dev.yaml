@@ -58,7 +58,7 @@ springdoc:
 
 open:
   api:
-    title: Base API Documentation
+    title: Money Lover API Documentation
     version: v1.1.0
     description: API-Service
     serverUrl: ${SPRING_SERVER_URL}

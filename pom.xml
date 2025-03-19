@@ -159,7 +159,7 @@
 					<url>jdbc:mysql://localhost:3306/db_money_lover?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</url>
 					<username>root</username>
 					<password>123456</password>
-					<referenceUrl>hibernate:spring:com.mgr.api.model?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl&amp;hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl</referenceUrl>
+					<referenceUrl>hibernate:spring:com.mobile.api.model?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl&amp;hibernate.implicit_naming_strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl</referenceUrl>
 					<verbose>true</verbose>
 					<logging>debug</logging>
 					<changeSetAuthor>Authentication</changeSetAuthor>

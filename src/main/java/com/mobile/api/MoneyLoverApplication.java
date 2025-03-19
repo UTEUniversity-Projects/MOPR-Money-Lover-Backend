@@ -12,9 +12,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableFeignClients
 @EnableAspectJAutoProxy
 @Slf4j
-public class BaseApplication {
+public class MoneyLoverApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BaseApplication.class, args);
+		SpringApplication.run(MoneyLoverApplication.class, args);
 	}
 }
