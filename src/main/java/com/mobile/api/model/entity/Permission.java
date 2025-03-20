@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "db_base_permission")
+@Table(name = "db_money_lover_permission")
 @Getter
 @Setter
 public class Permission extends Auditable<String> {

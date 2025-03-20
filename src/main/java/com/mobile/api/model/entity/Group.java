@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "db_base_group")
+@Table(name = "db_money_lover_group")
 @Getter
 @Setter
 public class Group extends Auditable<String> {
@@ -28,7 +28,7 @@ public class Group extends Auditable<String> {
     private Boolean isSystemGroup = false;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "db_base_permission_group",
+    @JoinTable(name = "db_money_lover_permission_group",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions = new ArrayList<>();

@@ -65,9 +65,12 @@ open:
     serverName: Server Test
 
 logging:
+  file:
+    path: logs/
   level:
-    org:
-      springframework: DEBUG
+    root: WARN
+    com.nails.auth: DEBUG
+    org.springframework: DEBUG
 
 oauth2-config:
   access-token-expiration: 86400000

@@ -11,6 +11,9 @@ src/main/resources/key/public.pem
 # Ignore environment file
 .env
 
+# Ignore logs
+logs/
+
 ### STS ###
 .apt_generated
 .classpath

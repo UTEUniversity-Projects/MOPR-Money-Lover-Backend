@@ -1,4 +1,4 @@
--- Dumping data for table db_base.oauth2_registered_client: ~5 rows (approximately)
+-- Dumping data for table db_money_lover.oauth2_registered_client: ~5 rows (approximately)
 INSERT INTO `oauth2_registered_client` (`id`, `client_id`, `client_id_issued_at`, `client_secret`, `client_secret_expires_at`, `client_name`, `client_authentication_methods`, `authorization_grant_types`, `redirect_uris`, `post_logout_redirect_uris`, `scopes`, `client_settings`, `token_settings`) VALUES
 	('aa6de5a0-61a1-44ba-911c-6eec251200b0', 'super_admin', '2025-03-10T03:18:18', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', NULL, NULL, 'client_secret_basic', 'authorization_code,refresh_token', '/api/oauth2/callback', NULL, 'openid,profile,email', '{"@class": "java.util.LinkedHashMap", "requireProofKey": false, "requireAuthorizationConsent": false}', '{"@class": "java.util.LinkedHashMap", "accessTokenTimeToLive": null, "refreshTokenTimeToLive": null}'),
 	('b1284a3a-d525-48fa-a52c-ddd4aca84a89', 'admin', '2025-03-10T03:18:18', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', NULL, NULL, 'client_secret_basic', 'authorization_code,refresh_token', '/api/oauth2/callback', NULL, 'openid,profile,email', '{"@class": "java.util.LinkedHashMap", "requireProofKey": false, "requireAuthorizationConsent": false}', '{"@class": "java.util.LinkedHashMap", "accessTokenTimeToLive": null, "refreshTokenTimeToLive": null}'),
@@ -6,16 +6,16 @@ INSERT INTO `oauth2_registered_client` (`id`, `client_id`, `client_id_issued_at`
 	('c421ad30-ca04-4d0f-8f18-e7953c42da5c', 'internal', '2025-03-10T03:18:18', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', NULL, NULL, 'client_secret_basic', 'authorization_code,refresh_token', '/api/oauth2/callback', NULL, 'openid,profile,email', '{"@class": "java.util.LinkedHashMap", "requireProofKey": false, "requireAuthorizationConsent": false}', '{"@class": "java.util.LinkedHashMap", "accessTokenTimeToLive": null, "refreshTokenTimeToLive": null}'),
 	('2f1e6400-9632-4e36-9c05-af642db77b3d', 'user', '2025-03-10T03:18:18', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', NULL, NULL, 'client_secret_basic', 'authorization_code,refresh_token', '/api/oauth2/callback', NULL, 'openid,profile,email', '{"@class": "java.util.LinkedHashMap", "requireProofKey": false, "requireAuthorizationConsent": false}', '{"@class": "java.util.LinkedHashMap", "accessTokenTimeToLive": null, "refreshTokenTimeToLive": null}');
 
--- Dumping data for table db_base.db_base_group: ~5 rows (approximately)
-INSERT INTO `db_base_group` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `description`, `kind`, `name`, `is_system_group`) VALUES
+-- Dumping data for table db_money_lover.db_money_lover_group: ~5 rows (approximately)
+INSERT INTO `db_money_lover_group` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `description`, `kind`, `name`, `is_system_group`) VALUES
 	(8274172085239808, 'super_admin', '2025-03-10T15:08:32', 'super_admin', '2025-03-10T15:08:32', 1, 'Role for super admin', 1, ' ROLE SUPER ADMIN', b'1'),
 	(8274172436414464, 'super_admin', '2025-03-10T15:08:34', 'super_admin', '2025-03-10T15:08:34', 1, 'Role for admin', 2, ' ROLE ADMIN', b'1'),
 	(8274172862824448, 'super_admin', '2025-03-10T15:08:47', 'super_admin', '2025-03-10T15:08:47', 1, 'Role for manager', 3, ' ROLE MANAGER', b'1'),
 	(8274173363322880, 'super_admin', '2025-03-10T15:09:02', 'super_admin', '2025-03-10T15:09:02', 1, 'Role for internal user', 4, ' ROLE INTERNAL', b'1'),
 	(8274173680582656, 'super_admin', '2025-03-10T15:09:12', 'super_admin', '2025-03-10T15:09:12', 1, 'Role for user', 5, ' ROLE USER', b'1');
 
--- Dumping data for table db_base.db_base_permission: ~22 rows (approximately)
-INSERT INTO `db_base_permission` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `action`, `code`, `description`, `name`, `name_group`, `show_menu`) VALUES
+-- Dumping data for table db_money_lover.db_money_lover_permission: ~22 rows (approximately)
+INSERT INTO `db_money_lover_permission` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `action`, `code`, `description`, `name`, `name_group`, `show_menu`) VALUES
 	(8274175207243776, 'super_admin', '2025-03-10T15:09:59', 'super_admin', '2025-03-10T15:09:59', 1, '/api/v1/account/list', 'ACC_LIS', 'List account', 'List account', 'Account', b'0'),
 	(8274175633620992, 'super_admin', '2025-03-10T15:10:12', 'super_admin', '2025-03-10T15:10:12', 1, '/api/v1/account/get', 'ACC_GET', 'Get account', 'Get account', 'Account', b'0'),
 	(8274176145981440, 'super_admin', '2025-03-10T15:10:27', 'super_admin', '2025-03-10T15:10:27', 1, '/api/v1/account/create', 'ACC_CRE', 'Create account', 'Create account', 'Account', b'0'),
@@ -39,24 +39,24 @@ INSERT INTO `db_base_permission` (`id`, `created_by`, `created_date`, `modified_
 	(8286951655669760, 'super_admin', '2025-03-10T03:28:25', 'super_admin', '2025-03-10T03:28:25', 1, '/api/v1/user/update', 'USE_UPD', 'Update user', 'Update user', 'User', b'0'),
 	(8286952140406784, 'super_admin', '2025-03-10T03:28:40', 'super_admin', '2025-03-10T03:28:40', 1, '/api/v1/user/delete', 'USE_DEL', 'Delete user', 'Delete user', 'User', b'0');
 
--- Dumping data for table db_base.db_base_account: ~ rows (approximately)
-INSERT INTO `db_base_account` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `avatar_path`, `email`, `is_super_admin`, `password`, `phone`, `username`, `group_id`) VALUES
+-- Dumping data for table db_money_lover.db_money_lover_account: ~ rows (approximately)
+INSERT INTO `db_money_lover_account` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `avatar_path`, `email`, `is_super_admin`, `password`, `phone`, `username`, `group_id`) VALUES
 	(8274182432555008, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '/image/avatar/super_admin', 'super_admin@gmail.com', b'1', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0123456789', 'super_admin', 8274172085239808),
 	(8274185907273728, 'super_admin', '2025-03-10T15:16:25', 'super_admin', '2025-03-10T15:16:25', 1, '/image/avatar/admin', 'admin@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0987654321', 'admin', 8274172436414464),
 	(8274188362824639, 'super_admin', '2025-03-10T15:16:25', 'super_admin', '2025-03-10T15:16:25', 1, '/image/avatar/admin', 'manager@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0538227546', 'manager', 8274172862824448),
 	(8274180735929377, 'super_admin', '2025-03-10T15:16:25', 'super_admin', '2025-03-10T15:16:25', 1, '/image/avatar/admin', 'internal@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0735289218', 'internal', 8274173363322880),
 	(8274185907263427, 'super_admin', '2025-03-10T15:17:25', 'super_admin', '2025-03-10T15:17:25', 1, '/image/avatar/user', 'user@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0246813579', 'user', 8274173680582656);
 
--- Dumping data for table db_base.db_base_user: ~5 rows (approximately)
-INSERT INTO `db_base_user` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `birthday`, `gender`) VALUES
+-- Dumping data for table db_money_lover.db_money_lover_user: ~5 rows (approximately)
+INSERT INTO `db_money_lover_user` (`id`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`, `birthday`, `gender`) VALUES
 	(8274182432555008, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '2000-03-25T00:00:00', 1),
 	(8274185907273728, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '2000-11-25T00:00:00', 1),
 	(8274188362824639, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '2000-06-10T00:00:00', 1),
 	(8274180735929377, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '2000-05-15T00:00:00', 1),
 	(8274185907263427, 'super_admin', '2025-03-10T15:15:25', 'super_admin', '2025-03-10T15:15:25', 1, '2000-11-09T00:00:00', 1);
 
--- Dumping data for table db_base.db_base_permission_group: ~58 rows (approximately)
-INSERT INTO `db_base_permission_group` (`group_id`, `permission_id`) VALUES
+-- Dumping data for table db_money_lover.db_money_lover_permission_group: ~58 rows (approximately)
+INSERT INTO `db_money_lover_permission_group` (`group_id`, `permission_id`) VALUES
 	(8274172085239808, 8274175207243776),
 	(8274172085239808, 8274175633620992),
 	(8274172085239808, 8274176145981440),

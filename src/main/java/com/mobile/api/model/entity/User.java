@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "db_base_user")
+@Table(name = "db_money_lover_user")
 @Getter
 @Setter
 public class User extends Auditable<String> {

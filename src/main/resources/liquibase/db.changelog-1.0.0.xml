@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet author="Authentication" id="1741964893421-1">
-        <createTable tableName="db_base_account">
+        <createTable tableName="db_money_lover_account">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -35,7 +35,7 @@
         </createTable>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-2">
-        <createTable tableName="db_base_group">
+        <createTable tableName="db_money_lover_group">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -61,7 +61,7 @@
         </createTable>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-3">
-        <createTable tableName="db_base_permission">
+        <createTable tableName="db_money_lover_permission">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -89,7 +89,7 @@
         </createTable>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-4">
-        <createTable tableName="db_base_permission_group">
+        <createTable tableName="db_money_lover_permission_group">
             <column name="group_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -99,7 +99,7 @@
         </createTable>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-5">
-        <createTable tableName="db_base_user">
+        <createTable tableName="db_money_lover_user">
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -156,30 +156,30 @@
         </createTable>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-7">
-        <createIndex associatedWith="" indexName="FK9yl66rgdfghq2ebig4gynx127" tableName="db_base_account">
+        <createIndex associatedWith="" indexName="FK9yl66rgdfghq2ebig4gynx127" tableName="db_money_lover_account">
             <column name="group_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-8">
-        <createIndex associatedWith="" indexName="FKfc9eafi0ji0ait4w48hu8atd4" tableName="db_base_permission_group">
+        <createIndex associatedWith="" indexName="FKfc9eafi0ji0ait4w48hu8atd4" tableName="db_money_lover_permission_group">
             <column name="permission_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-9">
-        <createIndex associatedWith="" indexName="FKlah3saixfkpd3ndw7qq4ufllw" tableName="db_base_permission_group">
+        <createIndex associatedWith="" indexName="FKlah3saixfkpd3ndw7qq4ufllw" tableName="db_money_lover_permission_group">
             <column name="group_id"/>
         </createIndex>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-10">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="db_base_user" constraintName="FK8do1lns1be9drtc9yjkgho8io" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_base_account" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="db_money_lover_user" constraintName="FK8do1lns1be9drtc9yjkgho8io" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_account" validate="true"/>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-11">
-        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_base_account" constraintName="FK9yl66rgdfghq2ebig4gynx127" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_base_group" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_money_lover_account" constraintName="FK9yl66rgdfghq2ebig4gynx127" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_group" validate="true"/>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-12">
-        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_base_permission_group" constraintName="FKfc9eafi0ji0ait4w48hu8atd4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_base_permission" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_money_lover_permission_group" constraintName="FKfc9eafi0ji0ait4w48hu8atd4" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_permission" validate="true"/>
     </changeSet>
     <changeSet author="Authentication" id="1741964893421-13">
-        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_base_permission_group" constraintName="FKlah3saixfkpd3ndw7qq4ufllw" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_base_group" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="group_id" baseTableName="db_money_lover_permission_group" constraintName="FKlah3saixfkpd3ndw7qq4ufllw" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_group" validate="true"/>
     </changeSet>
 </databaseChangeLog>
