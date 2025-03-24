@@ -2,8 +2,10 @@ package com.mobile.api.security.custom;
 
 import com.mobile.api.security.jwt.JwtProperties;
 import com.mobile.api.security.jwt.JwtUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -18,12 +20,14 @@ public class CustomRegisteredClientRepository implements RegisteredClientReposit
     private final JwtUtils jwtUtils;
     private final JdbcRegisteredClientRepository delegate;
     private final JwtProperties jwtProperties;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomRegisteredClientRepository(JdbcTemplate jdbcTemplate, JwtUtils jwtUtils, JwtProperties jwtProperties) {
+    public CustomRegisteredClientRepository(JdbcTemplate jdbcTemplate, JwtUtils jwtUtils, JwtProperties jwtProperties, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
         this.delegate = new JdbcRegisteredClientRepository(jdbcTemplate);
         this.jwtUtils = jwtUtils;
         this.jwtProperties = jwtProperties;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -62,5 +66,17 @@ public class CustomRegisteredClientRepository implements RegisteredClientReposit
         }
 
         return null;
+    }
+
+    @Transactional
+    public void updateClientId(String id, String newClientId) {
+        String sql = "UPDATE oauth2_registered_client SET client_id = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newClientId, id);
+    }
+
+    @Transactional
+    public void updateClientSecret(String id, String newClientSecret) {
+        String sql = "UPDATE oauth2_registered_client SET client_secret = ? WHERE id = ?";
+        jdbcTemplate.update(sql, newClientSecret, id);
     }
 }

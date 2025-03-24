@@ -1,9 +1,10 @@
 package com.mobile.api.controller.oauth;
 
-import com.mobile.api.dto.TokenDto;
+import com.mobile.api.dto.OauthTokenDto;
 import com.mobile.api.form.LoginForm;
 import com.mobile.api.security.jwt.JwtProperties;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -22,14 +23,10 @@ import java.util.Map;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthenticationController {
-
-    private final RestTemplate restTemplate;
-    private final JwtProperties jwtProperties;
-
-    public AuthenticationController(RestTemplate restTemplate, JwtProperties jwtProperties) {
-        this.restTemplate = restTemplate;
-        this.jwtProperties = jwtProperties;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
+    private JwtProperties jwtProperties;
 
     /**
      * API endpoint for user login
@@ -47,7 +44,7 @@ public class AuthenticationController {
             String authorizationCode = requestAuthorizationCode(loginForm.getUsername(), sessionId);
 
             // Exchange Authorization Code for an Access Token
-            TokenDto tokenResponse = exchangeCodeForToken(authorizationCode, loginForm.getUsername(), loginForm.getPassword());
+            OauthTokenDto tokenResponse = exchangeCodeForToken(authorizationCode, loginForm.getUsername(), loginForm.getPassword());
             return ResponseEntity.ok(tokenResponse);
 
         } catch (Exception e) {
@@ -131,7 +128,7 @@ public class AuthenticationController {
      * @param clientSecret The client secret (can be encrypted or stored securely).
      * @return Access token response.
      */
-    private TokenDto exchangeCodeForToken(String code, String clientId, String clientSecret) {
+    private OauthTokenDto exchangeCodeForToken(String code, String clientId, String clientSecret) {
         String tokenUrl = jwtProperties.getBaseUrl() + jwtProperties.getTokenUri();
 
         HttpHeaders headers = new HttpHeaders();
@@ -155,7 +152,7 @@ public class AuthenticationController {
         }
 
         Map<String, Object> body = response.getBody();
-        return new TokenDto(
+        return new OauthTokenDto(
                 (String) body.get("access_token"),
                 (String) body.get("refresh_token"),
                 (String) body.get("id_token"),

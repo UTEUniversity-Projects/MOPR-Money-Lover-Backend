@@ -21,7 +21,18 @@ public enum ErrorCode {
      */
     BUSINESS_NO_PERMISSION("ERROR-BUSINESS-0001", "No permission"),
     BUSINESS_INVALID_OTP("ERROR-BUSINESS-0002", "Invalid OTP"),
-    BUSINESS_OTP_EXPIRED("ERROR-BUSINESS-0003", "OTP Expired"),
+    BUSINESS_INVALID_TOKEN("ERROR-BUSINESS-0003", "Invalid Token"),
+    BUSINESS_INVALID_RECAPTCHA("ERROR-BUSINESS-0004", "Invalid reCAPTCHA"),
+
+    /**
+     * OTP error codes
+     */
+    OTP_NOT_FOUND("ERROR-OTP-0001", "OTP not found"),
+
+    /**
+     * TOKEN error codes
+     */
+    TOKEN_NOT_FOUND("ERROR-TOKEN-0001", "Token not found"),
 
     /**
      * GROUP error codes
@@ -44,11 +55,13 @@ public enum ErrorCode {
     ACCOUNT_NOT_FOUND("ERROR-ACCOUNT-0001", "Account not found"),
     ACCOUNT_USERNAME_EXISTED("ERROR-ACCOUNT-0002", "Account existed by username"),
     ACCOUNT_EMAIL_EXISTED("ERROR-ACCOUNT-0003", "Account existed by email"),
-    ACCOUNT_INVALID_PASSWORD("ERROR-ACCOUNT-0004", "Old password invalid"),
-    ACCOUNT_INVALID_OLD_PASSWORD("ERROR-ACCOUNT-0005", "Password invalid"),
+    ACCOUNT_INVALID_OLD_PASSWORD("ERROR-ACCOUNT-0004", "Old password invalid"),
+    ACCOUNT_INVALID_NEW_PASSWORD("ERROR-ACCOUNT-0005", "New password must be different from old password"),
+    ACCOUNT_INVALID_OLD_EMAIL("ERROR-ACCOUNT-0006", "Old email must be logged in"),
+    ACCOUNT_INVALID_NEW_EMAIL("ERROR-ACCOUNT-0007", "New email must be different from old email"),
 
     /**
-     * ACCOUNT error codes
+     * USER error codes
      */
     USER_NOT_FOUND("ERROR-USER-0001", "User not found"),
     USER_USERNAME_EXISTED("ERROR-USER-0002", "User existed by username"),

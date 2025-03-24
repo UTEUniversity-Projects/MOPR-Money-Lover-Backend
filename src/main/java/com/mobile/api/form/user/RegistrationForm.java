@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-@Schema(description = "Update Email Form")
+@Schema(description = "Registration Form")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdatePasswordForm {
+public class RegistrationForm {
     @Schema(description = "OTP", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "OTP can not be empty")
+    @NotEmpty(message = "OTP cannot be empty")
     private String otp;
 
     @Schema(description = "Token", example = "AbcDxy...", requiredMode = Schema.RequiredMode.REQUIRED)

@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
-
     private final User user;
     @Getter
     private final List<String> pcodeList;

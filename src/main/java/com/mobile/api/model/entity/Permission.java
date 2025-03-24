@@ -19,18 +19,25 @@ public class Permission extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "action")
     private String action;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "name_group")
     private String nameGroup;
 
+    @Column(name = "code")
     private String code;
 
+    @Column(name = "show_menu")
     private Boolean showMenu;
 
+    @Column(name = "groups")
     @ManyToMany(mappedBy = "permissions")
     private List<Group> groups = new ArrayList<>();
 }

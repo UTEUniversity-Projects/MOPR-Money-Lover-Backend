@@ -18,21 +18,26 @@ public class Account extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
     private Long id;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "phone")
     private String phone;
 
+    @Column(name = "avatar_path")
     private String avatarPath;
 
+    @Column(name = "is_super_admin")
     private Boolean isSuperAdmin = false;
 
-    private String resetPwdCode;
-
-    private LocalDateTime resetPwdTime;
+    @Column(name = "verified")
+    private Boolean verified = false;
 
     @ManyToOne
     @JoinColumn(name = "group_id")

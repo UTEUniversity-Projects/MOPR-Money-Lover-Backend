@@ -1,7 +1,7 @@
 server:
-  port: 8080
+  port: ${SPRING_SERVER_PORT:8080}
   servlet:
-    context-path: /
+    context-path: ${SPRING_CONTEXT_PATH:/}
 
 spring:
   main:
@@ -37,7 +37,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
-    change-log: classpath:liquibase/db.changelog-master.xml
+    change-log: ${LIQUIBASE_CHANGELOG:classpath:liquibase/db.changelog-master.xml}
     enabled: true
     database-change-log-table: DATABASECHANGELOG
     database-change-log-lock-table: DATABASECHANGELOGLOCK
@@ -47,22 +47,38 @@ spring:
     time-zone: UTC
   config:
     import: optional:file:.env[.properties]
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+          scope: openid, profile, email
 
 springdoc:
   api-docs:
-    path: /v3/api-docs
+    path: ${SPRING_API_DOCS:/v3/api-docs}
   swagger-ui:
-    path: /swagger-ui.html
+    path: ${SPRING_SWAGGER_UI:/swagger-ui.html}
     oauth2-redirect-url: ${SPRING_SERVER_URL}
     docExpansion: none
 
 open:
   api:
-    title: Money Lover API Documentation
-    version: v1.1.0
-    description: API-Service
+    title: ${OPEN_API_TITLE}
+    version: ${OPEN_API_VERSION}
+    description: ${OPEN_API_DESCRIPTION}
     serverUrl: ${SPRING_SERVER_URL}
-    serverName: Server Test
+    serverName: ${OPEN_API_SERVERNAME}
+
+recaptcha:
+  site-key: ${RECAPTCHA_SITE_KEY}
+  secret-key: ${RECAPTCHA_SECRET_KEY}
+  verify-url: ${RECAPTCHA_VERIFY_URL}
+  threshold: ${RECAPTCHA_THRESHOLD}
+
+otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
+jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
 
 logging:
   file:
@@ -73,11 +89,11 @@ logging:
     org.springframework: DEBUG
 
 oauth2-config:
-  access-token-expiration: 86400000
-  refresh-token-expiration: 2592000000
+  access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}
+  refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: "http://localhost:8080"
+  base-url: ${SPRING_SERVER_URL}
   token-uri: "/api/oauth2/token"
   authorization-uri: "/api/oauth2/authorize"
   token-introspection-uri: "/api/oauth2/introspect"
@@ -88,7 +104,3 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
-  registration-uri: "/api/register"
-  custom-login-uri: "/api/login"
-  forgot-password-uri: "/api/forgot-password"
-  request-forgot-password-uri: "/api/request-forgot-password"

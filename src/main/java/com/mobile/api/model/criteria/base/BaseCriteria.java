@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +18,8 @@ public abstract class BaseCriteria<T> implements Serializable {
     private Long id;
     private String createdBy;
     private String modifiedBy;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private Instant createdDate;
+    private Instant modifiedDate;
     private Integer status;
 
     public Specification<T> getBaseSpecification() {

@@ -92,6 +92,11 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.12.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>nimbus-jose-jwt</artifactId>
+			<version>9.31</version>
+		</dependency>
 
 		<!-- Database -->
 		<dependency>
@@ -153,7 +158,7 @@
 				<version>${liquibase.version}</version>
 				<configuration>
 					<changeLogFile>${basedir}src/main/resources/liquibase/${liquibase.changeLogFile}</changeLogFile>
-					<diffChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_diff.xml</diffChangeLogFile>
+					<diffChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
 					<outputChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_generate.xml</outputChangeLogFile>
 					<driver>com.mysql.cj.jdbc.Driver</driver>
 					<url>jdbc:mysql://localhost:3306/db_money_lover?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</url>

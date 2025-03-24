@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -17,9 +17,12 @@ public class UserAdminDto extends BaseAdminDto {
     @Schema(description = "account")
     private AccountAdminDto account;
 
+    @Schema(description = "fullName")
+    private String fullName;
+
     @Schema(description = "gender")
     private Integer gender;
 
     @Schema(description = "birthday")
-    private LocalDateTime birthday;
+    private Instant birthday;
 }

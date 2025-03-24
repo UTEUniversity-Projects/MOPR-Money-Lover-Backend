@@ -3,7 +3,7 @@ package com.mobile.api.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 public class BaseAdminDto {
@@ -14,8 +14,8 @@ public class BaseAdminDto {
     private Integer status;
 
     @Schema(description = "created date")
-    private LocalDateTime createdDate;
+    private Instant createdDate;
 
     @Schema(description = "modified date")
-    private LocalDateTime modifiedDate;
+    private Instant modifiedDate;
 }

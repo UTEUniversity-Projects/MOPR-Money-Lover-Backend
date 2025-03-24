@@ -1,8 +1,7 @@
-package com.mobile.api.security;
+package com.mobile.api.service;
 
 import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.security.jwt.JwtProperties;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -16,15 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ClientRegistrationService {
+public class OauthService {
     private final CustomRegisteredClientRepository registeredClientRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private final JwtProperties jwtProperties;
 
-    public ClientRegistrationService(CustomRegisteredClientRepository registeredClientRepository, JwtProperties jwtProperties) {
+    public OauthService(CustomRegisteredClientRepository registeredClientRepository, JwtProperties jwtProperties) {
         this.registeredClientRepository = registeredClientRepository;
         this.jwtProperties = jwtProperties;
-        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public void registerClientForUser(String username, String password) {
@@ -32,7 +29,7 @@ public class ClientRegistrationService {
 
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(username)
-                .clientSecret(passwordEncoder.encode(password))
+                .clientSecret(password)
                 .clientIdIssuedAt(Instant.now())
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)

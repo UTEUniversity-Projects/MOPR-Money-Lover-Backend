@@ -19,14 +19,19 @@ public class Group extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "kind")
     private Integer kind;
 
+    @Column(name = "is_system_group")
     private Boolean isSystemGroup = false;
 
+    @Column(name = "permissions")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "db_money_lover_permission_group",
             joinColumns = @JoinColumn(name = "group_id"),

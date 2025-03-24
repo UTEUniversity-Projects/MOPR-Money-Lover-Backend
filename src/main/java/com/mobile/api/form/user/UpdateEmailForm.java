@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Schema(description = "Update Email Form")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UpdatePasswordForm {
+public class UpdateEmailForm {
     @Schema(description = "OTP", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "OTP can not be empty")
     private String otp;

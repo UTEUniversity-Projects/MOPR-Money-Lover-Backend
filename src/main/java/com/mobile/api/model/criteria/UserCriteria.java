@@ -12,8 +12,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -28,7 +28,7 @@ public class UserCriteria extends BaseCriteria<User> {
     private Integer kind;
     private Boolean isSuperAdmin;
     private Integer gender;
-    private LocalDateTime birthday;
+    private Instant birthday;
 
     @Override
     public Specification<User> getSpecification() {

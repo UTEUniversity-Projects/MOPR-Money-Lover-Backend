@@ -4,16 +4,15 @@ import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.PaginationDto;
+import com.mobile.api.dto.TokenDto;
 import com.mobile.api.dto.user.UserDto;
 import com.mobile.api.dto.user.UserAdminDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
-import com.mobile.api.form.user.CreateUserAdminForm;
-import com.mobile.api.form.user.UpdatePasswordForm;
-import com.mobile.api.form.user.UpdateUserAdminForm;
-import com.mobile.api.form.user.UpdateUserForm;
+import com.mobile.api.form.user.*;
 import com.mobile.api.mapper.UserMapper;
+import com.mobile.api.model.OtpCode;
 import com.mobile.api.model.criteria.UserCriteria;
 import com.mobile.api.model.entity.Account;
 import com.mobile.api.model.entity.User;
@@ -21,10 +20,13 @@ import com.mobile.api.model.entity.Group;
 import com.mobile.api.repository.AccountRepository;
 import com.mobile.api.repository.GroupRepository;
 import com.mobile.api.repository.UserRepository;
+import com.mobile.api.security.custom.CustomRegisteredClientRepository;
+import com.mobile.api.security.jwt.JwtUtils;
 import com.mobile.api.service.EmailService;
+import com.mobile.api.service.OtpService;
+import com.mobile.api.service.TokenService;
 import com.mobile.api.utils.ApiMessageUtils;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,11 +34,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -49,11 +54,21 @@ public class UserController extends BaseController {
     @Autowired
     private GroupRepository groupRepository;
     @Autowired
-    private UserMapper userMapper;
+    private TokenService tokenService;
+    @Autowired
+    private OtpService otpService;
     @Autowired
     private EmailService emailService;
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private JwtDecoder jwtDecoder;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CustomRegisteredClientRepository customRegisteredClientRepository;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_LIS')")
@@ -91,47 +106,6 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(userMapper.fromEntityToUserDto(user), "Get user successfully");
     }
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('USE_CRE')")
-    public ApiMessageDto<Void> createUser(
-            @Valid @RequestBody CreateUserAdminForm createUserAdminForm,
-            BindingResult bindingResult
-    ) {
-        // Create ACCOUNT
-        Optional<Account> existingUser = accountRepository.findByUsernameOrEmail(
-                createUserAdminForm.getUsername(), createUserAdminForm.getEmail()
-        );
-        if (existingUser.isPresent()) {
-            if (existingUser.get().getUsername().equals(createUserAdminForm.getUsername())) {
-                throw new BusinessException(ErrorCode.ACCOUNT_USERNAME_EXISTED);
-            }
-            if (existingUser.get().getEmail().equals(createUserAdminForm.getEmail())) {
-                throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);
-            }
-        }
-
-        Account account = new Account();
-        account.setUsername(createUserAdminForm.getUsername());
-        account.setPassword(passwordEncoder.encode(createUserAdminForm.getPassword()));
-        account.setEmail(createUserAdminForm.getPhone());
-        account.setAvatarPath(createUserAdminForm.getAvatarPath());
-
-        Group group = groupRepository.findById(createUserAdminForm.getGroupId())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.GROUP_NOT_FOUND));
-        if (Objects.equals(group.getKind(), BaseConstant.GROUP_KIND_SUPER_ADMIN)) {
-            throw new BusinessException(ErrorCode.GROUP_NOT_ALLOWED);
-        }
-        account.setGroup(group);
-        Account savedAccount = accountRepository.save(account);
-
-        // Create USER
-        User user = userMapper.fromCreateUserAdminForm(createUserAdminForm);
-        user.setAccount(savedAccount);
-        userRepository.save(user);
-
-        return ApiMessageUtils.success(null, "Create user successfully");
-    }
-    
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_UDP')")
     public ApiMessageDto<Void> updateUser(
@@ -143,22 +117,15 @@ public class UserController extends BaseController {
 
         // Update ACCOUNT
         Account account = user.getAccount();
+        RegisteredClient registeredClient = customRegisteredClientRepository.findByClientId(account.getUsername());
+        assert registeredClient != null;
         if (!Objects.equals(account.getUsername(), updateUserAdminForm.getUsername())) {
             if (accountRepository.existsByUsername(updateUserAdminForm.getUsername())) {
                 throw new BusinessException(ErrorCode.ACCOUNT_USERNAME_EXISTED);
             }
             account.setUsername(updateUserAdminForm.getUsername());
-        }
-        if (!Objects.equals(account.getEmail(), updateUserAdminForm.getEmail())) {
-            if (accountRepository.existsByEmail(updateUserAdminForm.getEmail())) {
-                throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);
-            }
-            account.setEmail(updateUserAdminForm.getEmail());
-        }
-        if (StringUtils.isNoneBlank(updateUserAdminForm.getPassword())) {
-            if (!passwordEncoder.matches(updateUserAdminForm.getPassword(), account.getPassword())) {
-                account.setPassword(passwordEncoder.encode(updateUserAdminForm.getPassword()));
-            }
+            customRegisteredClientRepository.updateClientId(registeredClient.getId(),
+                    updateUserAdminForm.getUsername());
         }
         account.setPhone(updateUserAdminForm.getPhone());
         account.setAvatarPath(updateUserAdminForm.getAvatarPath());
@@ -190,22 +157,15 @@ public class UserController extends BaseController {
 
         // Update ACCOUNT
         Account account = user.getAccount();
+        RegisteredClient registeredClient = customRegisteredClientRepository.findByClientId(account.getUsername());
+        assert registeredClient != null;
         if (!Objects.equals(account.getUsername(), updateUserForm.getUsername())) {
             if (accountRepository.existsByUsername(updateUserForm.getUsername())) {
                 throw new BusinessException(ErrorCode.ACCOUNT_USERNAME_EXISTED);
             }
             account.setUsername(updateUserForm.getUsername());
-        }
-        if (!Objects.equals(account.getEmail(), updateUserForm.getEmail())) {
-            if (accountRepository.existsByEmail(updateUserForm.getEmail())) {
-                throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);
-            }
-            account.setEmail(updateUserForm.getEmail());
-        }
-        if (StringUtils.isNoneBlank(updateUserForm.getPassword())) {
-            if (!passwordEncoder.matches(updateUserForm.getPassword(), account.getPassword())) {
-                account.setPassword(passwordEncoder.encode(updateUserForm.getPassword()));
-            }
+            customRegisteredClientRepository.updateClientId(registeredClient.getId(),
+                    updateUserForm.getUsername());
         }
         account.setPhone(updateUserForm.getPhone());
         account.setAvatarPath(updateUserForm.getAvatarPath());
@@ -218,35 +178,112 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(null, "Update user successfully");
     }
 
-    @PutMapping(value = "/update-password", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<String> updatePassword(
+    @PostMapping(value = "/client-request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ApiMessageDto<TokenDto> updatePassword(
+            @Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm,
+            BindingResult bindingResult
+    ) {
+        if (Objects.equals(requestUpdatePasswordForm.getOldPassword(), requestUpdatePasswordForm.getNewPassword())) {
+            throw new BusinessException(ErrorCode.ACCOUNT_INVALID_NEW_PASSWORD);
+        }
+
+        Account account = accountRepository.findByEmail(getCurrentEmail())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        if (!passwordEncoder.matches(requestUpdatePasswordForm.getOldPassword(), account.getPassword())) {
+            throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_PASSWORD);
+        }
+
+        // Create and Send OTP
+        OtpCode otpCode = otpService.createOtp(getCurrentEmail(), BaseConstant.OTP_CODE_KIND_UPDATE_PASSWORD);
+        emailService.sendOTPEmail("Your OTP Code for Update Password",
+                otpCode.getEmail(),
+                otpCode.getCode(),
+                otpService.getOtpExpiryMinutes());
+
+        // Create TOKEN-UPDATE-PASSWORD
+        String tokenValue = jwtUtils.generateUpdatePasswordToken(
+                getCurrentEmail(),
+                passwordEncoder.encode(requestUpdatePasswordForm.getOldPassword()),
+                passwordEncoder.encode(requestUpdatePasswordForm.getNewPassword()));
+        TokenDto tokenDto = tokenService.createToken(tokenValue, BaseConstant.TOKEN_KIND_UPDATE_PASSWORD, jwtDecoder.decode(tokenValue).getExpiresAt());
+
+        return ApiMessageUtils.success(tokenDto, "OTP Code send to email successfully");
+    }
+
+    @PutMapping(value = "/client-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ApiMessageDto<String> verifyUpdatePassword(
             @Valid @RequestBody UpdatePasswordForm updatePasswordForm,
             BindingResult bindingResult
     ) {
-        Long id = getCurrentUserId();
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        Jwt jwt = jwtDecoder.decode(updatePasswordForm.getToken());
+        String email = jwt.getSubject();
+        String newPassword = jwt.getClaimAsString("newPassword");
 
-        Account account = user.getAccount();
-        if (StringUtils.isNoneBlank(updatePasswordForm.getPassword())
-                || StringUtils.isNoneBlank(updatePasswordForm.getOldPassword())) {
-            if (!StringUtils.isNoneBlank(updatePasswordForm.getOldPassword())) {
-                throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_PASSWORD);
-            } else {
-                if (!StringUtils.isNoneBlank(updatePasswordForm.getPassword())) {
-                    throw new BusinessException(ErrorCode.ACCOUNT_INVALID_PASSWORD);
-                }
-                if (!passwordEncoder.matches(updatePasswordForm.getOldPassword(), account.getPassword())) {
-                    throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_PASSWORD);
-                }
-                if (!passwordEncoder.matches(updatePasswordForm.getPassword(), account.getPassword())) {
-                    account.setPassword(passwordEncoder.encode(updatePasswordForm.getPassword()));
-                }
-            }
-        }
+        tokenService.verifyToken(updatePasswordForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_PASSWORD);
+        otpService.verifyOtp(email, updatePasswordForm.getOtp(), BaseConstant.OTP_CODE_KIND_UPDATE_PASSWORD);
+
+        // Update Password
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        RegisteredClient registeredClient = customRegisteredClientRepository.findByClientId(account.getUsername());
+        assert registeredClient != null;
+        account.setPassword(newPassword);
+        customRegisteredClientRepository.updateClientSecret(registeredClient.getId(), newPassword);
         accountRepository.save(account);
 
-        return ApiMessageUtils.success(null, "Update password successfully");
+        return ApiMessageUtils.success(null, "Password updated successfully");
+    }
+
+    @PostMapping(value = "/client-request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ApiMessageDto<TokenDto> updateEmail(
+            @Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm,
+            BindingResult bindingResult
+    ) {
+        if (!Objects.equals(requestUpdateEmailForm.getOldEmail(), getCurrentEmail())) {
+            throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_EMAIL);
+        }
+        if (Objects.equals(requestUpdateEmailForm.getOldEmail(), requestUpdateEmailForm.getNewEmail())) {
+            throw new BusinessException(ErrorCode.ACCOUNT_INVALID_NEW_EMAIL);
+        }
+
+        // Create and Send OTP
+        OtpCode otpCode = otpService.createOtp(requestUpdateEmailForm.getOldEmail(), BaseConstant.OTP_CODE_KIND_UPDATE_EMAIL);
+        emailService.sendOTPEmail("Your OTP Code for Update Email",
+                otpCode.getEmail(),
+                otpCode.getCode(),
+                otpService.getOtpExpiryMinutes());
+
+        // Create TOKEN-UPDATE-EMAIL
+        String tokenValue = jwtUtils.generateUpdateEmailToken(requestUpdateEmailForm.getOldEmail(), requestUpdateEmailForm.getNewEmail());
+        TokenDto tokenDto = tokenService.createToken(tokenValue, BaseConstant.TOKEN_KIND_UPDATE_EMAIL, jwtDecoder.decode(tokenValue).getExpiresAt());
+
+        return ApiMessageUtils.success(tokenDto, "OTP Code send to old email successfully");
+    }
+
+    @PutMapping(value = "/client-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ApiMessageDto<String> verifyUpdateEmail(
+            @Valid @RequestBody UpdateEmailForm updateEmailForm,
+            BindingResult bindingResult
+    ) {
+        Jwt jwt = jwtDecoder.decode(updateEmailForm.getToken());
+        String oldEmail = jwt.getClaimAsString("oldEmail");
+        String newEmail = jwt.getClaimAsString("newEmail");
+
+        tokenService.verifyToken(updateEmailForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_EMAIL);
+        otpService.verifyOtp(oldEmail, updateEmailForm.getOtp(), BaseConstant.OTP_CODE_KIND_UPDATE_EMAIL);
+
+        // Update Email
+        Account account = accountRepository.findByEmail(oldEmail)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        account.setEmail(newEmail);
+        accountRepository.save(account);
+
+        return ApiMessageUtils.success(null, "Email updated successfully");
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

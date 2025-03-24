@@ -2,8 +2,6 @@ package com.mobile.api.mapper;
 
 import com.mobile.api.dto.user.UserAdminDto;
 import com.mobile.api.dto.user.UserDto;
-import com.mobile.api.form.user.CreateUserAdminForm;
-import com.mobile.api.form.user.CreateUserForm;
 import com.mobile.api.form.user.UpdateUserAdminForm;
 import com.mobile.api.form.user.UpdateUserForm;
 import com.mobile.api.model.entity.User;
@@ -15,24 +13,14 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {AccountMapper.class})
 public interface UserMapper {
-    @Mapping(source = "gender", target = "gender")
-    @Mapping(source = "birthday", target = "birthday")
-    @BeanMapping(ignoreByDefault = true)
-    @Named("fromCreateUserAdminForm")
-    User fromCreateUserAdminForm(CreateUserAdminForm createUserAdminForm);
-
-    @Mapping(source = "gender", target = "gender")
-    @Mapping(source = "birthday", target = "birthday")
-    @BeanMapping(ignoreByDefault = true)
-    @Named("fromCreateUserForm")
-    User fromCreateUserForm(CreateUserForm createUserForm);
-
+    @Mapping(source = "fullName", target = "fullName")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "birthday", target = "birthday")
     @BeanMapping(ignoreByDefault = true)
     @Named("updateFromUpdateUserAdminForm")
     void updateFromUpdateUserAdminForm(@MappingTarget User user, UpdateUserAdminForm updateUserAdminForm);
 
+    @Mapping(source = "fullName", target = "fullName")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "birthday", target = "birthday")
     @BeanMapping(ignoreByDefault = true)
@@ -40,6 +28,7 @@ public interface UserMapper {
     void updateFromUpdateUserForm(@MappingTarget User user, UpdateUserForm updateUserForm);
 
     @Mapping(source = "account", target = "account", qualifiedByName = "fromEntityToAccountDto")
+    @Mapping(source = "fullName", target = "fullName")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "birthday", target = "birthday")
     @BeanMapping(ignoreByDefault = true)
@@ -48,6 +37,7 @@ public interface UserMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "account", target = "account", qualifiedByName = "fromEntityToAccountAdminDto")
+    @Mapping(source = "fullName", target = "fullName")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "createdDate", target = "createdDate")

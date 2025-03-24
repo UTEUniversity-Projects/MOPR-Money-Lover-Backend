@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "db_money_lover_user")
@@ -23,7 +23,12 @@ public class User extends Auditable<String> {
     @JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
     private Account account;
 
+    @Column(name = "full_name")
+    private String fullName;
+
+    @Column(name = "gender")
     private Integer gender;
 
-    private LocalDateTime birthday;
+    @Column(name = "birthday")
+    private Instant birthday;
 }

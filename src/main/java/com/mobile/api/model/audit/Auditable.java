@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public abstract class Auditable<T> extends ReuseId {
 
     @CreatedDate
     @Column(name = "created_date" ,nullable = false, updatable = false)
-    private LocalDateTime createdDate;
+    private Instant createdDate;
 
     @LastModifiedBy
     @Column(name = "modified_by", nullable = false)
@@ -33,7 +33,7 @@ public abstract class Auditable<T> extends ReuseId {
 
     @LastModifiedDate
     @Column(name = "modified_date", nullable = false)
-    private LocalDateTime modifiedDate;
+    private Instant modifiedDate;
 
     @Column(name = "status", nullable = false)
     private Integer status = BaseConstant.STATUS_ACTIVE;

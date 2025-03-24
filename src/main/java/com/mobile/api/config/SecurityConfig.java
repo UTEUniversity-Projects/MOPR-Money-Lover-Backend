@@ -44,13 +44,12 @@ public class SecurityConfig {
                                 jwtProperties.getTokenRevocationUri(),
                                 jwtProperties.getRedirectUri(),
                                 jwtProperties.getConsentPageUri(),
-                                jwtProperties.getLoginUri(),
-                                jwtProperties.getLogoutUri(),
-                                jwtProperties.getErrorUri(),
-                                jwtProperties.getRegistrationUri(),
-                                jwtProperties.getCustomLoginUri(),
-                                jwtProperties.getForgotPasswordUri(),
-                                jwtProperties.getRequestForgotPasswordUri()
+                                "/api/login",
+                                "/api/request-register",
+                                "/api/register",
+                                "/api/request-reset-password",
+                                "/api/reset-password",
+                                "/api/resend-otp"
                         ).permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
