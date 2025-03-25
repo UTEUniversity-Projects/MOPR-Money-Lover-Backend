@@ -51,7 +51,7 @@ public class PasswordController extends BaseController {
 
     @PostMapping(value = "/request-reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestForgotPassword(
+    public ApiMessageDto<TokenDto> requestResetPassword(
             @Valid @RequestBody RequestResetPasswordForm requestResetPasswordForm,
             BindingResult bindingResult
     ) {
@@ -76,7 +76,7 @@ public class PasswordController extends BaseController {
 
     @PutMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> forgotPassword(
+    public ApiMessageDto<String> resetPassword(
             @Valid @RequestBody ResetPasswordForm resetPasswordForm,
             BindingResult bindingResult
     ) {

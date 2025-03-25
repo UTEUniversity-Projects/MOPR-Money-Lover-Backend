@@ -180,7 +180,7 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client-request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> updatePassword(
+    public ApiMessageDto<TokenDto> requestUpdatePassword(
             @Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm,
             BindingResult bindingResult
     ) {
@@ -213,7 +213,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/client-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> verifyUpdatePassword(
+    public ApiMessageDto<String> updatePassword(
             @Valid @RequestBody UpdatePasswordForm updatePasswordForm,
             BindingResult bindingResult
     ) {
@@ -239,7 +239,7 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client-request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> updateEmail(
+    public ApiMessageDto<TokenDto> requestUpdateEmail(
             @Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm,
             BindingResult bindingResult
     ) {
@@ -266,7 +266,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/client-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> verifyUpdateEmail(
+    public ApiMessageDto<String> updateEmail(
             @Valid @RequestBody UpdateEmailForm updateEmailForm,
             BindingResult bindingResult
     ) {

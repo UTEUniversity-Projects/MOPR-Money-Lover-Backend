@@ -59,7 +59,7 @@ public class RegistrationController {
 
     @PostMapping(value = "/request-register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestOtpRegister(
+    public ApiMessageDto<TokenDto> requestRegister(
             @Valid @RequestBody RequestRegisterForm requestRegisterForm,
             BindingResult bindingResult
     ) {
@@ -93,7 +93,7 @@ public class RegistrationController {
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> registerUser(
+    public ApiMessageDto<String> register(
             @Valid @RequestBody RegistrationForm registrationForm,
             BindingResult bindingResult
     ) {

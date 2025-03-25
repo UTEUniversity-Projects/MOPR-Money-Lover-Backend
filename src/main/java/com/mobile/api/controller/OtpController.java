@@ -35,7 +35,7 @@ public class OtpController {
     @Autowired
     private JwtDecoder jwtDecoder;
 
-    @GetMapping(value = "/resend-otp", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/resend-otp", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> resendOtp(
             @Valid @RequestBody ResendOtpForm resendOtpForm,
