@@ -49,7 +49,7 @@
 
 ---
 
-## 📌 How to Run
+## 📌 How to Run in Development Environment
 ```sh
 # Clone the repository
 git clone git@github.com:UTEUniversity-Projects/Money-Lover-Backend.git
@@ -256,6 +256,7 @@ Create an HTML file and copy the following code. This will generate a simple web
 </body>
 </html>
 ```
+- Replace `SITE_KEY` with actual **Site Key** from [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin).
 
 ### 2️⃣ Run the HTML File
 - Save the file as `recaptcha_test.html`.
@@ -272,9 +273,6 @@ Create an HTML file and copy the following code. This will generate a simple web
 - The token is **valid for one-time use only** and must be sent to the server immediately for verification.
 - After **2 minutes**, if the token is not used, a new token must be generated.
 - If an expired token is used, Google will reject the authentication with an appropriate error.
-
-### 📝 Notes:
-- Replace `SITE_KEY` with actual **Site Key** from [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin).
 
 ---
 
