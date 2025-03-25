@@ -69,7 +69,10 @@ public class PasswordController extends BaseController {
         // Create TOKEN-RESET-PASSWORD
         String tokenValue = jwtUtils.generateResetPasswordToken(requestResetPasswordForm.getEmail());
         TokenDto tokenDto = tokenService.createToken(
-                tokenValue, BaseConstant.TOKEN_KIND_RESET_PASSWORD, jwtDecoder.decode(tokenValue).getExpiresAt());
+                requestResetPasswordForm.getEmail(),
+                tokenValue,
+                BaseConstant.TOKEN_KIND_RESET_PASSWORD,
+                jwtDecoder.decode(tokenValue).getExpiresAt());
 
         return ApiMessageUtils.success(tokenDto, "OTP sent to email successfully");
     }
@@ -83,7 +86,7 @@ public class PasswordController extends BaseController {
         Jwt jwt = jwtDecoder.decode(resetPasswordForm.getToken());
         String email = jwt.getClaimAsString("email");
 
-        tokenService.verifyToken(resetPasswordForm.getToken(), BaseConstant.TOKEN_KIND_RESET_PASSWORD);
+        tokenService.verifyToken(email, resetPasswordForm.getToken(), BaseConstant.TOKEN_KIND_RESET_PASSWORD);
         otpService.verifyOtp(email, resetPasswordForm.getOtp(), BaseConstant.OTP_CODE_KIND_RESET_PASSWORD);
 
         // Reset Password

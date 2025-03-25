@@ -206,7 +206,11 @@ public class UserController extends BaseController {
                 getCurrentEmail(),
                 passwordEncoder.encode(requestUpdatePasswordForm.getOldPassword()),
                 passwordEncoder.encode(requestUpdatePasswordForm.getNewPassword()));
-        TokenDto tokenDto = tokenService.createToken(tokenValue, BaseConstant.TOKEN_KIND_UPDATE_PASSWORD, jwtDecoder.decode(tokenValue).getExpiresAt());
+        TokenDto tokenDto = tokenService.createToken(
+                getCurrentEmail(),
+                tokenValue,
+                BaseConstant.TOKEN_KIND_UPDATE_PASSWORD,
+                jwtDecoder.decode(tokenValue).getExpiresAt());
 
         return ApiMessageUtils.success(tokenDto, "OTP Code send to email successfully");
     }
@@ -221,7 +225,7 @@ public class UserController extends BaseController {
         String email = jwt.getSubject();
         String newPassword = jwt.getClaimAsString("newPassword");
 
-        tokenService.verifyToken(updatePasswordForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_PASSWORD);
+        tokenService.verifyToken(email, updatePasswordForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_PASSWORD);
         otpService.verifyOtp(email, updatePasswordForm.getOtp(), BaseConstant.OTP_CODE_KIND_UPDATE_PASSWORD);
 
         // Update Password
@@ -259,7 +263,11 @@ public class UserController extends BaseController {
 
         // Create TOKEN-UPDATE-EMAIL
         String tokenValue = jwtUtils.generateUpdateEmailToken(requestUpdateEmailForm.getOldEmail(), requestUpdateEmailForm.getNewEmail());
-        TokenDto tokenDto = tokenService.createToken(tokenValue, BaseConstant.TOKEN_KIND_UPDATE_EMAIL, jwtDecoder.decode(tokenValue).getExpiresAt());
+        TokenDto tokenDto = tokenService.createToken(
+                getCurrentEmail(),
+                tokenValue,
+                BaseConstant.TOKEN_KIND_UPDATE_EMAIL,
+                jwtDecoder.decode(tokenValue).getExpiresAt());
 
         return ApiMessageUtils.success(tokenDto, "OTP Code send to old email successfully");
     }
@@ -274,7 +282,7 @@ public class UserController extends BaseController {
         String oldEmail = jwt.getClaimAsString("oldEmail");
         String newEmail = jwt.getClaimAsString("newEmail");
 
-        tokenService.verifyToken(updateEmailForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_EMAIL);
+        tokenService.verifyToken(oldEmail, updateEmailForm.getToken(), BaseConstant.TOKEN_KIND_UPDATE_EMAIL);
         otpService.verifyOtp(oldEmail, updateEmailForm.getOtp(), BaseConstant.OTP_CODE_KIND_UPDATE_EMAIL);
 
         // Update Email

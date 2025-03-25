@@ -1,5 +1,6 @@
 package com.mobile.api.controller.oauth;
 
+import com.mobile.api.controller.base.BaseController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/oauth2")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class CallbackController {
+public class CallbackController extends BaseController {
 
     @GetMapping("/callback")
     public ResponseEntity<Map<String, Object>> handleCallback(

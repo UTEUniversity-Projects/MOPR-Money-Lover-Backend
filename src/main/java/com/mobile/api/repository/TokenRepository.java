@@ -12,7 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
-    Optional<Token> findTopByTokenAndKindOrderByCreatedDateDesc(String token, Integer kind);
+    Optional<Token> findTopByEmailAndTokenAndKindOrderByCreatedDateDesc(String email, String token, Integer kind);
+
+    void deleteAllByEmailAndKind(String email, Integer kind);
 
     boolean existsByTokenAndKind(String token, Integer kind);
 

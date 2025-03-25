@@ -1,18 +1,32 @@
 package com.mobile.api.controller.oauth;
 
+import com.mobile.api.constant.BaseConstant;
+import com.mobile.api.controller.base.BaseController;
+import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.OauthTokenDto;
+import com.mobile.api.enumeration.ErrorCode;
+import com.mobile.api.exception.AuthenticationException;
+import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.form.LoginForm;
+import com.mobile.api.model.entity.Account;
+import com.mobile.api.repository.AccountRepository;
+import com.mobile.api.repository.TokenRepository;
 import com.mobile.api.security.jwt.JwtProperties;
+import com.mobile.api.service.TokenService;
+import com.mobile.api.utils.ApiMessageUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,11 +36,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class AuthenticationController {
+public class AuthenticationController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private JwtProperties jwtProperties;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     /**
      * API endpoint for user login
@@ -35,7 +55,8 @@ public class AuthenticationController {
      * @return Access token response or an error message if authentication fails.
      */
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@Valid @RequestBody LoginForm loginForm, BindingResult bindingResult) {
+    @Transactional
+    public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm, BindingResult bindingResult) {
         try {
             // Authenticate using OAuth2's /login endpoint
             String sessionId = authenticateViaOAuth2(loginForm.getUsername(), loginForm.getPassword());
@@ -45,11 +66,22 @@ public class AuthenticationController {
 
             // Exchange Authorization Code for an Access Token
             OauthTokenDto tokenResponse = exchangeCodeForToken(authorizationCode, loginForm.getUsername(), loginForm.getPassword());
-            return ResponseEntity.ok(tokenResponse);
 
+            return ApiMessageUtils.success(tokenResponse, "Login successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
+            throw new AuthenticationException("Login failed");
         }
+    }
+
+    /**
+     * API endpoint for user logout
+     */
+    @DeleteMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ApiMessageDto<String> logout() {
+        tokenRepository.deleteAllByEmailAndKind(getCurrentEmail(), BaseConstant.TOKEN_KIND_AUTHORIZATION);
+
+        return ApiMessageUtils.success(null, "Logout successfully");
     }
 
     /**
@@ -83,7 +115,7 @@ public class AuthenticationController {
             }
         }
 
-        throw new RuntimeException("OAuth2 Login failed, unable to retrieve session.");
+        throw new AuthenticationException("OAuth2 Login failed, unable to retrieve session.");
     }
 
     /**
@@ -117,7 +149,7 @@ public class AuthenticationController {
             }
         }
 
-        throw new RuntimeException("Unable to retrieve Authorization Code");
+        throw new AuthenticationException("Unable to retrieve Authorization Code");
     }
 
     /**
@@ -148,11 +180,11 @@ public class AuthenticationController {
         );
 
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-            throw new RuntimeException("Failed to retrieve Access Token");
+            throw new AuthenticationException("Failed to retrieve Access Token");
         }
 
         Map<String, Object> body = response.getBody();
-        return new OauthTokenDto(
+        OauthTokenDto oauthTokenDto = new OauthTokenDto(
                 (String) body.get("access_token"),
                 (String) body.get("refresh_token"),
                 (String) body.get("id_token"),
@@ -160,5 +192,16 @@ public class AuthenticationController {
                 ((Number) body.get("expires_in")).longValue(),
                 Arrays.asList(((String) body.get("scope")).split(" "))
         );
+
+        Account account = accountRepository.findByUsername(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        tokenService.createToken(
+                account.getEmail(),
+                oauthTokenDto.getAccessToken(),
+                BaseConstant.TOKEN_KIND_AUTHORIZATION,
+                Instant.now().plus(oauthTokenDto.getExpiresIn(), ChronoUnit.MINUTES));
+
+        return oauthTokenDto;
     }
 }

@@ -86,7 +86,11 @@ public class RegistrationController {
         String tokenValue = jwtUtils.generateRegisterToken(
                 requestRegisterForm.getEmail(), requestRegisterForm.getUsername(),
                 passwordEncoder.encode(requestRegisterForm.getPassword()));
-        TokenDto tokenDto = tokenService.createToken(tokenValue, BaseConstant.TOKEN_KIND_REGISTER, jwtDecoder.decode(tokenValue).getExpiresAt());
+        TokenDto tokenDto = tokenService.createToken(
+                requestRegisterForm.getEmail(),
+                tokenValue,
+                BaseConstant.TOKEN_KIND_REGISTER,
+                jwtDecoder.decode(tokenValue).getExpiresAt());
 
         return ApiMessageUtils.success(tokenDto, "OTP send to email successfully");
     }
@@ -103,7 +107,7 @@ public class RegistrationController {
         String password = jwt.getClaimAsString("password");
 
         // Verify TOKEN
-        tokenService.verifyToken(registrationForm.getToken(), BaseConstant.TOKEN_KIND_REGISTER);
+        tokenService.verifyToken(email, registrationForm.getToken(), BaseConstant.TOKEN_KIND_REGISTER);
         otpService.verifyOtp(email, registrationForm.getOtp(), BaseConstant.OTP_CODE_KIND_REGISTER);
 
         // Create ACCOUNT

@@ -24,8 +24,9 @@ public class TokenService {
     @Autowired
     private JwtDecoder jwtDecoder;
 
-    public TokenDto createToken(String tokenValue, Integer kind, Instant expiryTime) {
+    public TokenDto createToken(String email, String tokenValue, Integer kind, Instant expiryTime) {
         Token token = new Token();
+        token.setEmail(email);
         token.setToken(tokenValue);
         token.setKind(kind);
         token.setExpiryTime(expiryTime);
@@ -34,7 +35,7 @@ public class TokenService {
         return tokenMapper.fromEntityToTokenDto(savedToken);
     }
 
-    public void verifyToken(String tokenValue, Integer kind) {
+    public void verifyToken(String email, String tokenValue, Integer kind) {
         Jwt jwt = jwtDecoder.decode(tokenValue);
 
         // Valid TOKEN
@@ -42,7 +43,7 @@ public class TokenService {
             throw new BusinessException(ErrorCode.BUSINESS_INVALID_TOKEN);
         }
         // Delete TOKEN
-        Token token = tokenRepository.findTopByTokenAndKindOrderByCreatedDateDesc(tokenValue, kind)
+        Token token = tokenRepository.findTopByEmailAndTokenAndKindOrderByCreatedDateDesc(email, tokenValue, kind)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TOKEN_NOT_FOUND));
         tokenRepository.delete(token);
     }

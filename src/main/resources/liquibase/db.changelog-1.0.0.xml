@@ -186,6 +186,7 @@
             <column name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
+            <column name="email" type="VARCHAR(255)"/>
             <column name="kind" type="INT"/>
             <column name="token" type="TEXT"/>
             <column name="created_by" type="VARCHAR(255)">

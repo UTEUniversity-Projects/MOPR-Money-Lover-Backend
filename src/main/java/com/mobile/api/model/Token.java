@@ -18,6 +18,9 @@ public class Token extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
     private Long id;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "token", columnDefinition = "TEXT")
     private String token;
 

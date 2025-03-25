@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>, JpaSpec
 
     long countByGroupId(Long id);
 
-    Optional<Account> findByUsernameOrEmail(String username, String email);
+    Optional<Account> findByUsername(String username);
 
     Optional<Account> findByEmail(String email);
 }
