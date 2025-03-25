@@ -25,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -74,10 +73,7 @@ public class GroupController extends BaseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_CRE')")
-    public ApiMessageDto<Void> createGroup(
-            @Valid @RequestBody CreateGroupAdminForm createGroupAdminForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> createGroup(@Valid @RequestBody CreateGroupAdminForm createGroupAdminForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }
@@ -93,10 +89,7 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_UPD')")
-    public ApiMessageDto<Void> updateGroup(
-            @Valid @RequestBody UpdateGroupAdminForm updateGroupAdminForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> updateGroup(@Valid @RequestBody UpdateGroupAdminForm updateGroupAdminForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }
@@ -118,10 +111,7 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/add-permissions", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_PER_ADD')")
-    public ApiMessageDto<Void> addPermissionsToGroup(
-            @Valid @RequestBody UpdatePermissionListForm updatePermissionListForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> addPermissionsToGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }
@@ -142,10 +132,7 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/remove-permissions", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_PER_REM')")
-    public ApiMessageDto<Void> removePermissionsFromGroup(
-            @Valid @RequestBody UpdatePermissionListForm updatePermissionListForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> removePermissionsFromGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }

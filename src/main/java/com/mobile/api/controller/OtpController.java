@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,10 +36,7 @@ public class OtpController {
 
     @PostMapping(value = "/resend-otp", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> resendOtp(
-            @Valid @RequestBody ResendOtpForm resendOtpForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<String> resendOtp(@Valid @RequestBody ResendOtpForm resendOtpForm) {
         Jwt jwt = jwtDecoder.decode(resendOtpForm.getToken());
         String email = jwt.getSubject();
         Long otpKindLong = (Long) jwt.getClaims().get("otpKind");

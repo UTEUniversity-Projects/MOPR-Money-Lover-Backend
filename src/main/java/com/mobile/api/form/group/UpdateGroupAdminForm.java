@@ -2,6 +2,7 @@ package com.mobile.api.form.group;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mobile.api.validation.GroupKind;
+import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,11 +17,11 @@ public class UpdateGroupAdminForm {
     private Long id;
 
     @Schema(description = "Name", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Name cant not be empty")
+    @TypeString(fieldName = "Name")
     private String name;
 
     @Schema(description = "Description", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Description cant not be empty")
+    @TypeString(fieldName = "Description")
     private String description;
 
     @Schema(description = "Kind", requiredMode = Schema.RequiredMode.REQUIRED)

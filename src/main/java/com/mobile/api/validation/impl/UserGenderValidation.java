@@ -23,9 +23,6 @@ public class UserGenderValidation implements ConstraintValidator<UserGender, Int
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return allowNull;
-        }
-        return ALLOWED_VALUES.contains(value);
+        return value == null ? allowNull : ALLOWED_VALUES.contains(value);
     }
 }

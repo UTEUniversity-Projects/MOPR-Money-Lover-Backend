@@ -1,8 +1,8 @@
 package com.mobile.api.form;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -10,6 +10,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResendOtpForm {
     @Schema(description = "Token", example = "AbcDxy...", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Token can not be empty")
+    @TypeString(fieldName = "Token")
     private String token;
 }

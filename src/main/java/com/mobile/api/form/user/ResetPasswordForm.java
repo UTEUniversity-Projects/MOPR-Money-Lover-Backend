@@ -2,10 +2,8 @@ package com.mobile.api.form.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mobile.api.validation.Password;
+import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -13,8 +11,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResetPasswordForm {
     @Schema(description = "OTP", example = "123456", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotBlank(message = "OTP cannot be empty")
-    @Size(min = 6, max = 6, message = "OTP must be 6 digits")
+    @TypeString(fieldName = "OTP")
     private String otp;
 
     @Schema(description = "Password (must be at least 8 characters, include uppercase, lowercase, digit, and special character)",
@@ -23,6 +20,6 @@ public class ResetPasswordForm {
     private String newPassword;
 
     @Schema(description = "Token", example = "AbcDxy...", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Token can not be empty")
+    @TypeString(fieldName = "Token")
     private String token;
 }

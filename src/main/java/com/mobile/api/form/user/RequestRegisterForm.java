@@ -1,9 +1,10 @@
 package com.mobile.api.form.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.api.validation.EmailAddress;
 import com.mobile.api.validation.Password;
+import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -12,12 +13,11 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestRegisterForm {
     @Schema(description = "Email", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Email cannot be empty")
-    @Email(message = "Invalid email format")
+    @EmailAddress(allowNull = false)
     private String email;
 
     @Schema(description = "Username", example = "user", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Username can not be empty")
+    @TypeString(fieldName = "Username")
     private String username;
 
     @Schema(description = "Password (must be at least 8 characters, include uppercase, lowercase, digit, and special character)",

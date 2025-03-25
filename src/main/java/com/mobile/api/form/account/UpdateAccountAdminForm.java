@@ -1,7 +1,9 @@
 package com.mobile.api.form.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.api.validation.EmailAddress;
 import com.mobile.api.validation.PhoneNumber;
+import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -15,12 +17,11 @@ public class UpdateAccountAdminForm {
     private Long id;
 
     @Schema(description = "Username", example = "username", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Username cannot be empty")
+    @TypeString(fieldName = "Username")
     private String username;
 
     @Schema(description = "Email", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Email cannot be empty")
-    @Email(message = "Invalid email format")
+    @EmailAddress(allowNull = false)
     private String email;
 
     @Schema(description = "Phone number (10-15 digits)", example = "0987654321", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

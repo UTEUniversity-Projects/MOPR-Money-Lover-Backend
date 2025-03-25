@@ -265,7 +265,8 @@ Create an HTML file and copy the following code. This will generate a simple web
 ### 3️⃣ Get the reCAPTCHA v3 Token
 - Click the **“Get Token”** button.
 - The generated reCAPTCHA token will appear on the screen.
-- You can also check the browser console (`F12` → Console) to see the token.
+- Check the browser console (`F12` → Console) to see the token.
+- You can try in [phucle0809.github.io/recaptcha-v3-client-site](https://phucle0809.github.io/recaptcha-v3-client-site/)
 
 ---
 

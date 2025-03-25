@@ -1,9 +1,8 @@
 package com.mobile.api.form.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.api.validation.EmailAddress;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -11,12 +10,10 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestUpdateEmailForm {
     @Schema(description = "Old email", example = "user@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Old email cannot be empty")
-    @Email(message = "Invalid old email format")
+    @EmailAddress(allowNull = false)
     private String oldEmail;
 
     @Schema(description = "New email", example = "client@example.com", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "New email cannot be empty")
-    @Email(message = "Invalid new email format")
+    @EmailAddress(allowNull = false)
     private String newEmail;
 }

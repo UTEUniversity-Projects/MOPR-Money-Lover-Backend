@@ -3,6 +3,7 @@ package com.mobile.api.validation.impl;
 import com.mobile.api.validation.PhoneNumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.apache.commons.lang3.StringUtils;
 
 public class PhoneNumberValidation implements ConstraintValidator<PhoneNumber, String> {
     private boolean allowNull;
@@ -15,9 +16,6 @@ public class PhoneNumberValidation implements ConstraintValidator<PhoneNumber, S
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return allowNull;
-        }
-        return !value.trim().isEmpty() && value.matches(PHONE_PATTERN);
+        return value == null ? allowNull : StringUtils.isNoneBlank(value) && value.matches(PHONE_PATTERN);
     }
 }

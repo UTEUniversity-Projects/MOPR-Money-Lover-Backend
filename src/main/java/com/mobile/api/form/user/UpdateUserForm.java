@@ -2,9 +2,9 @@ package com.mobile.api.form.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mobile.api.validation.PhoneNumber;
+import com.mobile.api.validation.TypeString;
 import com.mobile.api.validation.UserGender;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.time.Instant;
@@ -14,7 +14,7 @@ import java.time.Instant;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UpdateUserForm {
     @Schema(description = "Username", example = "username", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "Username cannot be empty")
+    @TypeString(fieldName = "Username")
     private String username;
 
     @Schema(description = "Phone number (10-15 digits)", example = "0987654321", requiredMode = Schema.RequiredMode.NOT_REQUIRED)

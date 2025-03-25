@@ -23,9 +23,6 @@ public class AccountKindValidation implements ConstraintValidator<AccountKind, I
 
     @Override
     public boolean isValid(Integer value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return allowNull;
-        }
-        return ALLOWED_VALUES.contains(value);
+        return value == null ? allowNull : ALLOWED_VALUES.contains(value);
     }
 }

@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -65,10 +64,7 @@ public class PermissionController extends BaseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PER_CRE')")
-    public ApiMessageDto<Void> createPermission(
-            @Valid @RequestBody CreatePermissionAdminForm createPermissionAdminForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> createPermission(@Valid @RequestBody CreatePermissionAdminForm createPermissionAdminForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }
@@ -93,10 +89,7 @@ public class PermissionController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PER_UPD')")
-    public ApiMessageDto<Void> updatePermission(
-            @Valid @RequestBody UpdatePermissionAdminForm updatePermissionAdminForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> updatePermission(@Valid @RequestBody UpdatePermissionAdminForm updatePermissionAdminForm) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
         }

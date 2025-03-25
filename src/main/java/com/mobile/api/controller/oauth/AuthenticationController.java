@@ -21,7 +21,6 @@ import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -56,7 +55,7 @@ public class AuthenticationController extends BaseController {
      */
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm, BindingResult bindingResult) {
+    public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm) {
         try {
             // Authenticate using OAuth2's /login endpoint
             String sessionId = authenticateViaOAuth2(loginForm.getUsername(), loginForm.getPassword());

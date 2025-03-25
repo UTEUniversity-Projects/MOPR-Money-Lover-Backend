@@ -6,7 +6,7 @@ import com.mobile.api.dto.TokenDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
-import com.mobile.api.form.user.RegistrationForm;
+import com.mobile.api.form.user.RegisterForm;
 import com.mobile.api.form.user.RequestRegisterForm;
 import com.mobile.api.model.OtpCode;
 import com.mobile.api.model.entity.Account;
@@ -25,10 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/api")
@@ -59,10 +56,7 @@ public class RegistrationController {
 
     @PostMapping(value = "/request-register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestRegister(
-            @Valid @RequestBody RequestRegisterForm requestRegisterForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<TokenDto> requestRegister(@Valid @RequestBody RequestRegisterForm requestRegisterForm) {
         // Validate reCAPTCHA
         if (!recaptchaService.validateCaptcha(requestRegisterForm.getRecaptchaResponse())) {
             throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
@@ -97,18 +91,15 @@ public class RegistrationController {
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> register(
-            @Valid @RequestBody RegistrationForm registrationForm,
-            BindingResult bindingResult
-    ) {
-        Jwt jwt = jwtDecoder.decode(registrationForm.getToken());
+    public ApiMessageDto<String> register(@Valid @RequestBody RegisterForm registerForm) {
+        Jwt jwt = jwtDecoder.decode(registerForm.getToken());
         String email = jwt.getSubject();
         String username = jwt.getClaimAsString("username");
         String password = jwt.getClaimAsString("password");
 
         // Verify TOKEN
-        tokenService.verifyToken(email, registrationForm.getToken(), BaseConstant.TOKEN_KIND_REGISTER);
-        otpService.verifyOtp(email, registrationForm.getOtp(), BaseConstant.OTP_CODE_KIND_REGISTER);
+        tokenService.verifyToken(email, registerForm.getToken(), BaseConstant.TOKEN_KIND_REGISTER);
+        otpService.verifyOtp(email, registerForm.getOtp(), BaseConstant.OTP_CODE_KIND_REGISTER);
 
         // Create ACCOUNT
         Account account = new Account();

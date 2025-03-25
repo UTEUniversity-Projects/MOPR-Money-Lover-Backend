@@ -38,7 +38,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -108,10 +107,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_UDP')")
-    public ApiMessageDto<Void> updateUser(
-            @Valid @RequestBody UpdateUserAdminForm updateUserAdminForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> updateUser(@Valid @RequestBody UpdateUserAdminForm updateUserAdminForm) {
         User user = userRepository.findById(updateUserAdminForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
 
@@ -147,10 +143,7 @@ public class UserController extends BaseController {
     }
 
     @PutMapping(value = "/client-update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<Void> updateUserClient(
-            @Valid @RequestBody UpdateUserForm updateUserForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<Void> updateUserClient(@Valid @RequestBody UpdateUserForm updateUserForm) {
         Long id = getCurrentUserId();
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -180,10 +173,7 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client-request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestUpdatePassword(
-            @Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<TokenDto> requestUpdatePassword(@Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm) {
         if (Objects.equals(requestUpdatePasswordForm.getOldPassword(), requestUpdatePasswordForm.getNewPassword())) {
             throw new BusinessException(ErrorCode.ACCOUNT_INVALID_NEW_PASSWORD);
         }
@@ -217,10 +207,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/client-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> updatePassword(
-            @Valid @RequestBody UpdatePasswordForm updatePasswordForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<String> updatePassword(@Valid @RequestBody UpdatePasswordForm updatePasswordForm) {
         Jwt jwt = jwtDecoder.decode(updatePasswordForm.getToken());
         String email = jwt.getSubject();
         String newPassword = jwt.getClaimAsString("newPassword");
@@ -243,10 +230,7 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client-request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestUpdateEmail(
-            @Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<TokenDto> requestUpdateEmail(@Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm) {
         if (!Objects.equals(requestUpdateEmailForm.getOldEmail(), getCurrentEmail())) {
             throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_EMAIL);
         }
@@ -274,10 +258,7 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/client-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> updateEmail(
-            @Valid @RequestBody UpdateEmailForm updateEmailForm,
-            BindingResult bindingResult
-    ) {
+    public ApiMessageDto<String> updateEmail(@Valid @RequestBody UpdateEmailForm updateEmailForm) {
         Jwt jwt = jwtDecoder.decode(updateEmailForm.getToken());
         String oldEmail = jwt.getClaimAsString("oldEmail");
         String newEmail = jwt.getClaimAsString("newEmail");
