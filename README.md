@@ -256,7 +256,7 @@ Create an HTML file and copy the following code. This will generate a simple web
 </body>
 </html>
 ```
-- Replace `SITE_KEY` with actual **Site Key** from [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin).
+- Replace `SITE_KEY` with actual **Site Key** from [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin) - Development Team will give it to you.
 
 ### 2️⃣ Run the HTML File
 - Save the file as `recaptcha_test.html`.
