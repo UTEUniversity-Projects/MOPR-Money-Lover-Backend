@@ -1,6 +1,6 @@
 server:
   port: ${PORT:8080}
-  domain: ${RAILWAY_PRIVATE_DOMAIN}
+  domain: ${SPRING_SERVER_URL}
 
 spring:
   main:
@@ -36,7 +36,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
-    change-log: ${LIQUIBASE_CHANGELOG}
+    change-log: classpath:liquibase/db.changelog-master.xml
     enabled: true
     database-change-log-table: DATABASECHANGELOG
     database-change-log-lock-table: DATABASECHANGELOGLOCK
