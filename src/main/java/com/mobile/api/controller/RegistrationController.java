@@ -1,6 +1,7 @@
 package com.mobile.api.controller;
 
 import com.mobile.api.constant.BaseConstant;
+import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.TokenDto;
 import com.mobile.api.enumeration.ErrorCode;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class RegistrationController {
+public class RegistrationController extends BaseController {
     @Autowired
     private UserRepository userRepository;
     @Autowired

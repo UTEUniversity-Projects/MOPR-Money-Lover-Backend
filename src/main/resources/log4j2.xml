@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!-- Log directory -->
+        <Property name="LOG_DIR">logs</Property>
+        <!-- Max number of log files to keep -->
+        <Property name="MAX_FILES">5</Property>
+        <!-- Log format pattern -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss} [%p] %c{1}: %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender (Color output in IntelliJ) -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight{[%level]} [%thread] %style{%c{1}}{cyan} - %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <!-- Rolling File Appender -->
+        <RollingFile name="RollingFile" fileName="${LOG_DIR}/latest_log.log"
+                     filePattern="${LOG_DIR}/%d{yyyyMMddHHmmss}_log.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Trigger roll when file reaches 100MB -->
+                <SizeBasedTriggeringPolicy size="2.56MB"/>
+            </Policies>
+            <!-- Keep only 10 log files -->
+            <DefaultRolloverStrategy max="${MAX_FILES}" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Block RMI log -->
+        <Logger name="sun.rmi" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="javax.management.remote.rmi" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.apache.catalina.core" level="WARN" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <!-- Custom log level for specific packages -->
+        <Logger name="com.mobile.api" level="INFO" />
+        <Logger name="org.springframework" level="INFO" additivity="false" />
+        <!-- File logger -->
+        <Logger name="file" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+        <!-- Root Logger -->
+        <Root level="DEBUG">
+            <AppenderRef ref="RollingFile" />
+            <AppenderRef ref="Console" />
+        </Root>
+    </Loggers>
+</Configuration>

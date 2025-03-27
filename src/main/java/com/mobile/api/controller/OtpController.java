@@ -1,5 +1,6 @@
 package com.mobile.api.controller;
 
+import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class OtpController {
+public class OtpController extends BaseController {
     @Autowired
     private TokenRepository tokenRepository;
     @Autowired

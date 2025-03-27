@@ -47,6 +47,8 @@ spring:
     time-zone: UTC
   config:
     import: optional:file:.env[.properties]
+  jmx:
+    enabled: false
   oauth2:
     client:
       registration:
@@ -81,12 +83,7 @@ otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
 jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
 
 logging:
-  file:
-    path: logs/
-  level:
-    root: WARN
-    com.nails.auth: DEBUG
-    org.springframework: DEBUG
+  config: classpath:log4j2.xml
 
 oauth2-config:
   access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}
