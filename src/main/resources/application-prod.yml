@@ -1,7 +1,6 @@
 server:
-  port: ${SPRING_SERVER_PORT:8080}
-  servlet:
-    context-path: ${SPRING_CONTEXT_PATH:/}
+  port: ${PORT:8080}
+  domain: ${RAILWAY_PRIVATE_DOMAIN}
 
 spring:
   main:
@@ -11,7 +10,7 @@ spring:
   security:
     oauth2:
       authorization server:
-        issuer: ${SPRING_SERVER_URL}:${SPRING_SERVER_PORT}
+        issuer: https://${server.domain}:${server.port}
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -23,9 +22,9 @@ spring:
       mail.smtp.ssl.enable: false
       mail.smtp.starttls.enable: true
   datasource:
-    url: ${DATASOURCE_URL:jdbc:mysql://localhost:3306/db_money_lover}
-    username: ${DATASOURCE_USERNAME:root}
-    password: ${DATASOURCE_PASSWORD:123456}
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -37,7 +36,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
-    change-log: ${LIQUIBASE_CHANGELOG:classpath:liquibase/db.changelog-master.xml}
+    change-log: ${LIQUIBASE_CHANGELOG}
     enabled: true
     database-change-log-table: DATABASECHANGELOG
     database-change-log-lock-table: DATABASECHANGELOGLOCK
@@ -62,7 +61,7 @@ springdoc:
     path: ${SPRING_API_DOCS:/v3/api-docs}
   swagger-ui:
     path: ${SPRING_SWAGGER_UI:/swagger-ui.html}
-    oauth2-redirect-url: ${SPRING_SERVER_URL}:${SPRING_SERVER_PORT}${SECURITY_REDIRECT_URI}
+    oauth2-redirect-url: https://${server.domain}:${server.port}${SECURITY_REDIRECT_URI}
     docExpansion: none
 
 open:
@@ -70,11 +69,8 @@ open:
     title: ${OPEN_API_TITLE}
     version: ${OPEN_API_VERSION}
     description: ${OPEN_API_DESCRIPTION}
-    serverUrl: ${SPRING_SERVER_URL}:${SPRING_SERVER_PORT}
+    serverUrl: https://${server.domain}:${server.port}
     serverName: ${OPEN_API_SERVERNAME}
-
-logging:
-  config: classpath:log4j2-dev.xml
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
@@ -90,7 +86,7 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: ${SPRING_SERVER_URL}:${SPRING_SERVER_PORT}
+  base-url: https://${server.domain}:${server.port}
   token-uri: "/api/oauth2/token"
   authorization-uri: "/api/oauth2/authorize"
   token-introspection-uri: "/api/oauth2/introspect"
