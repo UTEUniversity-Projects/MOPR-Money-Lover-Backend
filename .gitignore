@@ -10,6 +10,8 @@ src/main/resources/key/public.pem
 
 # Ignore environment file
 .env
+.env.dev
+.env.prod
 
 # Ignore logs
 logs/
