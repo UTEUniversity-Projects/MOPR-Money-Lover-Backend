@@ -14,7 +14,7 @@ public class LogFileCleanupListener implements ApplicationListener<ApplicationSt
     private static final Logger LOGGER = Logger.getLogger(LogFileCleanupListener.class.getName());
     private static final String LOG_DIR = "./logs";
     private static final String LOG_EXTENSION = ".log";
-    private static final int MAX_LOG_FILES = 10;
+    private static final int MAX_LOG_FILES = 5;
 
     @Override
     public void onApplicationEvent(ApplicationStartingEvent event) {

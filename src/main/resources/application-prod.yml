@@ -1,6 +1,6 @@
 server:
   port: ${PORT:8080}
-  domain: ${RAILWAY_PRIVATE_DOMAIN}
+  domain: ${RAILWAY_PUBLIC_DOMAIN}
 
 spring:
   main:
@@ -10,7 +10,7 @@ spring:
   security:
     oauth2:
       authorization server:
-        issuer: https://${server.domain}
+        issuer: https://${RAILWAY_PUBLIC_DOMAIN}
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -36,7 +36,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
-    change-log: ${LIQUIBASE_CHANGELOG}
+    change-log: classpath:liquibase/db.changelog-master.xml
     enabled: true
     database-change-log-table: DATABASECHANGELOG
     database-change-log-lock-table: DATABASECHANGELOGLOCK
@@ -61,7 +61,7 @@ springdoc:
     path: ${SPRING_API_DOCS:/v3/api-docs}
   swagger-ui:
     path: ${SPRING_SWAGGER_UI:/swagger-ui.html}
-    oauth2-redirect-url: https://${server.domain}${SECURITY_REDIRECT_URI}
+    oauth2-redirect-url: https://${RAILWAY_PUBLIC_DOMAIN}${SECURITY_REDIRECT_URI}
     docExpansion: none
 
 open:
@@ -69,7 +69,7 @@ open:
     title: ${OPEN_API_TITLE}
     version: ${OPEN_API_VERSION}
     description: ${OPEN_API_DESCRIPTION}
-    serverUrl: https://${server.domain}
+    serverUrl: https://${RAILWAY_PUBLIC_DOMAIN}
     serverName: ${OPEN_API_SERVERNAME}
 
 recaptcha:
@@ -86,7 +86,7 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: https://${server.domain}
+  base-url: https://${RAILWAY_PUBLIC_DOMAIN}
   token-uri: "/api/oauth2/token"
   authorization-uri: "/api/oauth2/authorize"
   token-introspection-uri: "/api/oauth2/introspect"

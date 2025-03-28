@@ -1,14 +1,24 @@
-package com.mobile.api.dto;
+package com.mobile.api.dto.wallet;
 
+import com.mobile.api.dto.user.UserDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
-public class BaseAdminDto {
-    @Schema(description = "id")
+public class WalletDto {
+    @Schema(description = "ID")
     private Long id;
+
+    @Schema(description = "User")
+    private UserDto user;
+
+    @Schema(description = "Balance")
+    private Double balance;
+
+    @Schema(description = "Icon Path")
+    private String iconPath;
 
     @Schema(description = "created date")
     private Instant createdDate;

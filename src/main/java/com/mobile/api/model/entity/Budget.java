@@ -24,6 +24,6 @@ public class Budget extends Auditable<String> {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "balance")
+    private Double balance;
 }
