@@ -9,9 +9,9 @@ import lombok.Data;
 @Schema(description = "Login Form")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoginForm {
-    @Schema(description = "Username", example = "username", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeString(fieldName = "Username")
-    private String username;
+    @Schema(description = "Email", example = "abc@gmail.com", requiredMode = Schema.RequiredMode.REQUIRED)
+    @TypeString(fieldName = "Email")
+    private String email;
 
     @Schema(description = "Password", example = "Abc@1234", requiredMode = Schema.RequiredMode.REQUIRED)
     @TypeString(fieldName = "Password")

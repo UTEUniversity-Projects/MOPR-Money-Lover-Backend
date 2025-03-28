@@ -57,14 +57,18 @@ public class AuthenticationController extends BaseController {
     @Transactional
     public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm) {
         try {
+            // Get Account
+            Account account = accountRepository.findByEmail(loginForm.getEmail())
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+            
             // Authenticate using OAuth2's /login endpoint
-            String sessionId = authenticateViaOAuth2(loginForm.getUsername(), loginForm.getPassword());
+            String sessionId = authenticateViaOAuth2(account.getUsername(), loginForm.getPassword());
 
             // Request Authorization Code from OAuth2 Server using session
-            String authorizationCode = requestAuthorizationCode(loginForm.getUsername(), sessionId);
+            String authorizationCode = requestAuthorizationCode(account.getUsername(), sessionId);
 
             // Exchange Authorization Code for an Access Token
-            OauthTokenDto tokenResponse = exchangeCodeForToken(authorizationCode, loginForm.getUsername(), loginForm.getPassword());
+            OauthTokenDto tokenResponse = exchangeCodeForToken(authorizationCode, account.getUsername(), loginForm.getPassword());
 
             return ApiMessageUtils.success(tokenResponse, "Login successfully");
         } catch (Exception e) {
