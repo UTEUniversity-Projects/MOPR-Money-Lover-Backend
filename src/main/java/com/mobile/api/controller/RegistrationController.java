@@ -66,9 +66,6 @@ public class RegistrationController extends BaseController {
         if (accountRepository.existsByEmail(requestRegisterForm.getEmail())) {
             throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);
         }
-        if (accountRepository.existsByUsername(requestRegisterForm.getUsername())) {
-            throw new BusinessException(ErrorCode.ACCOUNT_USERNAME_EXISTED);
-        }
 
         // Create and Send OTP
         OtpCode otpCode = otpService.createOtp(requestRegisterForm.getEmail(), BaseConstant.OTP_CODE_KIND_REGISTER);
@@ -79,7 +76,7 @@ public class RegistrationController extends BaseController {
 
         // Create TOKEN-OTP
         String tokenValue = jwtUtils.generateRegisterToken(
-                requestRegisterForm.getEmail(), requestRegisterForm.getUsername(),
+                requestRegisterForm.getEmail(), requestRegisterForm.getEmail(),
                 passwordEncoder.encode(requestRegisterForm.getPassword()));
         TokenDto tokenDto = tokenService.createToken(
                 requestRegisterForm.getEmail(),

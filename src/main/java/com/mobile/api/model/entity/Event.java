@@ -23,6 +23,10 @@ public class Event extends Auditable<String> {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    private Wallet wallet;
+
     @Column(name = "name")
     private String name;
 
