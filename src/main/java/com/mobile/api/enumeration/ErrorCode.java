@@ -23,6 +23,7 @@ public enum ErrorCode {
     BUSINESS_INVALID_OTP("ERROR-BUSINESS-0002", "Invalid OTP"),
     BUSINESS_INVALID_TOKEN("ERROR-BUSINESS-0003", "Invalid Token"),
     BUSINESS_INVALID_RECAPTCHA("ERROR-BUSINESS-0004", "Invalid reCAPTCHA"),
+    BUSINESS_OTP_RESEND_LIMIT("ERROR-BUSINESS-0005", "OTP resend limit"),
 
     /**
      * OTP error codes
