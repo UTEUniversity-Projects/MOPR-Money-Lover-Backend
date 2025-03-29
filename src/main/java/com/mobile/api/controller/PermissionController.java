@@ -14,6 +14,7 @@ import com.mobile.api.model.criteria.PermissionCriteria;
 import com.mobile.api.model.entity.Permission;
 import com.mobile.api.repository.PermissionRepository;
 import com.mobile.api.utils.ApiMessageUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/permission")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@Hidden
 public class PermissionController extends BaseController {
     @Autowired
     private PermissionRepository permissionRepository;

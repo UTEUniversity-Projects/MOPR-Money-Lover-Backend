@@ -18,6 +18,7 @@ import com.mobile.api.repository.AccountRepository;
 import com.mobile.api.repository.GroupRepository;
 import com.mobile.api.repository.PermissionRepository;
 import com.mobile.api.utils.ApiMessageUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +35,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/v1/group")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@Hidden
 public class GroupController extends BaseController {
     @Autowired
     private GroupRepository groupRepository;
