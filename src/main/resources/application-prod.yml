@@ -75,6 +75,8 @@ springdoc:
     path: ${SPRING_SWAGGER_UI:/swagger-ui.html}
     oauth2-redirect-url: https://${RAILWAY_PUBLIC_DOMAIN}${SECURITY_REDIRECT_URI}
     docExpansion: none
+    tags-sorter: alpha
+    operations-sorter: alpha
 
 open:
   api:
