@@ -67,6 +67,21 @@ spring:
         min-idle: 2
         max-wait: 1000ms
 
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
+file:
+  max-size: 10485760 #10MB
+  allowed-types:
+    image: png,jpg,jpeg,gif,bmp,webp,tiff
+    video: mp4,mkv,avi,mov,flv,wmv
+    audio: mp3,wav,aac,ogg,flac
+    document: doc,docx,pdf,txt,xls,xlsx,ppt,pptx,csv,json,xml
+    archive: zip,rar,tar,gz,7z
+    executable: sh
+
 springdoc:
   api-docs:
     path: ${SPRING_API_DOCS:/v3/api-docs}

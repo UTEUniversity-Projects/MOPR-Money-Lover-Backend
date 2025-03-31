@@ -162,6 +162,13 @@
 			<version>2.6.0</version>
 		</dependency>
 
+		<!-- Cloudinary for upload file -->
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.34.0</version>
+		</dependency>
+
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
