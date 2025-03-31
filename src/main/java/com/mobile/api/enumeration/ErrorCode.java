@@ -36,6 +36,15 @@ public enum ErrorCode {
     TOKEN_NOT_FOUND("ERROR-TOKEN-0001", "Token not found"),
 
     /**
+     * FILE error codes
+     */
+    FILE_NOT_FOUND("ERROR-FILE-0001", "File not found"),
+    FILE_SIZE_EXCEEDED("ERROR-FILE-0002", "File size exceeded"),
+    FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
+    FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error with third-party"),
+    FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File download error with third-party"),
+
+    /**
      * GROUP error codes
      */
     GROUP_NOT_FOUND("ERROR-GROUP-0001", "Group not found"),
