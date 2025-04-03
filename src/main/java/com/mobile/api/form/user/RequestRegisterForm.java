@@ -20,7 +20,6 @@ public class RequestRegisterForm {
     @Password(allowNull = false)
     private String password;
 
-    @Schema(description = "reCAPTCHA response", example = "xyz", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty(message = "reCAPTCHA response can not be empty")
+    @Schema(description = "reCAPTCHA response", example = "xyz", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String recaptchaResponse;
 }
