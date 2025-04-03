@@ -38,6 +38,10 @@ public class OtpController extends BaseController {
     @PostMapping(value = "/resend-otp", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> resendOtp(@Valid @RequestBody ResendOtpForm resendOtpForm) {
+        if (!otpService.canResendOtp(resendOtpForm.getToken())) {
+            throw new BusinessException(ErrorCode.BUSINESS_OTP_RESEND_LIMIT);
+        }
+
         Jwt jwt = jwtDecoder.decode(resendOtpForm.getToken());
         String email = jwt.getSubject();
         Long otpKindLong = (Long) jwt.getClaims().get("otpKind");
