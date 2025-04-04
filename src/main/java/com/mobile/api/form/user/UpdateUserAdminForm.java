@@ -26,8 +26,8 @@ public class UpdateUserAdminForm {
     @PhoneNumber(allowNull = true)
     private String phone;
 
-    @Schema(description = "Avatar path", example = "/image/avatar/user1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String avatarPath;
+    @Schema(description = "Avatar ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Long avatarId;
 
     @Schema(description = "Group ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Group ID can not be null")

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {})
+        uses = {FileMapper.class})
 public interface WalletMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "balance", target = "balance")
-    @Mapping(source = "iconPath", target = "iconPath")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "status", target = "status")

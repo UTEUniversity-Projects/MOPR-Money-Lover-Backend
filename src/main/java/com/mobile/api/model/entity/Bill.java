@@ -49,4 +49,8 @@ public class Bill extends Auditable<String> {
     @OneToOne
     @JoinColumn(name = "reminder_id", referencedColumnName = "id")
     private Reminder reminder;
+
+    @OneToOne
+    @JoinColumn(name = "picture_id", referencedColumnName = "id")
+    private File picture;
 }

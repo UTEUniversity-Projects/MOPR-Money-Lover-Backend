@@ -14,7 +14,6 @@ public class UpdateWalletForm {
     @NotNull(message = "Balance can not be null")
     private Double balance;
 
-    @Schema(description = "Icon Path", example = "/image", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeString(fieldName = "Icon Path")
-    private String iconPath;
+    @Schema(description = "Icon ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Long iconId;
 }

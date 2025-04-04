@@ -1,5 +1,6 @@
 package com.mobile.api.dto.account;
 
+import com.mobile.api.dto.file.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,6 +15,6 @@ public class AccountDto {
     @Schema(description = "phone number")
     private String phone;
 
-    @Schema(description = "avatar path")
-    private String avatarPath;
+    @Schema(description = "avatar")
+    private FileDto avatar;
 }

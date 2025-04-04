@@ -21,8 +21,8 @@ public class UpdateUserForm {
     @PhoneNumber(allowNull = true)
     private String phone;
 
-    @Schema(description = "Avatar path", example = "/image/avatar/user1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String avatarPath;
+    @Schema(description = "Avatar ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private Long avatarId;
 
     @Schema(description = "Full name", example = "Nguyễn Văn An", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String fullName;
