@@ -36,6 +36,7 @@ public interface GroupMapper {
     @Mapping(source = "permissions", target = "permissions", qualifiedByName = "fromEntityToPermissionAdminDto")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToGroupAdminDto")
     GroupAdminDto fromEntityToGroupAdminDto(Group group);
@@ -45,6 +46,7 @@ public interface GroupMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "kind", target = "kind")
     @Mapping(source = "isSystemGroup", target = "isSystemGroup")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToGroupAdminDtoInAccount")
     GroupAdminDto fromEntityToGroupAdminDtoInAccount(Group group);

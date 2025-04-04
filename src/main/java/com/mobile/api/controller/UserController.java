@@ -15,14 +15,17 @@ import com.mobile.api.mapper.UserMapper;
 import com.mobile.api.model.OtpCode;
 import com.mobile.api.model.criteria.UserCriteria;
 import com.mobile.api.model.entity.Account;
+import com.mobile.api.model.entity.File;
 import com.mobile.api.model.entity.User;
 import com.mobile.api.model.entity.Group;
 import com.mobile.api.repository.AccountRepository;
+import com.mobile.api.repository.FileRepository;
 import com.mobile.api.repository.GroupRepository;
 import com.mobile.api.repository.UserRepository;
 import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.security.jwt.JwtUtils;
 import com.mobile.api.service.EmailService;
+import com.mobile.api.service.FileService;
 import com.mobile.api.service.OtpService;
 import com.mobile.api.service.TokenService;
 import com.mobile.api.utils.ApiMessageUtils;
@@ -47,17 +50,19 @@ import java.util.Objects;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserController extends BaseController {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private GroupRepository groupRepository;
-    @Autowired
     private TokenService tokenService;
     @Autowired
     private OtpService otpService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private GroupRepository groupRepository;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -68,6 +73,8 @@ public class UserController extends BaseController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomRegisteredClientRepository customRegisteredClientRepository;
+    @Autowired
+    private FileRepository fileRepository;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_LIS')")
@@ -84,7 +91,7 @@ public class UserController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "Get user list successfully");
+        return ApiMessageUtils.success(responseDto, "List users successfully");
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -96,7 +103,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(userMapper.fromEntityToUserAdminDto(user), "Get user successfully");
     }
 
-    @GetMapping(value = "/client-get", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/client/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<UserDto> getUserClient() {
         Long id = getCurrentUserId();
         User user = userRepository.findById(id)
@@ -123,8 +130,15 @@ public class UserController extends BaseController {
             customRegisteredClientRepository.updateClientId(registeredClient.getId(),
                     updateUserAdminForm.getUsername());
         }
+        if (updateUserAdminForm.getAvatarId() != null && !updateUserAdminForm.getAvatarId().equals(account.getAvatar().getId())) {
+            File avatar = fileRepository.findById(updateUserAdminForm.getAvatarId())
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
+
+            fileService.deleteFile(account.getAvatar().getId());
+            account.setAvatar(avatar);
+        }
         account.setPhone(updateUserAdminForm.getPhone());
-        account.setAvatarPath(updateUserAdminForm.getAvatarPath());
+
         if (!Objects.equals(account.getGroup().getId(), updateUserAdminForm.getGroupId())) {
             Group group = groupRepository.findById(updateUserAdminForm.getGroupId())
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.GROUP_NOT_FOUND));
@@ -142,7 +156,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(null, "Update user successfully");
     }
 
-    @PutMapping(value = "/client-update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/client/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<Void> updateUserClient(@Valid @RequestBody UpdateUserForm updateUserForm) {
         Long id = getCurrentUserId();
         User user = userRepository.findById(id)
@@ -160,8 +174,14 @@ public class UserController extends BaseController {
             customRegisteredClientRepository.updateClientId(registeredClient.getId(),
                     updateUserForm.getUsername());
         }
+        if (updateUserForm.getAvatarId() != null && !updateUserForm.getAvatarId().equals(account.getAvatar().getId())) {
+            File avatar = fileRepository.findById(updateUserForm.getAvatarId())
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
+
+            fileService.deleteFile(account.getAvatar().getId());
+            account.setAvatar(avatar);
+        }
         account.setPhone(updateUserForm.getPhone());
-        account.setAvatarPath(updateUserForm.getAvatarPath());
         accountRepository.save(account);
 
         // Update USER
@@ -171,7 +191,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(null, "Update user successfully");
     }
 
-    @PostMapping(value = "/client-request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/client/request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<TokenDto> requestUpdatePassword(@Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm) {
         if (Objects.equals(requestUpdatePasswordForm.getOldPassword(), requestUpdatePasswordForm.getNewPassword())) {
@@ -205,7 +225,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(tokenDto, "OTP Code send to email successfully");
     }
 
-    @PutMapping(value = "/client-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/client/update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> updatePassword(@Valid @RequestBody UpdatePasswordForm updatePasswordForm) {
         Jwt jwt = jwtDecoder.decode(updatePasswordForm.getToken());
@@ -228,7 +248,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(null, "Password updated successfully");
     }
 
-    @PostMapping(value = "/client-request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/client/request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<TokenDto> requestUpdateEmail(@Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm) {
         if (!Objects.equals(requestUpdateEmailForm.getOldEmail(), getCurrentEmail())) {
@@ -256,7 +276,7 @@ public class UserController extends BaseController {
         return ApiMessageUtils.success(tokenDto, "OTP Code send to old email successfully");
     }
 
-    @PutMapping(value = "/client-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/client/update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> updateEmail(@Valid @RequestBody UpdateEmailForm updateEmailForm) {
         Jwt jwt = jwtDecoder.decode(updateEmailForm.getToken());

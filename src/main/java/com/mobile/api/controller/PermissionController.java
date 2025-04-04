@@ -52,7 +52,7 @@ public class PermissionController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "Get permission list successfully");
+        return ApiMessageUtils.success(responseDto, "List permissions successfully");
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

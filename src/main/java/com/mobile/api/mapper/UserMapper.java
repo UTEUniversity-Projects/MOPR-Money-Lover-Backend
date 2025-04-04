@@ -42,6 +42,7 @@ public interface UserMapper {
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToUserAdminDto")
     UserAdminDto fromEntityToUserAdminDto(User user);
