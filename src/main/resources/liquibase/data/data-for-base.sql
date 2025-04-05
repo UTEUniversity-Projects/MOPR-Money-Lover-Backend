@@ -26,12 +26,12 @@ INSERT INTO `db_money_lover_permission` (`id`, `action`, `code`, `description`, 
 	(8286952140406784, '/api/v1/user/delete', 'USE_DEL', 'Delete user', 'Delete user', 'User', b'0', 'super_admin', '2025-03-10 03:28:40', 'super_admin', '2025-03-10 03:28:40', 1);
 
 -- Dumping data for table db_money_lover.db_money_lover_account: ~5 rows (approximately)
-INSERT INTO `db_money_lover_account` (`id`, `avatar_path`, `email`, `is_super_admin`, `password`, `phone`, `username`, `group_id`, `verified`,`created_by`, `created_date`, `modified_by`, `modified_date`, `status`) VALUES
-	(8274180735929377, '/image/avatar/super_admin', 'super_admin@gmail.com', b'1', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0123456789', 'super_admin', 8274172085239808, b'1', 'super_admin', '2025-03-10 15:15:25', 'super_admin', '2025-03-10 15:15:25', 1),
-	(8274182432555008, '/image/avatar/admin', 'admin@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0987654321', 'admin', 8274172436414464, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
-	(8274185907263427, '/image/avatar/manager', 'manager@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0538227546', 'manager', 8274172862824448, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
-	(8274185907273728, '/image/avatar/internal', 'internal@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0735289218', 'internal', 8274173363322880, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
-	(8274188362824639, '/image/avatar/user', 'user@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0246813579', 'user', 8274173680582656, b'1', 'super_admin', '2025-03-10 15:17:25', 'super_admin', '2025-03-10 15:17:25', 1);
+INSERT INTO `db_money_lover_account` (`id`, `avatar_id`, `email`, `is_super_admin`, `password`, `phone`, `username`, `group_id`, `verified`,`created_by`, `created_date`, `modified_by`, `modified_date`, `status`) VALUES
+	(8274180735929377, null, 'super_admin@gmail.com', b'1', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0123456789', 'super_admin', 8274172085239808, b'1', 'super_admin', '2025-03-10 15:15:25', 'super_admin', '2025-03-10 15:15:25', 1),
+	(8274182432555008, null, 'admin@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0987654321', 'admin', 8274172436414464, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
+	(8274185907263427, null, 'manager@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0538227546', 'manager', 8274172862824448, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
+	(8274185907273728, null, 'internal@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0735289218', 'internal', 8274173363322880, b'1', 'super_admin', '2025-03-10 15:16:25', 'super_admin', '2025-03-10 15:16:25', 1),
+	(8274188362824639, null, 'user@gmail.com', b'0', '$2a$12$mp9n9/fCtOI5hDDuUx3uMOYYepGUwlXzY5A1F4x5pLiz9Q8uhRguW', '0246813579', 'user', 8274173680582656, b'1', 'super_admin', '2025-03-10 15:17:25', 'super_admin', '2025-03-10 15:17:25', 1);
 
 -- Dumping data for table db_money_lover.db_money_lover_user: ~5 rows (approximately)
 INSERT INTO `db_money_lover_user` (`id`, `birthday`, `full_name`, `gender`, `created_by`, `created_date`, `modified_by`, `modified_date`, `status`) VALUES

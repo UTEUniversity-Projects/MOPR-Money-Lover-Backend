@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mobile.api.validation.Password;
 import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -20,6 +21,6 @@ public class ResetPasswordForm {
     private String newPassword;
 
     @Schema(description = "Token", example = "AbcDxy...", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeString(fieldName = "Token")
+    @NotEmpty(message = "Token cannot be empty")
     private String token;
 }
