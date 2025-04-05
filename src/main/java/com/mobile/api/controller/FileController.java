@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,17 +30,20 @@ public class FileController extends BaseController {
     private FileMapper fileMapper;
 
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ApiMessageDto<FileDto> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fileType") String fileType) throws IOException {
         File uploadedFile = fileService.uploadFile(file, fileType);
         return ApiMessageUtils.success(fileMapper.fromEntityToFileDto(uploadedFile), "Upload file successfully");
     }
 
     @GetMapping(value = "/download/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Transactional
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable Long id) throws IOException {
         return fileService.downloadFile(id);
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     @Hidden
     public ApiMessageDto<String> deleteFile(@PathVariable Long id) {
         if (!getIsSuperAdmin()) {
