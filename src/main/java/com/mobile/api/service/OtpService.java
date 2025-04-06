@@ -26,7 +26,7 @@ public class OtpService {
     @Getter
     @Value("${otp.expiry.minutes}")
     private int otpExpiryMinutes;
-    @Value("${spring.data.redis.otp-timeout}")
+    @Value("${otp.redis.otp-timeout}")
     private int otpTimeout;
 
     public OtpCode createOtp(String email, Integer kind) {
