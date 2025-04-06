@@ -101,9 +101,6 @@ open:
     serverName: ${OPEN_API_SERVERNAME}
 
 logging:
-#  level:
-#    root: debug
-#    org.springframework: debug
   config: classpath:log4j2-dev.xml
 
 recaptcha:

@@ -1,6 +1,5 @@
 server:
   port: ${PORT:8080}
-  domain: ${RAILWAY_PUBLIC_DOMAIN}
 
 spring:
   main:
@@ -127,8 +126,3 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
-
-logging:
-  level:
-    root: debug
-    org.springframework: debug
