@@ -51,7 +51,7 @@
             <AppenderRef ref="RollingFile" />
         </Logger>
         <!-- Root Logger -->
-        <Root level="INFO">
+        <Root level="DEBUG">
             <AppenderRef ref="RollingFile" />
             <AppenderRef ref="Console" />
         </Root>

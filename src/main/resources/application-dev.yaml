@@ -64,8 +64,6 @@ spring:
 #        max-idle: 5
 #        min-idle: 2
 #        max-wait: 1000ms
-#    ssl:
-#      enabled: false
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
