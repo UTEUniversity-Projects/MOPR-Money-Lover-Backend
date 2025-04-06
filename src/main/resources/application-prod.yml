@@ -53,19 +53,17 @@ spring:
           client-id: ${GOOGLE_CLIENT_ID}
           client-secret: ${GOOGLE_CLIENT_SECRET}
           scope: openid, profile, email
-#  data.redis:
-#    host: ${REDIS_HOST}
-#    port: ${REDIS_PORT}
-#    password: ${REDIS_PASSWORD}
-#    timeout: 60000
-#    lettuce:
-#      pool:
-#        max-active: 10
-#        max-idle: 5
-#        min-idle: 2
-#        max-wait: 1000ms
-#    ssl:
-#      enabled: true
+  data.redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+    timeout: 60000
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 5
+        min-idle: 2
+        max-wait: 1000ms
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
@@ -107,7 +105,7 @@ recaptcha:
   threshold: ${RECAPTCHA_THRESHOLD}
 
 otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
-otp.redis.otp-timeout: 30000
+otp.redis.otp-timeout: ${OTP_REDIS_TIMEOUT:30}
 jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
 
 oauth2-config:
