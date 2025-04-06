@@ -1,0 +1,89 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1743742927940-4">
+        <addColumn tableName="db_money_lover_account">
+            <column name="avatar_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-5">
+        <addColumn tableName="db_money_lover_event">
+            <column name="icon_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-6">
+        <addColumn tableName="db_money_lover_notification">
+            <column name="icon_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-7">
+        <addColumn tableName="db_money_lover_reminder">
+            <column name="icon_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-8">
+        <addColumn tableName="db_money_lover_wallet">
+            <column name="icon_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-9">
+        <addColumn tableName="db_money_lover_bill">
+            <column name="picture_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-10">
+        <addUniqueConstraint columnNames="avatar_id" constraintName="UC_DB_MONEY_LOVER_ACCOUNTAVATAR_ID_COL" tableName="db_money_lover_account"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-11">
+        <addUniqueConstraint columnNames="picture_id" constraintName="UC_DB_MONEY_LOVER_BILLPICTURE_ID_COL" tableName="db_money_lover_bill"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-12">
+        <addUniqueConstraint columnNames="icon_id" constraintName="UC_DB_MONEY_LOVER_EVENTICON_ID_COL" tableName="db_money_lover_event"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-13">
+        <addUniqueConstraint columnNames="icon_id" constraintName="UC_DB_MONEY_LOVER_NOTIFICATIONICON_ID_COL" tableName="db_money_lover_notification"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-14">
+        <addUniqueConstraint columnNames="icon_id" constraintName="UC_DB_MONEY_LOVER_REMINDERICON_ID_COL" tableName="db_money_lover_reminder"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-15">
+        <addUniqueConstraint columnNames="icon_id" constraintName="UC_DB_MONEY_LOVER_WALLETICON_ID_COL" tableName="db_money_lover_wallet"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-16">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_event" constraintName="FK9l6xm2ful0otlno8dq4erca4f" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-17">
+        <addForeignKeyConstraint baseColumnNames="avatar_id" baseTableName="db_money_lover_account" constraintName="FKftq4qq9iuk1phfy5ykm8n99ax" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-18">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_reminder" constraintName="FKj11b9oxh17ivlfhuk6e0kdadl" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-19">
+        <addForeignKeyConstraint baseColumnNames="picture_id" baseTableName="db_money_lover_bill" constraintName="FKldx34kmkk1sgbklyf59rvijpu" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-20">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_notification" constraintName="FKosoewypab8yl13lev5dxp7fsp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-21">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_wallet" constraintName="FKpggbwihp2fwus7b9vy8vtry6x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-22">
+        <dropColumn tableName="db_money_lover_account" columnName="avatar_path" />
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-23">
+        <dropColumn tableName="db_money_lover_event" columnName="icon_path" />
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-24">
+        <dropColumn tableName="db_money_lover_notification" columnName="icon_path" />
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-25">
+        <dropColumn tableName="db_money_lover_reminder" columnName="icon_path" />
+    </changeSet>
+    <changeSet author="Authentication" id="1743742927940-26">
+        <dropColumn tableName="db_money_lover_wallet" columnName="icon_path" />
+    </changeSet>
+    <changeSet author="Authentication" id="1743904450594-4">
+        <addColumn tableName="db_money_lover_file">
+            <column name="is_system_file" type="bit"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -61,7 +61,7 @@ public class GroupController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "Get group list successfully");
+        return ApiMessageUtils.success(responseDto, "List groups successfully");
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

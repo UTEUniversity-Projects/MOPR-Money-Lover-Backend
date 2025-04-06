@@ -1,6 +1,5 @@
 server:
   port: ${PORT:8080}
-  domain: ${RAILWAY_PUBLIC_DOMAIN}
 
 spring:
   main:
@@ -34,7 +33,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
   liquibase:
     change-log: classpath:liquibase/db.changelog-master.xml
     enabled: true
@@ -60,7 +58,6 @@ spring:
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
     timeout: 60000
-    otp-timeout: 30000
     lettuce:
       pool:
         max-active: 10
@@ -108,6 +105,7 @@ recaptcha:
   threshold: ${RECAPTCHA_THRESHOLD}
 
 otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
+otp.redis.otp-timeout: ${OTP_REDIS_TIMEOUT:30}
 jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
 
 oauth2-config:

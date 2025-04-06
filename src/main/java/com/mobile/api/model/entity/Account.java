@@ -30,8 +30,9 @@ public class Account extends Auditable<String> {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "avatar_path")
-    private String avatarPath;
+    @OneToOne
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private File avatar;
 
     @Column(name = "is_super_admin")
     private Boolean isSuperAdmin = false;

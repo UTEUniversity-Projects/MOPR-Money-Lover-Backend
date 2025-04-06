@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1743692765027-4">
+        <addColumn tableName="db_money_lover_category">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-5">
+        <addColumn tableName="db_money_lover_category">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-6">
+        <addColumn tableName="db_money_lover_category">
+            <column name="icon_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-7">
+        <addColumn tableName="db_money_lover_category">
+            <column name="is_expense" type="bit"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-8">
+        <addColumn tableName="db_money_lover_category">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-9">
+        <addColumn tableName="db_money_lover_category">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-10">
+        <addColumn tableName="db_money_lover_category">
+            <column name="order" type="integer"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-11">
+        <addColumn tableName="db_money_lover_category">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-12">
+        <addColumn tableName="db_money_lover_category">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-13">
+        <addUniqueConstraint columnNames="icon_id" constraintName="UC_DB_MONEY_LOVER_CATEGORYICON_ID_COL" tableName="db_money_lover_category"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-14">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_category" constraintName="FKa9kwc2hwchj0r4laedjixhtie" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1743692765027-15">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_money_lover_category" constraintName="FKr2gyi2jjcqd70jp25789ktfw6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -23,6 +23,7 @@ public class Wallet extends Auditable<String> {
     @Column(name = "balance")
     private Double balance;
 
-    @Column(name = "icon_path")
-    private String iconPath;
+    @OneToOne
+    @JoinColumn(name = "icon_id", referencedColumnName = "id")
+    private File icon;
 }

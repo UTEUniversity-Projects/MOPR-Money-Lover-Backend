@@ -59,7 +59,8 @@ public class RegistrationController extends BaseController {
     @Transactional
     public ApiMessageDto<TokenDto> requestRegister(@Valid @RequestBody RequestRegisterForm requestRegisterForm) {
         // Validate reCAPTCHA
-        if (!recaptchaService.validateCaptcha(requestRegisterForm.getRecaptchaResponse())) {
+        if (requestRegisterForm.getRecaptchaResponse() != null
+                && !recaptchaService.validateCaptcha(requestRegisterForm.getRecaptchaResponse())) {
             throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
         }
         // Validate information

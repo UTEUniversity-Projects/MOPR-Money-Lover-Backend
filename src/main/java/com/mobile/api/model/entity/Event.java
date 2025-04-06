@@ -39,8 +39,9 @@ public class Event extends Auditable<String> {
     @Column(name = "end_date")
     private Instant endDate;
 
-    @Column(name = "icon_path")
-    private String iconPath;
+    @OneToOne
+    @JoinColumn(name = "icon_id", referencedColumnName = "id")
+    private File icon;
 
     @OneToMany(mappedBy = "event")
     private List<Bill> bills;

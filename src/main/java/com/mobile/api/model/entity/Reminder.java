@@ -28,6 +28,7 @@ public class Reminder extends Auditable<String> {
     @Column(name = "time")
     private Instant time;
 
-    @Column(name = "icon_path")
-    private String iconPath;
+    @OneToOne
+    @JoinColumn(name = "icon_id", referencedColumnName = "id")
+    private File icon;
 }
