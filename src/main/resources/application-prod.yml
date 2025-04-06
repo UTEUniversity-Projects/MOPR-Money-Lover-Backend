@@ -125,8 +125,3 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
-
-#logging:
-#  level:
-#    root: debug
-#    org.springframework: debug
