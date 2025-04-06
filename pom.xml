@@ -139,6 +139,12 @@
 			<groupId>org.liquibase.ext</groupId>
 			<artifactId>liquibase-hibernate6</artifactId>
 			<version>${liquibase.hibernate6.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Lombok -->
