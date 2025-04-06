@@ -9,20 +9,20 @@ import com.mobile.api.utils.OtpUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-//import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OtpService {
     @Autowired
     private OtpRepository otpRepository;
-//    @Autowired
-//    private ValueOperations<String, String> valueOperations;
+    @Autowired
+    private ValueOperations<String, String> valueOperations;
     @Getter
     @Value("${otp.expiry.minutes}")
     private int otpExpiryMinutes;
@@ -63,24 +63,24 @@ public class OtpService {
     }
 
     public boolean canResendOtp(String token) {
-//        String redisKey = "otp:resend:" + token;
-//        String lastRequestTime = valueOperations.get(redisKey);
-//
-//        if (lastRequestTime != null) {
-//            long lastTime = Long.parseLong(lastRequestTime);
-//            long currentTime = Instant.now().getEpochSecond();
-//            long diff = currentTime - lastTime;
-//
-//            if (diff < otpTimeout) {
-//                return false;
-//            }
-//        }
-//        // Update the last request time in Redis
-//        valueOperations.set(
-//                redisKey,
-//                String.valueOf(Instant.now().getEpochSecond()),
-//                otpTimeout,
-//                TimeUnit.SECONDS);
+        String redisKey = "otp:resend:" + token;
+        String lastRequestTime = valueOperations.get(redisKey);
+
+        if (lastRequestTime != null) {
+            long lastTime = Long.parseLong(lastRequestTime);
+            long currentTime = Instant.now().getEpochSecond();
+            long diff = currentTime - lastTime;
+
+            if (diff < otpTimeout) {
+                return false;
+            }
+        }
+        // Update the last request time in Redis
+        valueOperations.set(
+                redisKey,
+                String.valueOf(Instant.now().getEpochSecond()),
+                otpTimeout,
+                TimeUnit.SECONDS);
         return true;
     }
 }
