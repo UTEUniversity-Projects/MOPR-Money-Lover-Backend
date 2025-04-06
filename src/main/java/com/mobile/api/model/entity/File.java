@@ -30,4 +30,7 @@ public class File extends Auditable<String> {
 
     @Column(name = "public_id", nullable = false)
     private String publicId;
+
+    @Column(name = "is_system_file")
+    private Boolean isSystemFile = false;
 }
