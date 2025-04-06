@@ -81,4 +81,9 @@
     <changeSet author="Authentication" id="1743742927940-26">
         <dropColumn tableName="db_money_lover_wallet" columnName="icon_path" />
     </changeSet>
+    <changeSet author="Authentication" id="1743904450594-4">
+        <addColumn tableName="db_money_lover_file">
+            <column name="is_system_file" type="bit"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

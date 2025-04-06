@@ -100,7 +100,6 @@ open:
     serverUrl: https://${RAILWAY_PUBLIC_DOMAIN}
     serverName: ${OPEN_API_SERVERNAME}
 
-
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
   secret-key: ${RECAPTCHA_SECRET_KEY}
@@ -126,3 +125,8 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
+
+logging:
+  level:
+    root: debug
+    org.springframework: debug
