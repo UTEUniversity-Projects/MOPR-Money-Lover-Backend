@@ -53,19 +53,19 @@ spring:
           client-id: ${GOOGLE_CLIENT_ID}
           client-secret: ${GOOGLE_CLIENT_SECRET}
           scope: openid, profile, email
-  data.redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
-    timeout: 60000
-    lettuce:
-      pool:
-        max-active: 10
-        max-idle: 5
-        min-idle: 2
-        max-wait: 1000ms
-    ssl:
-      enabled: true
+#  data.redis:
+#    host: ${REDIS_HOST}
+#    port: ${REDIS_PORT}
+#    password: ${REDIS_PASSWORD}
+#    timeout: 60000
+#    lettuce:
+#      pool:
+#        max-active: 10
+#        max-idle: 5
+#        min-idle: 2
+#        max-wait: 1000ms
+#    ssl:
+#      enabled: true
 
 cloudinary:
   cloud-name: ${CLOUDINARY_CLOUD_NAME}
@@ -126,8 +126,3 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
-
-#logging:
-#  level:
-#    root: debug
-#    org.springframework.web: debug
