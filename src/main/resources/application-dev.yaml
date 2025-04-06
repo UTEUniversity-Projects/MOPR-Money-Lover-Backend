@@ -58,8 +58,6 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
-    repositories:
-      enabled: false
     timeout: 60000
     otp-timeout: 30000
     lettuce:
@@ -103,6 +101,9 @@ open:
     serverName: ${OPEN_API_SERVERNAME}
 
 logging:
+#  level:
+#    root: debug
+#    org.springframework: debug
   config: classpath:log4j2-dev.xml
 
 recaptcha:
@@ -130,3 +131,4 @@ oauth2-config:
   logout-uri: "/logout"
   error-uri: "/error"
   callback-uri: "/home"
+
