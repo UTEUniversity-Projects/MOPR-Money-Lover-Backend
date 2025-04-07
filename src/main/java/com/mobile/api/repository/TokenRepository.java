@@ -19,7 +19,7 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     boolean existsByTokenAndKind(String token, Integer kind);
 
     @Modifying
-    @Query("DELETE Token t WHERE t.expiryTime < :now")
+    @Query("DELETE FROM Token t WHERE t.expiryTime < :now")
     void deleteExpiredTokens(@Param("now") Instant now);
 }
 

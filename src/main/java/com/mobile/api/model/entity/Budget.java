@@ -1,6 +1,7 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,15 +14,15 @@ import org.hibernate.annotations.GenericGenerator;
 public class Budget extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "period_id")
+    @JoinColumn(name = "period_id", nullable = false)
     private Period period;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(name = "balance")

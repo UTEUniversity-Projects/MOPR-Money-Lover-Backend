@@ -1,12 +1,11 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "db_money_lover_account")
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 public class Account extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @Column(name = "username")

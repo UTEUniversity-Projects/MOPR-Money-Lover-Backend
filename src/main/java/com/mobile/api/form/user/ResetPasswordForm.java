@@ -20,7 +20,7 @@ public class ResetPasswordForm {
     @Password(allowNull = false)
     private String newPassword;
 
-    @Schema(description = "Token", example = "AbcDxy...", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Token", example = "aBcDxy", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotEmpty(message = "Token cannot be empty")
     private String token;
 }

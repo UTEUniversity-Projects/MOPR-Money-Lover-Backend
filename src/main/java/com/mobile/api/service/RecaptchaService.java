@@ -12,6 +12,9 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class RecaptchaService {
+    @Value("${recaptcha.site-key}")
+    private String siteKey;
+
     @Value("${recaptcha.secret-key}")
     private String secretKey;
 

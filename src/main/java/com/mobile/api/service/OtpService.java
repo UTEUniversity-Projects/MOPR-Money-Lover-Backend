@@ -23,9 +23,11 @@ public class OtpService {
     private OtpRepository otpRepository;
     @Autowired
     private ValueOperations<String, String> valueOperations;
+
     @Getter
     @Value("${otp.expiry.minutes}")
     private int otpExpiryMinutes;
+
     @Value("${otp.redis.otp-timeout}")
     private int otpTimeout;
 

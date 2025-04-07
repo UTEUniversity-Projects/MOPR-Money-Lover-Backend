@@ -5,12 +5,11 @@ import com.mobile.api.validation.UserGender;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 public class UserGenderValidation implements ConstraintValidator<UserGender, Integer> {
     private boolean allowNull;
-    private static final List<Integer> ALLOWED_VALUES = Arrays.asList(
+    private static final Set<Integer> ALLOWED_VALUES = Set.of(
             BaseConstant.USER_GENDER_MALE,
             BaseConstant.USER_GENDER_FEMALE,
             BaseConstant.USER_GENDER_UNKNOWN

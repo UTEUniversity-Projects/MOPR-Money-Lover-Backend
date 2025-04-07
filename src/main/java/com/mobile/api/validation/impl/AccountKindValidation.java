@@ -5,12 +5,11 @@ import com.mobile.api.validation.AccountKind;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 public class AccountKindValidation implements ConstraintValidator<AccountKind, Integer> {
     private boolean allowNull;
-    private static final List<Integer> ALLOWED_VALUES = Arrays.asList(
+    private static final Set<Integer> ALLOWED_VALUES = Set.of(
             BaseConstant.USER_KIND_ADMIN,
             BaseConstant.USER_KIND_MANAGER,
             BaseConstant.USER_KIND_USER

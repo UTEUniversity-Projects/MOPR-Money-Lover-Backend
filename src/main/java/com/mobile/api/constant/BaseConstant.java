@@ -19,6 +19,32 @@ public class BaseConstant {
     public static final Integer GROUP_KIND_USER = 5;
 
     /**
+     * TOKEN_KIND constants
+     */
+    public static final Integer TOKEN_KIND_AUTHORIZATION = 1;
+    public static final Integer TOKEN_KIND_REGISTER = 2;
+    public static final Integer TOKEN_KIND_RESET_PASSWORD = 3;
+    public static final Integer TOKEN_KIND_UPDATE_PASSWORD = 4;
+    public static final Integer TOKEN_KIND_UPDATE_EMAIL = 5;
+
+    /**
+     * OTP_CODE_KIND constants
+     */
+    public static final Integer OTP_CODE_KIND_REGISTER = 1;
+    public static final Integer OTP_CODE_KIND_RESET_PASSWORD = 2;
+    public static final Integer OTP_CODE_KIND_UPDATE_PASSWORD = 3;
+    public static final Integer OTP_CODE_KIND_UPDATE_EMAIL = 4;
+
+    /**
+     * FILE_TYPE constants
+     */
+    public static final String FILE_TYPE_IMAGE = "IMAGE";
+    public static final String FILE_TYPE_VIDEO = "VIDEO";
+    public static final String FILE_TYPE_AUDIO = "AUDIO";
+    public static final String FILE_TYPE_DOCUMENT = "DOCUMENT";
+    public static final String FILE_TYPE_ARCHIVE = "ARCHIVE";
+
+    /**
      * USER_KIND constants
      */
     public static final Integer USER_KIND_ADMIN = 1;
@@ -32,20 +58,4 @@ public class BaseConstant {
     public static final Integer USER_GENDER_FEMALE = 2;
     public static final Integer USER_GENDER_UNKNOWN = 3;
 
-    /**
-     * OTP_CODE_KIND constants
-     */
-    public static final Integer OTP_CODE_KIND_REGISTER = 1;
-    public static final Integer OTP_CODE_KIND_RESET_PASSWORD = 2;
-    public static final Integer OTP_CODE_KIND_UPDATE_PASSWORD = 3;
-    public static final Integer OTP_CODE_KIND_UPDATE_EMAIL = 4;
-
-    /**
-     * TOKEN_KIND constants
-     */
-    public static final Integer TOKEN_KIND_AUTHORIZATION = 1;
-    public static final Integer TOKEN_KIND_REGISTER = 2;
-    public static final Integer TOKEN_KIND_RESET_PASSWORD = 3;
-    public static final Integer TOKEN_KIND_UPDATE_PASSWORD = 4;
-    public static final Integer TOKEN_KIND_UPDATE_EMAIL = 5;
 }

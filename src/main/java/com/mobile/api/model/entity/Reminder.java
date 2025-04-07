@@ -1,6 +1,7 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +16,11 @@ import java.time.Instant;
 public class Reminder extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "title")
@@ -29,6 +30,6 @@ public class Reminder extends Auditable<String> {
     private Instant time;
 
     @OneToOne
-    @JoinColumn(name = "icon_id", referencedColumnName = "id")
+    @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }

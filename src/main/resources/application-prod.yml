@@ -57,7 +57,7 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
-    timeout: 60000
+    timeout: ${REDIS_TIMEOUT}
     lettuce:
       pool:
         max-active: 10
@@ -71,14 +71,13 @@ cloudinary:
   api-secret: ${CLOUDINARY_API_SECRET}
 
 file:
-  max-size: 10485760 #10MB
+  max-size: 524288 #size 512KB
   allowed-types:
-    image: png,jpg,jpeg,gif,bmp,webp,tiff
+    image: png,jpg,jpeg,gif,bmp,webp,tiff,icon,svg
     video: mp4,mkv,avi,mov,flv,wmv
     audio: mp3,wav,aac,ogg,flac
     document: doc,docx,pdf,txt,xls,xlsx,ppt,pptx,csv,json,xml
     archive: zip,rar,tar,gz,7z
-    executable: sh
 
 springdoc:
   api-docs:
@@ -105,7 +104,7 @@ recaptcha:
   threshold: ${RECAPTCHA_THRESHOLD}
 
 otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
-otp.redis.otp-timeout: ${OTP_REDIS_TIMEOUT:30}
+otp.redis.otp-timeout: ${OTP_TIMEOUT_MINUTES:30}
 jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
 
 oauth2-config:
