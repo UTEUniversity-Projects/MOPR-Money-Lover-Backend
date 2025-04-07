@@ -77,7 +77,7 @@ public class GroupController extends BaseController {
     @PreAuthorize("hasAuthority('GRO_CRE')")
     public ApiMessageDto<Void> createGroup(@Valid @RequestBody CreateGroupAdminForm createGroupAdminForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
         if (groupRepository.existsByName(createGroupAdminForm.getName())) {
             throw new BusinessException(ErrorCode.GROUP_NAME_EXISTED);
@@ -93,7 +93,7 @@ public class GroupController extends BaseController {
     @PreAuthorize("hasAuthority('GRO_UPD')")
     public ApiMessageDto<Void> updateGroup(@Valid @RequestBody UpdateGroupAdminForm updateGroupAdminForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Group group = groupRepository.findById(updateGroupAdminForm.getId())
@@ -115,7 +115,7 @@ public class GroupController extends BaseController {
     @PreAuthorize("hasAuthority('GRO_PER_ADD')")
     public ApiMessageDto<Void> addPermissionsToGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Group group = groupRepository.findById(updatePermissionListForm.getId())
@@ -136,7 +136,7 @@ public class GroupController extends BaseController {
     @PreAuthorize("hasAuthority('GRO_PER_REM')")
     public ApiMessageDto<Void> removePermissionsFromGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Group group = groupRepository.findById(updatePermissionListForm.getId())
@@ -153,7 +153,7 @@ public class GroupController extends BaseController {
     @PreAuthorize("hasAuthority('GRO_DEL')")
     public ApiMessageDto<Void> deleteGroup(@PathVariable Long id) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
         if (accountRepository.countByGroupId(id) > 0) {
             throw new BusinessException(ErrorCode.GROUP_CANT_DELETE);

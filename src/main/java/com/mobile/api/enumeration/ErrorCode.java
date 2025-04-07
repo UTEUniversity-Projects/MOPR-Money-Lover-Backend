@@ -17,32 +17,22 @@ public enum ErrorCode {
     SYSTEM_UNKNOWN_ERROR("ERROR-SYSTEM-0008", "Unknown error"),
 
     /**
+     * AUTHENTICATION error codes
+     */
+    AUTHENTICATION_LOGIN_FAILED("ERROR-AUTHENTICATION-0001", "Login failed"),
+    AUTHENTICATION_LOGOUT_FAILED("ERROR-AUTHENTICATION-0002", "Logout failed"),
+    AUTHENTICATION_OAUTH2_LOGIN_FAILED("ERROR-AUTHENTICATION-0003", "OAuth2 Login failed"),
+    AUTHENTICATION_OAUTH2_AUTHORIZATION_CODE("ERROR-AUTHENTICATION-0004", "Unable to retrieve Authorization Code"),
+    AUTHENTICATION_OAUTH2_ACCESS_TOKEN("ERROR-AUTHENTICATION-0005", "Failed to retrieve Access Token"),
+
+    /**
      * BUSINESS error codes
      */
-    BUSINESS_NO_PERMISSION("ERROR-BUSINESS-0001", "No permission"),
+    BUSINESS_PERMISSION_DENIED("ERROR-BUSINESS-0001", "No permission"),
     BUSINESS_INVALID_OTP("ERROR-BUSINESS-0002", "Invalid OTP"),
     BUSINESS_INVALID_TOKEN("ERROR-BUSINESS-0003", "Invalid Token"),
     BUSINESS_INVALID_RECAPTCHA("ERROR-BUSINESS-0004", "Invalid reCAPTCHA"),
     BUSINESS_OTP_RESEND_LIMIT("ERROR-BUSINESS-0005", "OTP resend limit"),
-
-    /**
-     * OTP error codes
-     */
-    OTP_NOT_FOUND("ERROR-OTP-0001", "OTP not found"),
-
-    /**
-     * TOKEN error codes
-     */
-    TOKEN_NOT_FOUND("ERROR-TOKEN-0001", "Token not found"),
-
-    /**
-     * FILE error codes
-     */
-    FILE_NOT_FOUND("ERROR-FILE-0001", "File not found"),
-    FILE_SIZE_EXCEEDED("ERROR-FILE-0002", "File size exceeded"),
-    FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
-    FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error with third-party"),
-    FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File download error with third-party"),
 
     /**
      * GROUP error codes
@@ -79,10 +69,43 @@ public enum ErrorCode {
     USER_NOT_MATCH_OLD_PASSWORD("ERROR-USER-0004", "Old password does not match"),
 
     /**
+     * OTP error codes
+     */
+    OTP_NOT_FOUND("ERROR-OTP-0001", "OTP not found"),
+
+    /**
+     * TOKEN error codes
+     */
+    TOKEN_NOT_FOUND("ERROR-TOKEN-0001", "Token not found"),
+
+    /**
+     * FILE error codes
+     */
+    FILE_NOT_FOUND("ERROR-FILE-0001", "File not found"),
+    FILE_SIZE_EXCEEDED("ERROR-FILE-0002", "File size exceeded"),
+    FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
+    FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error"),
+    FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File download error"),
+
+    /**
      * CATEGORY error codes
      */
     CATEGORY_NOT_FOUND("ERROR-CATEGORY-0001", "Category not found"),
     CATEGORY_CANT_DELETE("ERROR-CATEGORY-0002", "Category can not delete"),
+
+    /**
+     * CURRENCY error codes
+     */
+    CURRENCY_NOT_FOUND("ERROR-CURRENCY-0001", "Currency not found"),
+    CURRENCY_NAME_EXISTED("ERROR-CURRENCY-0002", "Currency existed by name"),
+    CURRENCY_CODE_EXISTED("ERROR-CURRENCY-0003", "Currency existed by code"),
+    CURRENCY_CANT_DELETE("ERROR-CURRENCY-0004", "Currency can not delete"),
+
+    /**
+     * WALLET error codes
+     */
+    WALLET_NOT_FOUND("ERROR-WALLET-0001", "Wallet not found"),
+    WALLET_CANT_DELETE("ERROR-WALLET-0002", "Wallet can not delete"),
     ;
 
     private final String code;

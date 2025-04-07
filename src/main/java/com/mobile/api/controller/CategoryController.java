@@ -72,7 +72,7 @@ public class CategoryController extends BaseController {
 
     @PostMapping(value = "/client/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<Void> createCategory(@Valid @RequestBody CreateCategoryForm createCategoryForm) {
-        Category category = categoryMapper.fromCreateCategoryForm(createCategoryForm);
+        Category category = categoryMapper.fromCreateCategoryFormToEntity(createCategoryForm);
 
         File icon = fileRepository.findById(createCategoryForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));

@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 public @interface PhoneNumber {
     boolean allowNull() default false;
 
-    String message() default "Phone number must be 10 to 15 digits.";
+    String message() default "Phone number must be 10 to 15 digits";
 
     Class<?>[] groups() default {};
 

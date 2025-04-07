@@ -2,7 +2,7 @@ package com.mobile.api.utils;
 
 import java.security.SecureRandom;
 
-public class OtpUtils {
+public final class OtpUtils {
     private static final SecureRandom random = new SecureRandom();
 
     public static String generateOTP(int length) {

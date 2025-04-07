@@ -5,12 +5,11 @@ import com.mobile.api.validation.GroupKind;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 public class GroupKindValidation implements ConstraintValidator<GroupKind, Integer> {
     private boolean allowNull;
-    private static final List<Integer> ALLOWED_VALUES = Arrays.asList(
+    private static final Set<Integer> ALLOWED_VALUES = Set.of(
             BaseConstant.GROUP_KIND_ADMIN,
             BaseConstant.GROUP_KIND_MANAGER,
             BaseConstant.GROUP_KIND_INTERNAL,

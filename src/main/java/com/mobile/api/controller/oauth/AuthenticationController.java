@@ -72,7 +72,7 @@ public class AuthenticationController extends BaseController {
 
             return ApiMessageUtils.success(tokenResponse, "Login successfully");
         } catch (Exception e) {
-            throw new AuthenticationException("Login failed");
+            throw new AuthenticationException(ErrorCode.AUTHENTICATION_LOGIN_FAILED);
         }
     }
 
@@ -118,7 +118,7 @@ public class AuthenticationController extends BaseController {
             }
         }
 
-        throw new AuthenticationException("OAuth2 Login failed, unable to retrieve session.");
+        throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_LOGIN_FAILED);
     }
 
     /**
@@ -152,7 +152,7 @@ public class AuthenticationController extends BaseController {
             }
         }
 
-        throw new AuthenticationException("Unable to retrieve Authorization Code");
+        throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_AUTHORIZATION_CODE);
     }
 
     /**
@@ -183,7 +183,7 @@ public class AuthenticationController extends BaseController {
         );
 
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-            throw new AuthenticationException("Failed to retrieve Access Token");
+            throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_ACCESS_TOKEN);
         }
 
         Map<String, Object> body = response.getBody();

@@ -1,6 +1,7 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +16,11 @@ import java.time.Instant;
 public class Period extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
     @Column(name = "start_date")
