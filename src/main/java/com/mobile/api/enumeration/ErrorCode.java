@@ -117,6 +117,21 @@ public enum ErrorCode {
      */
     EVENT_NOT_FOUND("ERROR-EVENT-0001", "Event not found"),
     EVENT_INVALID_DATE_RANGE("ERROR-EVENT-0002", "Event invalid date range"),
+
+    /**
+     * REMINDER error codes
+     */
+    REMINDER_NOT_FOUND("ERROR-REMINDER-0001", "Reminder not found"),
+
+    /**
+     * PERIOD error codes
+     */
+    PERIOD_NOT_FOUND("ERROR-PERIOD-0001", "Period not found"),
+
+    /**
+     * BUDGET error codes
+     */
+    BUDGET_NOT_FOUND("ERROR-PERIOD-0001", "Period not found"),
     ;
 
     private final String code;

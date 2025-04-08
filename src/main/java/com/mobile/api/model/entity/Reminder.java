@@ -23,9 +23,6 @@ public class Reminder extends Auditable<String> {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "time")
     private Instant time;
 

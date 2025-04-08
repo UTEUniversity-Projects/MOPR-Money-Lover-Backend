@@ -58,4 +58,18 @@ public class BaseConstant {
     public static final Integer USER_GENDER_FEMALE = 2;
     public static final Integer USER_GENDER_UNKNOWN = 3;
 
+    /**
+     * NOTIFICATION_TYPE constants
+     */
+    public static final Integer NOTIFICATION_TYPE_BUDGET = 1;
+    public static final Integer NOTIFICATION_TYPE_REMINDER = 2;
+    public static final Integer NOTIFICATION_TYPE_EVENT = 3;
+    public static final Integer NOTIFICATION_TYPE_WARNING = 4;
+
+    /**
+     * NOTIFICATION_SCOPE constants
+     */
+    public static final Integer NOTIFICATION_SCOPE_INDIVIDUAL = 1;
+    public static final Integer NOTIFICATION_SCOPE_GROUP = 2;
+    public static final Integer NOTIFICATION_SCOPE_ALL = 3;
 }
