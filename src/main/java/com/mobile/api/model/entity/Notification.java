@@ -21,13 +21,15 @@ public class Notification extends Auditable<String> {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "budget_id", nullable = false)
-    private Budget budget;
-
     @Column(name = "content")
     private String content;
 
     @Column(name = "is_read")
     private Boolean isRead = false;
+
+    @Column(name = "type")
+    private Integer type;
+
+    @Column(name = "scope")
+    private Integer scope;
 }

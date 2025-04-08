@@ -27,4 +27,7 @@
             <column name="is_completed" type="bit"/>
         </addColumn>
     </changeSet>
+    <changeSet author="Authentication" id="1744092572677-5">
+        <dropColumn tableName="db_money_lover_reminder" columnName="title"/>
+    </changeSet>
 </databaseChangeLog>
