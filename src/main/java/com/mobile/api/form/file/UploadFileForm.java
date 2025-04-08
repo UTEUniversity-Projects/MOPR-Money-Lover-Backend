@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UploadFileForm {
     @Schema(description = "File", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "File cannot be null")
+    @NotNull(message = "File can not be null")
     private MultipartFile file;
 
     @Schema(description = "File Type", example = "IMAGE", requiredMode = Schema.RequiredMode.REQUIRED)

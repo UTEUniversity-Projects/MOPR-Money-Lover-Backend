@@ -68,7 +68,7 @@ public class WalletController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "List categories successfully");
+        return ApiMessageUtils.success(responseDto, "List wallets successfully");
     }
 
     @GetMapping(value = "/client/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

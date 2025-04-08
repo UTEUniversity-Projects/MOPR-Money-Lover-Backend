@@ -111,6 +111,12 @@ public enum ErrorCode {
      * TAG error codes
      */
     TAG_NOT_FOUND("ERROR-TAG-0001", "Tag not found"),
+
+    /**
+     * EVENT error codes
+     */
+    EVENT_NOT_FOUND("ERROR-EVENT-0001", "Event not found"),
+    EVENT_INVALID_DATE_RANGE("ERROR-EVENT-0002", "Event invalid date range"),
     ;
 
     private final String code;
