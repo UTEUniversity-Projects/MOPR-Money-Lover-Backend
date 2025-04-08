@@ -49,7 +49,7 @@ public class TagController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "List categories successfully");
+        return ApiMessageUtils.success(responseDto, "List tags successfully");
     }
 
     @GetMapping(value = "/client/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

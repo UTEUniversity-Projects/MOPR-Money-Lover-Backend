@@ -22,4 +22,9 @@
     <changeSet author="Authentication" id="1744090076509-8">
         <dropColumn tableName="db_money_lover_bill" columnName="tag_id"/>
     </changeSet>
+    <changeSet author="Authentication" id="1744092572677-4">
+        <addColumn tableName="db_money_lover_event">
+            <column name="is_completed" type="bit"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

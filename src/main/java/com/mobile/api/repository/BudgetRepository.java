@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface BudgetRepository extends JpaRepository<Budget, Long>, JpaSpecif
 
     @Modifying
     @Query("DELETE FROM Budget b WHERE b.period.id IN :periodIds")
-    void deleteAllFollowPeriodIds(List<Long> periodIds);
+    void deleteAllFollowPeriodIds(@Param("periodIds") List<Long> periodIds);
 }
