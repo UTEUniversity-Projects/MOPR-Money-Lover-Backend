@@ -92,8 +92,9 @@ public class TagController extends BaseController {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND));
 
+        tag.getBills().clear();
+        tagRepository.save(tag);
         tagRepository.delete(tag);
-
         return ApiMessageUtils.success(null, "Delete tag successfully");
     }
 }
