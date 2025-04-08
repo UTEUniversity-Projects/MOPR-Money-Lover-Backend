@@ -43,6 +43,13 @@ public interface WalletMapper {
     @Named("fromEntityToWalletDto")
     WalletDto fromEntityToWalletDto(Wallet wallet);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("fromEntityToWalletInPeriodDto")
+    WalletDto fromEntityToWalletInPeriodDto(Wallet wallet);
+
     @IterableMapping(elementTargetType = WalletDto.class, qualifiedByName = "fromEntityToWalletDto")
     @Named("fromEntitiesToWalletDtoList")
     List<WalletDto> fromEntitiesToWalletDtoList(List<Wallet> wallets);
