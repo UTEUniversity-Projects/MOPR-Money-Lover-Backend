@@ -15,4 +15,11 @@ public interface FileMapper {
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToFileDto")
     FileDto fromEntityToFileDto(File file);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "fileUrl", target = "fileUrl")
+    @Mapping(source = "fileType", target = "fileType")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("fromEntityToSimpleFileDto")
+    FileDto fromEntityToSimpleFileDto(File file);
 }

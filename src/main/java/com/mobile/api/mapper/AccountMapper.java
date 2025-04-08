@@ -12,7 +12,7 @@ public interface AccountMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phone", target = "phone")
-    @Mapping(source = "avatar", target = "avatar", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "avatar", target = "avatar", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToAccountDto")
     AccountDto fromEntityToAccountDto(Account account);
@@ -21,7 +21,7 @@ public interface AccountMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "email", target = "email")
     @Mapping(source = "phone", target = "phone")
-    @Mapping(source = "avatar", target = "avatar", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "avatar", target = "avatar", qualifiedByName = "fromEntityToSimpleFileDto")
     @Mapping(source = "group", target = "group", qualifiedByName = "fromEntityToGroupAdminDtoInAccount")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")

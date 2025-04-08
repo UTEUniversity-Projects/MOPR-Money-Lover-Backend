@@ -14,7 +14,7 @@ public interface CurrencyMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "code", target = "code")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToCurrencyDto")
     CurrencyDto fromEntityToCurrencyDto(Currency currency);
@@ -22,7 +22,7 @@ public interface CurrencyMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "code", target = "code")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
     @Mapping(source = "status", target = "status")
