@@ -2,11 +2,13 @@ package com.mobile.api.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.entity.File;
 import com.mobile.api.repository.FileRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -44,37 +44,41 @@ public class FileService {
     private long maxFileSize;
 
     @Value("#{'${file.allowed-types.image}'.split(',')}")
-    private List<String> allowedImageTypes;
+    private Set<String> allowedImageTypes;
 
     @Value("#{'${file.allowed-types.video}'.split(',')}")
-    private List<String> allowedVideoTypes;
+    private Set<String> allowedVideoTypes;
 
     @Value("#{'${file.allowed-types.audio}'.split(',')}")
-    private List<String> allowedAudioTypes;
+    private Set<String> allowedAudioTypes;
 
     @Value("#{'${file.allowed-types.document}'.split(',')}")
-    private List<String> allowedDocumentTypes;
+    private Set<String> allowedDocumentTypes;
 
     @Value("#{'${file.allowed-types.archive}'.split(',')}")
-    private List<String> allowedArchiveTypes;
+    private Set<String> allowedArchiveTypes;
 
-    @Value("#{'${file.allowed-types.executable}'.split(',')}")
-    private List<String> allowedExecutableTypes;
+    private Map<String, Set<String>> allowedFileTypeMap = new HashMap<>();
+
+    @PostConstruct
+    private void init() {
+        // Initialize any resources if needed
+        allowedFileTypeMap = Map.of(
+                BaseConstant.FILE_TYPE_IMAGE, allowedImageTypes,
+                BaseConstant.FILE_TYPE_VIDEO, allowedVideoTypes,
+                BaseConstant.FILE_TYPE_AUDIO, allowedAudioTypes,
+                BaseConstant.FILE_TYPE_DOCUMENT, allowedDocumentTypes,
+                BaseConstant.FILE_TYPE_ARCHIVE, allowedArchiveTypes
+        );
+    }
 
     private String getFileExtension(String filename) {
         return filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
     }
 
     private boolean isAllowedFileType(String extension, String fileType) {
-        return switch (fileType) {
-            case "image" -> allowedImageTypes.contains(extension);
-            case "video" -> allowedVideoTypes.contains(extension);
-            case "audio" -> allowedAudioTypes.contains(extension);
-            case "document" -> allowedDocumentTypes.contains(extension);
-            case "archive" -> allowedArchiveTypes.contains(extension);
-            case "executable" -> allowedExecutableTypes.contains(extension);
-            default -> false;
-        };
+        Set<String> allowedExtensions = allowedFileTypeMap.get(fileType);
+        return allowedExtensions != null && allowedExtensions.contains(extension);
     }
 
     public File uploadFile(MultipartFile multipartFile, String fileType) throws IOException {

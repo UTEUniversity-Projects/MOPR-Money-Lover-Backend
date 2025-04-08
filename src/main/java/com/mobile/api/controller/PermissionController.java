@@ -68,7 +68,7 @@ public class PermissionController extends BaseController {
     @PreAuthorize("hasAuthority('PER_CRE')")
     public ApiMessageDto<Void> createPermission(@Valid @RequestBody CreatePermissionAdminForm createPermissionAdminForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Optional<Permission> existingPermission = permissionRepository.findByActionOrCode(
@@ -93,7 +93,7 @@ public class PermissionController extends BaseController {
     @PreAuthorize("hasAuthority('PER_UPD')")
     public ApiMessageDto<Void> updatePermission(@Valid @RequestBody UpdatePermissionAdminForm updatePermissionAdminForm) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Permission permission = permissionRepository.findById(updatePermissionAdminForm.getId())
@@ -120,7 +120,7 @@ public class PermissionController extends BaseController {
     @PreAuthorize("hasAuthority('PER_DEL')")
     public ApiMessageDto<Void> deletePermission(@PathVariable Long id) {
         if (!getIsSuperAdmin()) {
-            throw new BusinessException(ErrorCode.BUSINESS_NO_PERMISSION);
+            throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
 
         Permission permission = permissionRepository.findById(id)

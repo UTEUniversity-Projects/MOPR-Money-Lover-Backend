@@ -41,6 +41,7 @@ public interface PermissionMapper {
     @Mapping(source = "showMenu", target = "showMenu")
     @Mapping(source = "createdDate", target = "createdDate")
     @Mapping(source = "modifiedDate", target = "modifiedDate")
+    @Mapping(source = "status", target = "status")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToPermissionAdminDto")
     PermissionAdminDto fromEntityToPermissionAdminDto(Permission permission);

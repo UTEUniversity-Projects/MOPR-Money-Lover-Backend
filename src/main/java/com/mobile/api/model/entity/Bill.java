@@ -1,6 +1,7 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.time.Instant;
 public class Bill extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @Column(name = "price")
@@ -31,26 +32,26 @@ public class Bill extends Auditable<String> {
     private Boolean isIncludedReport = true;
 
     @ManyToOne
-    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
     @ManyToOne
-    @JoinColumn(name = "event_id", referencedColumnName = "id")
+    @JoinColumn(name = "event_id")
     private Event event;
 
     @OneToOne
-    @JoinColumn(name = "reminder_id", referencedColumnName = "id")
+    @JoinColumn(name = "reminder_id")
     private Reminder reminder;
 
     @OneToOne
-    @JoinColumn(name = "picture_id", referencedColumnName = "id")
+    @JoinColumn(name = "picture_id")
     private File picture;
 }

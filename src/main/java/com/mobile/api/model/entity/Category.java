@@ -1,6 +1,7 @@
 package com.mobile.api.model.entity;
 
 import com.mobile.api.model.audit.Auditable;
+import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class Category extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
-    @GenericGenerator(name = "idGenerator", type = com.mobile.api.service.id.IdGenerator.class)
+    @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
     @ManyToOne
@@ -29,10 +30,10 @@ public class Category extends Auditable<String> {
     @Column(name = "is_expense")
     private Boolean isExpense;
 
-    @Column(name = "order")
-    private Integer order;
+    @Column(name = "ordering")
+    private Integer ordering;
 
     @OneToOne
-    @JoinColumn(name = "icon_id", referencedColumnName = "id")
+    @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }

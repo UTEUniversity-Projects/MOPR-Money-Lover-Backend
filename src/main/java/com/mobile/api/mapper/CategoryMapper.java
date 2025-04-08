@@ -16,8 +16,8 @@ public interface CategoryMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "isExpense", target = "isExpense")
     @BeanMapping(ignoreByDefault = true)
-    @Named("fromCreateCategoryForm")
-    Category fromCreateCategoryForm(CreateCategoryForm createCategoryForm);
+    @Named("fromCreateCategoryFormToEntity")
+    Category fromCreateCategoryFormToEntity(CreateCategoryForm createCategoryForm);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")

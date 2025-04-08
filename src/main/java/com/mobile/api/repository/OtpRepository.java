@@ -15,6 +15,6 @@ public interface OtpRepository extends JpaRepository<OtpCode, Long> {
     Optional<OtpCode> findTopByEmailAndKindOrderByCreatedDateDesc(String email, Integer kind);
 
     @Modifying
-    @Query("DELETE OtpCode oc WHERE oc.expiryTime < :now")
+    @Query("DELETE FROM OtpCode oc WHERE oc.expiryTime < :now")
     void deleteExpiredOTPs(@Param("now") Instant now);
 }

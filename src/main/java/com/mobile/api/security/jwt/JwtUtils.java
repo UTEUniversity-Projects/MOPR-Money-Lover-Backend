@@ -26,12 +26,13 @@ public class JwtUtils {
     private final JwtEncoder jwtEncoder;
     private final ObjectMapper objectMapper;
     private final JwtProperties jwtProperties;
+
     @Value("${jwt.expiry.minutes}")
     private int jwtExpiryMinutes;
 
-    public JwtUtils(JwtEncoder jwtEncoder, JwtProperties jwtProperties) {
+    public JwtUtils(JwtEncoder jwtEncoder, ObjectMapper objectMapper, JwtProperties jwtProperties) {
         this.jwtEncoder = jwtEncoder;
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = objectMapper;
         this.jwtProperties = jwtProperties;
     }
 

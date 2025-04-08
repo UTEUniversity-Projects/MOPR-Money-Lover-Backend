@@ -25,6 +25,7 @@ public class UpdateCategoryForm {
     @TypeString(fieldName = "Is expense")
     private Boolean isExpense;
 
-    @Schema(description = "Icon ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Icon ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "Icon ID can not be null")
     private Long iconId;
 }
