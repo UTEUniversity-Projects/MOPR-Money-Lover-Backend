@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long>, JpaSpecificationExecutor<Bill> {
-    boolean existsByCategoryId(Long categoryId);
+    void deleteAllByCategoryId(Long id);
 
     void deleteAllByWalletId(Long id);
 }

@@ -26,9 +26,6 @@ public class Tag extends Auditable<String> {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "icon_path")
-    private String iconPath;
-
-    @OneToMany(mappedBy = "tag")
+    @ManyToMany(mappedBy = "tags")
     private List<Bill> bills;
 }

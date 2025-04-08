@@ -50,7 +50,9 @@ public class PasswordController extends BaseController {
 
     @PostMapping(value = "/request-reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestResetPassword(@Valid @RequestBody RequestResetPasswordForm requestResetPasswordForm) {
+    public ApiMessageDto<TokenDto> requestResetPassword(
+            @Valid @RequestBody RequestResetPasswordForm requestResetPasswordForm
+    ) {
         if (!accountRepository.existsByEmail(requestResetPasswordForm.getEmail())) {
             throw new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
@@ -75,7 +77,9 @@ public class PasswordController extends BaseController {
 
     @PutMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<String> resetPassword(@Valid @RequestBody ResetPasswordForm resetPasswordForm) {
+    public ApiMessageDto<String> resetPassword(
+            @Valid @RequestBody ResetPasswordForm resetPasswordForm
+    ) {
         Jwt jwt = jwtDecoder.decode(resetPasswordForm.getToken());
         String email = jwt.getClaimAsString("email");
 

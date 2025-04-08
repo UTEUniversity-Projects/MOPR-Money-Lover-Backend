@@ -57,7 +57,9 @@ public class RegistrationController extends BaseController {
 
     @PostMapping(value = "/request-register", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestRegister(@Valid @RequestBody RequestRegisterForm requestRegisterForm) {
+    public ApiMessageDto<TokenDto> requestRegister(
+            @Valid @RequestBody RequestRegisterForm requestRegisterForm
+    ) {
         // Validate reCAPTCHA
         if (requestRegisterForm.getRecaptchaResponse() != null
                 && !recaptchaService.validateCaptcha(requestRegisterForm.getRecaptchaResponse())) {

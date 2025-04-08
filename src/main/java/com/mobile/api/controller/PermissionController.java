@@ -66,7 +66,9 @@ public class PermissionController extends BaseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PER_CRE')")
-    public ApiMessageDto<Void> createPermission(@Valid @RequestBody CreatePermissionAdminForm createPermissionAdminForm) {
+    public ApiMessageDto<Void> createPermission(
+            @Valid @RequestBody CreatePermissionAdminForm createPermissionAdminForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
@@ -91,7 +93,9 @@ public class PermissionController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('PER_UPD')")
-    public ApiMessageDto<Void> updatePermission(@Valid @RequestBody UpdatePermissionAdminForm updatePermissionAdminForm) {
+    public ApiMessageDto<Void> updatePermission(
+            @Valid @RequestBody UpdatePermissionAdminForm updatePermissionAdminForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
