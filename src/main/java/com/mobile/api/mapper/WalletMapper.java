@@ -32,7 +32,6 @@ public interface WalletMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "currency", target = "currency", qualifiedByName = "fromEntityToCurrencyDto")
     @Mapping(source = "balance", target = "balance")
     @Mapping(source = "isPrimary", target = "isPrimary")

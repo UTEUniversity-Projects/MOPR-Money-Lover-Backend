@@ -40,6 +40,9 @@ public class Event extends Auditable<String> {
     @Column(name = "end_date")
     private Instant endDate;
 
+    @Column(name = "is_completed")
+    private Boolean isCompleted = false;
+
     @OneToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;

@@ -36,7 +36,9 @@ public class FileController extends BaseController {
 
     @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<FileDto> uploadFile(@Valid @RequestBody UploadFileForm uploadFileForm) throws IOException {
+    public ApiMessageDto<FileDto> uploadFile(
+            @Valid @RequestBody UploadFileForm uploadFileForm
+    ) throws IOException {
         File uploadedFile = fileService.uploadFile(uploadFileForm.getFile(), uploadFileForm.getFileType());
         return ApiMessageUtils.success(fileMapper.fromEntityToFileDto(uploadedFile), "Upload file successfully");
     }

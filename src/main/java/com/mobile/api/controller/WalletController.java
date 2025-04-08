@@ -18,7 +18,6 @@ import com.mobile.api.model.entity.Wallet;
 import com.mobile.api.repository.*;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +33,6 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/v1/wallet")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@Tag(name = "Wallet", description = "Wallet related operations")
 public class WalletController extends BaseController {
     @Autowired
     private WalletRepository walletRepository;
@@ -70,7 +68,7 @@ public class WalletController extends BaseController {
                 page.getTotalPages()
         );
 
-        return ApiMessageUtils.success(responseDto, "List categories successfully");
+        return ApiMessageUtils.success(responseDto, "List wallets successfully");
     }
 
     @GetMapping(value = "/client/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -123,6 +121,7 @@ public class WalletController extends BaseController {
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
             wallet.setIcon(icon);
         }
+        walletMapper.updateFromUpdateWalletForm(wallet, updateWalletForm);
 
         if (updateWalletForm.getIsPrimary()) {
             walletRepository.resetPrimaryWalletByUserId(getCurrentUserId());
@@ -134,10 +133,7 @@ public class WalletController extends BaseController {
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @Operation(
-            summary = "Delete wallet",
-            description = "Delete bills, events, periods, and budgets associated with the wallet"
-    )
+    @Operation(summary = "Attention", description = "Delete wallet and all bills, events, periods, budgets associated with the wallet")
     public ApiMessageDto<Void> deleteWallet(@PathVariable Long id) {
         Wallet wallet = walletRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));

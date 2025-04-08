@@ -106,6 +106,17 @@ public enum ErrorCode {
      */
     WALLET_NOT_FOUND("ERROR-WALLET-0001", "Wallet not found"),
     WALLET_CANT_DELETE("ERROR-WALLET-0002", "Wallet can not delete"),
+
+    /**
+     * TAG error codes
+     */
+    TAG_NOT_FOUND("ERROR-TAG-0001", "Tag not found"),
+
+    /**
+     * EVENT error codes
+     */
+    EVENT_NOT_FOUND("ERROR-EVENT-0001", "Event not found"),
+    EVENT_INVALID_DATE_RANGE("ERROR-EVENT-0002", "Event invalid date range"),
     ;
 
     private final String code;

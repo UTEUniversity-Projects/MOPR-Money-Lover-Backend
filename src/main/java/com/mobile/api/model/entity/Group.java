@@ -32,7 +32,6 @@ public class Group extends Auditable<String> {
     @Column(name = "is_system_group")
     private Boolean isSystemGroup = false;
 
-    @Column(name = "permissions")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "db_money_lover_permission_group",
             joinColumns = @JoinColumn(name = "group_id"),

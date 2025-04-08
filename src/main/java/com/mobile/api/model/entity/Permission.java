@@ -38,7 +38,6 @@ public class Permission extends Auditable<String> {
     @Column(name = "show_menu")
     private Boolean showMenu;
 
-    @Column(name = "groups")
     @ManyToMany(mappedBy = "permissions")
     private List<Group> groups = new ArrayList<>();
 }

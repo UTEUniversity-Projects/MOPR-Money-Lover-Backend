@@ -30,8 +30,4 @@ public class Notification extends Auditable<String> {
 
     @Column(name = "is_read")
     private Boolean isRead = false;
-
-    @OneToOne
-    @JoinColumn(name = "icon_id", nullable = false)
-    private File icon;
 }

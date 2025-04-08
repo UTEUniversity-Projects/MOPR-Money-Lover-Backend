@@ -75,7 +75,9 @@ public class GroupController extends BaseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_CRE')")
-    public ApiMessageDto<Void> createGroup(@Valid @RequestBody CreateGroupAdminForm createGroupAdminForm) {
+    public ApiMessageDto<Void> createGroup(
+            @Valid @RequestBody CreateGroupAdminForm createGroupAdminForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
@@ -91,7 +93,9 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_UPD')")
-    public ApiMessageDto<Void> updateGroup(@Valid @RequestBody UpdateGroupAdminForm updateGroupAdminForm) {
+    public ApiMessageDto<Void> updateGroup(
+            @Valid @RequestBody UpdateGroupAdminForm updateGroupAdminForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
@@ -113,7 +117,9 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/add-permissions", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_PER_ADD')")
-    public ApiMessageDto<Void> addPermissionsToGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
+    public ApiMessageDto<Void> addPermissionsToGroup(
+            @Valid @RequestBody UpdatePermissionListForm updatePermissionListForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
@@ -134,7 +140,9 @@ public class GroupController extends BaseController {
 
     @PutMapping(value = "/remove-permissions", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GRO_PER_REM')")
-    public ApiMessageDto<Void> removePermissionsFromGroup(@Valid @RequestBody UpdatePermissionListForm updatePermissionListForm) {
+    public ApiMessageDto<Void> removePermissionsFromGroup(
+            @Valid @RequestBody UpdatePermissionListForm updatePermissionListForm
+    ) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);
         }
