@@ -15,9 +15,6 @@ public class WalletDto {
     @Schema(description = "name")
     private String name;
 
-    @Schema(description = "userId")
-    private String userId;
-
     @Schema(description = "currency")
     private CurrencyDto currency;
 

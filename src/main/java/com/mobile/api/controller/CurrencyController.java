@@ -77,7 +77,9 @@ public class CurrencyController extends BaseController {
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAuthority('CUR_CRE')")
-    public ApiMessageDto<Void> createCurrency(@Valid @RequestBody CreateCurrencyAdminForm createCurrencyAdminForm) {
+    public ApiMessageDto<Void> createCurrency(
+            @Valid @RequestBody CreateCurrencyAdminForm createCurrencyAdminForm
+    ) {
         Currency currency = new Currency();
 
         if (currencyRepository.existsByName(createCurrencyAdminForm.getName())) {
@@ -99,7 +101,9 @@ public class CurrencyController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
 //    @PreAuthorize("hasAuthority('CUR_UPD')")
-    public ApiMessageDto<Void> updateCurrency(@Valid @RequestBody UpdateCurrencyAdminForm updateCurrencyAdminForm) {
+    public ApiMessageDto<Void> updateCurrency(
+            @Valid @RequestBody UpdateCurrencyAdminForm updateCurrencyAdminForm
+    ) {
         Currency currency = currencyRepository.findById(updateCurrencyAdminForm.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.CURRENCY_NOT_FOUND));
 

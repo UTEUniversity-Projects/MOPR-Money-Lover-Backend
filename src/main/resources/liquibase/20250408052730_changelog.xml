@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1744090076509-7">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_bill" constraintName="FKrvq6i10wn7opnral87f9w492q"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1744090076509-4">
+        <createTable tableName="db_money_lover_bill_tag">
+            <column name="bill_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tag_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1744090076509-5">
+        <addForeignKeyConstraint baseColumnNames="tag_id" baseTableName="db_money_lover_bill_tag" constraintName="FKgr08bns05wvdcewr3fui315i3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_tag" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1744090076509-6">
+        <addForeignKeyConstraint baseColumnNames="bill_id" baseTableName="db_money_lover_bill_tag" constraintName="FKo71ujo32xcpkewst3v8a57wqf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_bill" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1744090076509-8">
+        <dropColumn tableName="db_money_lover_bill" columnName="tag_id"/>
+    </changeSet>
+</databaseChangeLog>

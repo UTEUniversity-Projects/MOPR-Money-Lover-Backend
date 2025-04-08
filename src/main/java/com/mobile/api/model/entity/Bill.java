@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "db_money_lover_bill")
@@ -39,9 +40,11 @@ public class Bill extends Auditable<String> {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @ManyToMany
+    @JoinTable(name = "db_money_lover_bill_tag",
+            joinColumns = @JoinColumn(name = "bill_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
 
     @ManyToOne
     @JoinColumn(name = "event_id")

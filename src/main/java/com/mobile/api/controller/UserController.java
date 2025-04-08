@@ -114,7 +114,9 @@ public class UserController extends BaseController {
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_UDP')")
-    public ApiMessageDto<Void> updateUser(@Valid @RequestBody UpdateUserAdminForm updateUserAdminForm) {
+    public ApiMessageDto<Void> updateUser(
+            @Valid @RequestBody UpdateUserAdminForm updateUserAdminForm
+    ) {
         User user = userRepository.findById(updateUserAdminForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
 
@@ -193,7 +195,9 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client/request-update-password", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestUpdatePassword(@Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm) {
+    public ApiMessageDto<TokenDto> requestUpdatePassword(
+            @Valid @RequestBody RequestUpdatePasswordForm requestUpdatePasswordForm
+    ) {
         if (Objects.equals(requestUpdatePasswordForm.getOldPassword(), requestUpdatePasswordForm.getNewPassword())) {
             throw new BusinessException(ErrorCode.ACCOUNT_INVALID_NEW_PASSWORD);
         }
@@ -250,7 +254,9 @@ public class UserController extends BaseController {
 
     @PostMapping(value = "/client/request-update-email", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ApiMessageDto<TokenDto> requestUpdateEmail(@Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm) {
+    public ApiMessageDto<TokenDto> requestUpdateEmail(
+            @Valid @RequestBody RequestUpdateEmailForm requestUpdateEmailForm
+    ) {
         if (!Objects.equals(requestUpdateEmailForm.getOldEmail(), getCurrentEmail())) {
             throw new BusinessException(ErrorCode.ACCOUNT_INVALID_OLD_EMAIL);
         }
