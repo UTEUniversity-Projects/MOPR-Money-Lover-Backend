@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -20,14 +19,11 @@ public class Bill extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "amount")
+    private Double amount;
 
     @Column(name = "note")
     private String note;
-
-    @Column(name = "record_date")
-    private Instant recordDate;
 
     @Column(name = "is_included_report")
     private Boolean isIncludedReport = true;

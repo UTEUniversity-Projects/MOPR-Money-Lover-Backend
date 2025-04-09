@@ -9,7 +9,7 @@ import org.mapstruct.*;
         uses = {WalletMapper.class})
 public interface PeriodMapper {
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "wallet", target = "wallet", qualifiedByName = "fromEntityToWalletInPeriodDto")
+    @Mapping(source = "wallet", target = "wallet", qualifiedByName = "fromEntityToSimpleWalletDto")
     @Mapping(source = "startDate", target = "startDate")
     @Mapping(source = "endDate", target = "endDate")
     @BeanMapping(ignoreByDefault = true)

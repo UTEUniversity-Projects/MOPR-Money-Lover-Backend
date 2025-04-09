@@ -132,6 +132,11 @@ public enum ErrorCode {
      * BUDGET error codes
      */
     BUDGET_NOT_FOUND("ERROR-PERIOD-0001", "Period not found"),
+
+    /**
+     * BILL error codes
+     */
+    BILL_NOT_FOUND("ERROR-BILL-0001", "Bill not found"),
     ;
 
     private final String code;

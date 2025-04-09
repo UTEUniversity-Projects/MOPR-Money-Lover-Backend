@@ -111,7 +111,7 @@ public class CategoryController extends BaseController {
 
     @PutMapping(value = "/client/update-ordering", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @Operation(summary = "Attention", description = "Must be add all categories of user in the request")
+    @Operation(summary = "Attention", description = "This API will update the ordering of categories and delete categories that are not in the list")
     public ApiMessageDto<Void> updateCategoryOrdering(
             @Valid @RequestBody UpdateCategoryOrderingForm updateCategoryOrderingForm
     ) {
@@ -147,7 +147,7 @@ public class CategoryController extends BaseController {
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @Operation(summary = "Attention", description = "Delete category and all bills, budgets associated with the category")
+    @Operation(summary = "Attention", description = "This API will delete the category and all bills, budgets associated with it")
     public ApiMessageDto<Void> deleteCategory(@PathVariable Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
