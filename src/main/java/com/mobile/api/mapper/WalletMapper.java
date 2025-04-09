@@ -37,7 +37,7 @@ public interface WalletMapper {
     @Mapping(source = "isPrimary", target = "isPrimary")
     @Mapping(source = "turnOnNotifications", target = "turnOnNotifications")
     @Mapping(source = "chargeToTotal", target = "chargeToTotal")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @Mapping(source = "createdDate", target = "createdDate")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToWalletDto")
@@ -45,10 +45,10 @@ public interface WalletMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
-    @Named("fromEntityToWalletInPeriodDto")
-    WalletDto fromEntityToWalletInPeriodDto(Wallet wallet);
+    @Named("fromEntityToSimpleWalletDto")
+    WalletDto fromEntityToSimpleWalletDto(Wallet wallet);
 
     @IterableMapping(elementTargetType = WalletDto.class, qualifiedByName = "fromEntityToWalletDto")
     @Named("fromEntitiesToWalletDtoList")

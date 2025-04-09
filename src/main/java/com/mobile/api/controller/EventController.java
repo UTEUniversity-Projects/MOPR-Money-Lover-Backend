@@ -137,7 +137,7 @@ public class EventController extends BaseController {
     }
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Attention", description = "Delete event and detach it from all bills")
+    @Operation(summary = "Attention", description = "This API will delete the event and detach it from all bills")
     public ApiMessageDto<Void> deleteEvent(@PathVariable Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.EVENT_NOT_FOUND));

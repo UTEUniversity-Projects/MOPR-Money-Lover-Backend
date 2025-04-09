@@ -30,10 +30,17 @@ public interface CategoryMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "isExpense", target = "isExpense")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToCategoryDto")
     CategoryDto fromEntityToCategoryDto(Category category);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("fromEntityToSimpleCategory")
+    CategoryDto fromEntityToSimpleCategory(Category category);
 
     @IterableMapping(elementTargetType = CategoryDto.class, qualifiedByName = "fromEntityToCategoryDto")
     @Named("fromEntitiesToCategoryDtoList")

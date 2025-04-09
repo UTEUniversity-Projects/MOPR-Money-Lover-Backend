@@ -31,10 +31,17 @@ public interface EventMapper {
     @Mapping(source = "startDate", target = "startDate")
     @Mapping(source = "endDate", target = "endDate")
     @Mapping(source = "isCompleted", target = "isCompleted")
-    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToFileDto")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToEventDto")
     EventDto fromEntityToEventDto(Event event);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("fromEntityToSimpleEventDto")
+    EventDto fromEntityToSimpleEventDto(Event event);
 
     @IterableMapping(elementTargetType = EventDto.class, qualifiedByName = "fromEntityToEventDto")
     @Named("fromEntitiesToEventDtoList")

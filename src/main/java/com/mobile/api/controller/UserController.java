@@ -29,6 +29,7 @@ import com.mobile.api.service.FileService;
 import com.mobile.api.service.OtpService;
 import com.mobile.api.service.TokenService;
 import com.mobile.api.utils.ApiMessageUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -303,11 +304,12 @@ public class UserController extends BaseController {
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('USE_DEL')")
+    @Hidden
     public ApiMessageDto<Void> deleteUser(@PathVariable Long id) {
         userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        // Delete ACCOUNT
+        // Delete all associated with USER
         accountRepository.deleteById(id);
         // Delete USER
         userRepository.deleteById(id);
