@@ -9,4 +9,3 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @EnableRedisRepositories(basePackages = "com.mobile.api.repository.redis")
 public class RepositoryConfig {
 }
-

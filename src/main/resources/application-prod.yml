@@ -124,7 +124,7 @@ oauth2-config:
   error-uri: "/error"
   callback-uri: "/home"
 
-logging:
-  level:
-    root: debug
-    org.springframework: debug
+#logging:
+#  level:
+#    root: debug
+#    org.springframework: debug
