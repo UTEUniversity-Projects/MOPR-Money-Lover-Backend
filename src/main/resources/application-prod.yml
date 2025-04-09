@@ -81,9 +81,9 @@ file:
 
 springdoc:
   api-docs:
-    path: ${SPRING_API_DOCS:/v3/api-docs}
+    path: /v3/api-docs
   swagger-ui:
-    path: ${SPRING_SWAGGER_UI:/swagger-ui.html}
+    path: /swagger-ui.html
     oauth2-redirect-url: https://${RAILWAY_PUBLIC_DOMAIN}${SECURITY_REDIRECT_URI}
     docExpansion: none
     tags-sorter: alpha
@@ -91,11 +91,11 @@ springdoc:
 
 open:
   api:
-    title: ${OPEN_API_TITLE}
-    version: ${OPEN_API_VERSION}
-    description: ${OPEN_API_DESCRIPTION}
+    title: Money Lover API Documentation
+    version: v1.1.0
+    description: API documentation for Money Lover
     serverUrl: https://${RAILWAY_PUBLIC_DOMAIN}
-    serverName: ${OPEN_API_SERVERNAME}
+    serverName: Server Test
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
@@ -103,9 +103,9 @@ recaptcha:
   verify-url: ${RECAPTCHA_VERIFY_URL}
   threshold: ${RECAPTCHA_THRESHOLD}
 
-otp.expiry.minutes: ${OTP_EXPIRATION_MINUTES:15}
-otp.redis.otp-timeout: ${OTP_TIMEOUT_MINUTES:30}
-jwt.expiry.minutes: ${JWT_EXPIRATION_MINUTES:15}
+otp.expiry.minutes: 15
+otp.redis.otp-timeout: 30
+jwt.expiry.minutes: 15
 
 oauth2-config:
   access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}

@@ -1,0 +1,52 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SPRING_PROFILE: dev
+    container_name: money-lover-api-dev
+    ports:
+      - "${PORT:-8080}:8080"
+    env_file:
+      - .env.dev
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - money-lover-net
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-money-lover-dev
+    restart: always
+    ports:
+      - '3307:3306'
+    environment:
+      MYSQL_DATABASE: db_money_lover
+      MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      - money-lover-net
+    volumes:
+      - mysql-money-lover-dev:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis-money-lover-dev
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - money-lover-net
+    volumes:
+      - redis-money-lover-dev:/data
+
+networks:
+  money-lover-net:
+
+volumes:
+  mysql-money-lover-dev:
+    external: false
+  redis-money-lover-dev:
+    external: false

@@ -1,0 +1,21 @@
+docker volume create mysql-money-lover-dev
+
+docker volume create redis-money-lover-dev
+
+docker-compose -f docker-compose.dev.yml up -d
+
+docker-compose -f docker-compose.prod.yml up -d
+
+docker-compose logs -f money-lover-api-dev
+
+docker-compose -f docker-compose.dev.yml ps
+
+docker ps
+
+docker build -t money-lover-api .
+
+docker run -p 8080:8080 --env-file .env money-lover-api
+
+netstat -aon | findstr :3306
+
+tasklist | findstr 1234
