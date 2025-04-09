@@ -126,5 +126,5 @@ oauth2-config:
 
 logging:
   level:
-    root: debug
-    org.springframework: debug
+    root: INFO
+    org.springframework: INFO
