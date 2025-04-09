@@ -1,7 +1,7 @@
 package com.mobile.api.scheduler;
 
-import com.mobile.api.repository.OtpRepository;
-import com.mobile.api.repository.TokenRepository;
+import com.mobile.api.repository.jpa.OtpRepository;
+import com.mobile.api.repository.jpa.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

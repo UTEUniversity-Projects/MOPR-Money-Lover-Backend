@@ -1,4 +1,4 @@
-package com.mobile.api.repository;
+package com.mobile.api.repository.jpa;
 
 import com.mobile.api.model.entity.Event;
 import org.springframework.data.jpa.repository.JpaRepository;

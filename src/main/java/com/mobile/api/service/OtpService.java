@@ -4,7 +4,7 @@ import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.OtpCode;
-import com.mobile.api.repository.OtpRepository;
+import com.mobile.api.repository.jpa.OtpRepository;
 import com.mobile.api.utils.OtpUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.mobile.api.security.custom;
 
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.entity.User;
-import com.mobile.api.repository.UserRepository;
+import com.mobile.api.repository.jpa.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

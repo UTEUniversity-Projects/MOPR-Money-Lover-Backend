@@ -1,4 +1,4 @@
-package com.mobile.api.repository;
+package com.mobile.api.repository.jpa;
 
 import com.mobile.api.model.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
