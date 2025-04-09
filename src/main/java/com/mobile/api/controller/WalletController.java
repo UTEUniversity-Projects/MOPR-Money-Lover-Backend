@@ -133,7 +133,7 @@ public class WalletController extends BaseController {
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @Operation(summary = "Attention", description = "Delete wallet and all bills, events, periods, budgets associated with the wallet")
+    @Operation(summary = "Attention", description = "This API will delete the wallet and all its associated bills, events, periods, and budgets")
     public ApiMessageDto<Void> deleteWallet(@PathVariable Long id) {
         Wallet wallet = walletRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));

@@ -1,6 +1,8 @@
 package com.mobile.api.mapper;
 
 import com.mobile.api.dto.bill.BillDto;
+import com.mobile.api.form.bill.CreateBillForm;
+import com.mobile.api.form.bill.UpdateBillForm;
 import com.mobile.api.model.entity.Bill;
 import org.mapstruct.*;
 
@@ -10,6 +12,20 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {WalletMapper.class, CategoryMapper.class, TagMapper.class, EventMapper.class, ReminderMapper.class, FileMapper.class})
 public interface BillMapper {
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "note", target = "note")
+    @Mapping(source = "isIncludedReport", target = "isIncludedReport")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("fromCreateBillFormToEntity")
+    Bill fromCreateBillFormToEntity(CreateBillForm createBillForm);
+
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "note", target = "note")
+    @Mapping(source = "isIncludedReport", target = "isIncludedReport")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("updateFromUpdateBillForm")
+    void updateFromUpdateBillForm(@MappingTarget Bill bill, UpdateBillForm updateBillForm);
+
     @Mapping(source = "id", target = "id")
     @Mapping(source = "amount", target = "amount")
     @Mapping(source = "note", target = "note")
