@@ -8,8 +8,8 @@ spring:
     name: base
   security:
     oauth2:
-      authorization server:
-        issuer: http://${SPRING_SERVER_URL}
+      authorizationserver:
+        issuer: http://localhost:8080
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -84,7 +84,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    oauth2-redirect-url: http://${SPRING_SERVER_URL}${SECURITY_REDIRECT_URI}
+    oauth2-redirect-url: http://localhost:8080/swagger-ui/oauth2-redirect.html
     docExpansion: none
     tags-sorter: alpha
     operations-sorter: alpha
@@ -94,7 +94,7 @@ open:
     title: Money Lover API Documentation
     version: v1.1.0
     description: API documentation for Money Lover
-    serverUrl: http://${SPRING_SERVER_URL}
+    serverUrl: http://localhost:8080
     serverName: Server Test
 
 logging:
@@ -115,7 +115,7 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: http://${SPRING_SERVER_URL}
+  base-url: http://localhost:8080
   token-uri: "/api/oauth2/token"
   authorization-uri: "/api/oauth2/authorize"
   token-introspection-uri: "/api/oauth2/introspect"
