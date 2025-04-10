@@ -12,7 +12,7 @@ import com.mobile.api.form.permission.UpdatePermissionAdminForm;
 import com.mobile.api.mapper.PermissionMapper;
 import com.mobile.api.model.criteria.PermissionCriteria;
 import com.mobile.api.model.entity.Permission;
-import com.mobile.api.repository.PermissionRepository;
+import com.mobile.api.repository.jpa.PermissionRepository;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;

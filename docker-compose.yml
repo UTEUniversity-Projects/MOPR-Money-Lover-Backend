@@ -1,0 +1,48 @@
+services:
+  maven:
+    image: maven:3.9.9-eclipse-temurin-17
+    container_name: maven-money-lover
+    volumes:
+      - maven-repo:/root/.m2
+      - .:/app
+    working_dir: /app
+    command: bash -c "mvn clean install -DskipTests && mvn spring-boot:run"
+    networks:
+      - money-lover-net
+    depends_on:
+      - mysql
+    ports:
+      - '8000:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_money_lover
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_SERVER_PORT: '8080'
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_PROTOCOL: ${MAIL_PROTOCOL}
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-money-lover
+    restart: always
+    environment:
+      MYSQL_DATABASE: db_money_lover
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - '3307:3306'
+    networks:
+      - money-lover-net
+    volumes:
+      - mysql-money-lover:/var/lib/mysql
+
+networks:
+  money-lover-net:
+
+volumes:
+  mysql-money-lover:
+    external: true
+  maven-repo:
+    external: true

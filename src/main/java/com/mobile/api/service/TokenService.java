@@ -6,7 +6,7 @@ import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.mapper.TokenMapper;
 import com.mobile.api.model.Token;
-import com.mobile.api.repository.TokenRepository;
+import com.mobile.api.repository.jpa.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;

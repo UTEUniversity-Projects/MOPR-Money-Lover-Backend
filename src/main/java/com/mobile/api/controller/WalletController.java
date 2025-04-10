@@ -15,7 +15,7 @@ import com.mobile.api.model.entity.Currency;
 import com.mobile.api.model.entity.File;
 import com.mobile.api.model.entity.User;
 import com.mobile.api.model.entity.Wallet;
-import com.mobile.api.repository.*;
+import com.mobile.api.repository.jpa.*;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

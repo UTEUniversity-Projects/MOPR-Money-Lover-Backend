@@ -9,7 +9,7 @@ import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.form.file.UploadFileForm;
 import com.mobile.api.mapper.FileMapper;
 import com.mobile.api.model.entity.File;
-import com.mobile.api.repository.FileRepository;
+import com.mobile.api.repository.jpa.FileRepository;
 import com.mobile.api.service.FileService;
 import com.mobile.api.utils.ApiMessageUtils;
 import jakarta.validation.Valid;

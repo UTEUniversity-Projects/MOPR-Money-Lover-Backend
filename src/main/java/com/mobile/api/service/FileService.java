@@ -7,7 +7,7 @@ import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.entity.File;
-import com.mobile.api.repository.FileRepository;
+import com.mobile.api.repository.jpa.FileRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;

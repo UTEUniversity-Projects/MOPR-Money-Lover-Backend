@@ -10,7 +10,7 @@ import com.mobile.api.form.user.ResetPasswordForm;
 import com.mobile.api.form.user.RequestResetPasswordForm;
 import com.mobile.api.model.OtpCode;
 import com.mobile.api.model.entity.Account;
-import com.mobile.api.repository.AccountRepository;
+import com.mobile.api.repository.jpa.AccountRepository;
 import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.security.jwt.JwtUtils;
 import com.mobile.api.service.EmailService;

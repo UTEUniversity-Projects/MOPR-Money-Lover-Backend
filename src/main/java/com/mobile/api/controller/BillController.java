@@ -10,7 +10,7 @@ import com.mobile.api.form.bill.UpdateBillForm;
 import com.mobile.api.mapper.BillMapper;
 import com.mobile.api.model.criteria.BillCriteria;
 import com.mobile.api.model.entity.*;
-import com.mobile.api.repository.*;
+import com.mobile.api.repository.jpa.*;
 import com.mobile.api.service.FileService;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;

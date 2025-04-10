@@ -12,6 +12,7 @@ src/main/resources/key/public.pem
 .env
 .env.dev
 .env.prod
+.env.properties
 
 # Ignore logs
 logs/
