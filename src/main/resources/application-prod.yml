@@ -104,13 +104,13 @@ logging:
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
-  secret-key: ${RECAPTCHA_SECRET_KEY}
-  verify-url: ${RECAPTCHA_VERIFY_URL}
+  api-key: ${RECAPTCHA_API_KEY}
+  project-id: ${RECAPTCHA_PROJECT_ID}
   threshold: ${RECAPTCHA_THRESHOLD}
 
-otp.expiry.minutes: 15
-otp.redis.otp-timeout: 30
-jwt.expiry.minutes: 15
+otp.expiry.minutes: 10
+otp.redis.otp-timeout.minutes: 15
+jwt.expiry.minutes: 10
 
 oauth2-config:
   access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}

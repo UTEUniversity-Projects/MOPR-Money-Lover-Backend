@@ -49,6 +49,7 @@ public class SecurityConfig {
                                 jwtProperties.getRedirectUri(),
                                 jwtProperties.getConsentPageUri(),
                                 "/api/login",
+                                "/api/oauth2/token",
                                 "/api/request-register",
                                 "/api/register",
                                 "/api/request-reset-password",

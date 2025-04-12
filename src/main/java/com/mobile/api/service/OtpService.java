@@ -1,11 +1,12 @@
 package com.mobile.api.service;
 
+import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.BusinessException;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.OtpCode;
 import com.mobile.api.repository.jpa.OtpRepository;
-import com.mobile.api.utils.OtpUtils;
+import com.mobile.api.utils.CodeGeneratorUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,13 +29,13 @@ public class OtpService {
     @Value("${otp.expiry.minutes}")
     private int otpExpiryMinutes;
 
-    @Value("${otp.redis.otp-timeout}")
+    @Value("${otp.redis.otp-timeout.minutes}")
     private int otpTimeout;
 
     public OtpCode createOtp(String email, Integer kind) {
         OtpCode otpCode = new OtpCode();
         otpCode.setEmail(email);
-        otpCode.setCode(OtpUtils.generateOTP(6));
+        otpCode.setCode(CodeGeneratorUtils.generateOTPCode(BaseConstant.CODE_LENGTH_OTP_CODE));
         otpCode.setKind(kind);
         otpCode.setExpiryTime(Instant.now().plus(otpExpiryMinutes, ChronoUnit.MINUTES));
 
@@ -45,7 +46,7 @@ public class OtpService {
         OtpCode otpCode = otpRepository.findTopByEmailAndKindOrderByCreatedDateDesc(email, kind).orElse(null);
 
         if (otpCode != null && otpCode.getExpiryTime().isAfter(Instant.now())) {
-            otpCode.setCode(OtpUtils.generateOTP(6));
+            otpCode.setCode(CodeGeneratorUtils.generateOTPCode(BaseConstant.CODE_LENGTH_OTP_CODE));
             otpCode.setExpiryTime(Instant.now().plus(otpExpiryMinutes, ChronoUnit.MINUTES));
             otpRepository.save(otpCode);
             return otpCode;
