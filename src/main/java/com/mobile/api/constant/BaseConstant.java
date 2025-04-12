@@ -21,11 +21,17 @@ public class BaseConstant {
     /**
      * TOKEN_KIND constants
      */
-    public static final Integer TOKEN_KIND_AUTHORIZATION = 1;
-    public static final Integer TOKEN_KIND_REGISTER = 2;
-    public static final Integer TOKEN_KIND_RESET_PASSWORD = 3;
-    public static final Integer TOKEN_KIND_UPDATE_PASSWORD = 4;
-    public static final Integer TOKEN_KIND_UPDATE_EMAIL = 5;
+    public static final Integer TOKEN_KIND_ACCESS_TOKEN = 1;
+    public static final Integer TOKEN_KIND_REFRESH_TOKEN = 2;
+    public static final Integer TOKEN_KIND_REGISTER = 3;
+    public static final Integer TOKEN_KIND_RESET_PASSWORD = 4;
+    public static final Integer TOKEN_KIND_UPDATE_PASSWORD = 5;
+    public static final Integer TOKEN_KIND_UPDATE_EMAIL = 6;
+
+    /**
+     * CODE_LENGTH constants
+     */
+    public static final Integer CODE_LENGTH_OTP_CODE = 6;
 
     /**
      * OTP_CODE_KIND constants

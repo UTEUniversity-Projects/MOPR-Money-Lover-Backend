@@ -61,8 +61,7 @@ public class RegistrationController extends BaseController {
             @Valid @RequestBody RequestRegisterForm requestRegisterForm
     ) {
         // Validate reCAPTCHA
-        if (requestRegisterForm.getRecaptchaResponse() != null
-                && !recaptchaService.validateCaptcha(requestRegisterForm.getRecaptchaResponse())) {
+        if (!recaptchaService.verifyCaptcha(requestRegisterForm.getRecaptchaResponse())) {
             throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
         }
         // Validate information
@@ -119,7 +118,7 @@ public class RegistrationController extends BaseController {
         userRepository.save(user);
 
         // Create CLIENT
-        oauthService.registerClientForUser(username, password);
+        oauthService.registerClientForUser(username);
 
         return ApiMessageUtils.success(null, "Register successfully");
     }

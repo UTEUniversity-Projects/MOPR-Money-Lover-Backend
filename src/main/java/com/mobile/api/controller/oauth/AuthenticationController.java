@@ -14,6 +14,7 @@ import com.mobile.api.repository.jpa.TokenRepository;
 import com.mobile.api.security.jwt.JwtProperties;
 import com.mobile.api.service.TokenService;
 import com.mobile.api.utils.ApiMessageUtils;
+import com.mobile.api.utils.CodeGeneratorUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -28,6 +29,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Controller for handling authentication & OAuth2 token exchange
@@ -47,28 +49,23 @@ public class AuthenticationController extends BaseController {
     @Autowired
     private TokenRepository tokenRepository;
 
-    /**
-     * API endpoint for user login
-     * This method sends a request to OAuth2's default /login endpoint and returns the access token.
-     *
-     * @return Access token response or an error message if authentication fails.
-     */
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm) {
         try {
-            // Get Account
             Account account = accountRepository.findByEmail(loginForm.getEmail())
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-            
-            // Authenticate using OAuth2's /login endpoint
+
             String sessionId = authenticateViaOAuth2(account.getUsername(), loginForm.getPassword());
 
-            // Request Authorization Code from OAuth2 Server using session
-            String authorizationCode = requestAuthorizationCode(account.getUsername(), sessionId);
+            String codeVerifier = CodeGeneratorUtils.generateCodeVerifier();
+            String codeChallenge = CodeGeneratorUtils.generateCodeChallenge(codeVerifier);
+            String state = UUID.randomUUID().toString();
 
-            // Exchange Authorization Code for an Access Token
-            OauthTokenDto tokenResponse = exchangeCodeForToken(authorizationCode, account.getUsername(), loginForm.getPassword());
+            // Save verifier by state in DB/cache/session if needed
+            String authorizationCode = requestAuthorizationCode(account.getUsername(), sessionId, codeChallenge, state);
+
+            OauthTokenDto tokenResponse = exchangeCodeForToken(account.getUsername(), authorizationCode, codeVerifier);
 
             return ApiMessageUtils.success(tokenResponse, "Login successfully");
         } catch (Exception e) {
@@ -76,24 +73,13 @@ public class AuthenticationController extends BaseController {
         }
     }
 
-    /**
-     * API endpoint for user logout
-     */
     @DeleteMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> logout() {
-        tokenRepository.deleteAllByEmailAndKind(getCurrentEmail(), BaseConstant.TOKEN_KIND_AUTHORIZATION);
-
+        tokenRepository.deleteAllByEmailAndKind(getCurrentEmail(), BaseConstant.TOKEN_KIND_REFRESH_TOKEN);
         return ApiMessageUtils.success(null, "Logout successfully");
     }
 
-    /**
-     * Authenticates user by sending credentials to OAuth2 /login endpoint
-     *
-     * @param username The username of the user
-     * @param password The password of the user
-     * @return The session ID from the authentication response
-     */
     private String authenticateViaOAuth2(String username, String password) {
         String loginUrl = jwtProperties.getBaseUrl() + "/login";
 
@@ -121,26 +107,21 @@ public class AuthenticationController extends BaseController {
         throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_LOGIN_FAILED);
     }
 
-    /**
-     * Requests an Authorization Code from the OAuth2 authorization endpoint.
-     *
-     * @param clientId  The client ID (username in this case)
-     * @param sessionId The session ID from OAuth2 login
-     * @return The authorization code retrieved from the redirect URL.
-     */
-    private String requestAuthorizationCode(String clientId, String sessionId) {
+    private String requestAuthorizationCode(String clientId, String sessionId, String codeChallenge, String state) {
         String authorizeUrl = String.format(
-                "%s?response_type=code&client_id=%s&redirect_uri=%s&scope=openid profile email&state=random_string",
+                "%s?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=%s&code_challenge=%s&code_challenge_method=S256",
                 jwtProperties.getBaseUrl() + jwtProperties.getAuthorizationUri(),
                 clientId,
-                jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri()
+                jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri(),
+                "openid profile email offline_access",
+                state,
+                codeChallenge
         );
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, sessionId);
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-
         ResponseEntity<Map> response = restTemplate.exchange(
                 authorizeUrl, HttpMethod.GET, requestEntity, Map.class
         );
@@ -155,27 +136,18 @@ public class AuthenticationController extends BaseController {
         throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_AUTHORIZATION_CODE);
     }
 
-    /**
-     * Exchanges the Authorization Code for an Access Token.
-     *
-     * @param code         The authorization code obtained from the authorization endpoint.
-     * @param clientId     The client ID.
-     * @param clientSecret The client secret (can be encrypted or stored securely).
-     * @return Access token response.
-     */
-    private OauthTokenDto exchangeCodeForToken(String code, String clientId, String clientSecret) {
+    private OauthTokenDto exchangeCodeForToken(String client_id, String code, String codeVerifier) {
         String tokenUrl = jwtProperties.getBaseUrl() + jwtProperties.getTokenUri();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(clientId, clientSecret);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
         params.add("grant_type", "authorization_code");
+        params.add("client_id", client_id);
         params.add("code", code);
         params.add("redirect_uri", jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri());
+        params.add("code_verifier", codeVerifier);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
@@ -196,14 +168,16 @@ public class AuthenticationController extends BaseController {
                 Arrays.asList(((String) body.get("scope")).split(" "))
         );
 
-        Account account = accountRepository.findByUsername(clientId)
+        Account account = accountRepository.findByUsername("super_admin")
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+        tokenRepository.deleteAllByEmailAndKind(account.getEmail(), BaseConstant.TOKEN_KIND_REFRESH_TOKEN);
         tokenService.createToken(
                 account.getEmail(),
-                oauthTokenDto.getAccessToken(),
-                BaseConstant.TOKEN_KIND_AUTHORIZATION,
-                Instant.now().plus(oauthTokenDto.getExpiresIn(), ChronoUnit.MINUTES));
+                oauthTokenDto.getRefreshToken(),
+                BaseConstant.TOKEN_KIND_REFRESH_TOKEN,
+                Instant.now().plus(oauthTokenDto.getExpiresIn(), ChronoUnit.MINUTES)
+        );
 
         return oauthTokenDto;
     }

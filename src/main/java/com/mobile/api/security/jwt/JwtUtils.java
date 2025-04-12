@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.constant.JwtConstant;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -42,7 +43,7 @@ public class JwtUtils {
     public String generateRegisterToken(String email, String username, String password) {
         return jwtEncoder.encode(JwtEncoderParameters.from(
                 JwtClaimsSet.builder()
-                        .issuer(JwtConstant.ISSUER_REGISTER)
+                        .issuer(JwtConstant.ISSUER_REGISTER_SERVICE)
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plus(jwtExpiryMinutes, ChronoUnit.MINUTES))
                         .subject(email)
@@ -61,7 +62,7 @@ public class JwtUtils {
     public String generateResetPasswordToken(String email) {
         return jwtEncoder.encode(JwtEncoderParameters.from(
                 JwtClaimsSet.builder()
-                        .issuer(JwtConstant.ISSUER_REGISTER)
+                        .issuer(JwtConstant.ISSUER_PASSWORD_SERVICE)
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plus(jwtExpiryMinutes, ChronoUnit.MINUTES))
                         .subject(email)
@@ -78,7 +79,7 @@ public class JwtUtils {
     public String generateUpdatePasswordToken(String email, String oldPassword, String newPassword) {
         return jwtEncoder.encode(JwtEncoderParameters.from(
                 JwtClaimsSet.builder()
-                        .issuer(JwtConstant.ISSUER_UPDATE_PASSWORD)
+                        .issuer(JwtConstant.ISSUER_PASSWORD_SERVICE)
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plus(jwtExpiryMinutes, ChronoUnit.MINUTES))
                         .subject(email)
@@ -96,7 +97,7 @@ public class JwtUtils {
     public String generateUpdateEmailToken(String oldEmail, String newEmail) {
         return jwtEncoder.encode(JwtEncoderParameters.from(
                 JwtClaimsSet.builder()
-                        .issuer(JwtConstant.ISSUER_UPDATE_EMAIL)
+                        .issuer(JwtConstant.ISSUER_EMAIL_SERVICE)
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plus(jwtExpiryMinutes, ChronoUnit.MINUTES))
                         .subject(oldEmail)
@@ -107,6 +108,18 @@ public class JwtUtils {
                         .build()
         )).getTokenValue();
     }
+
+    /**
+     * Convert String to client authentication methods.
+     */
+    public List<ClientAuthenticationMethod> parseClientAuthMethods(String raw) {
+        if (raw == null) return List.of();
+        return Arrays.stream(raw.split(","))
+                .map(String::trim)
+                .map(ClientAuthenticationMethod::new)
+                .toList();
+    }
+
 
     /**
      * Convert grant types list String to List<AuthorizationGrantType>.
@@ -155,7 +168,7 @@ public class JwtUtils {
         try {
             Map<String, Object> settings = objectMapper.readValue(json, new TypeReference<>() {});
             return ClientSettings.builder()
-                    .requireProofKey((Boolean) settings.getOrDefault("requireProofKey", false))
+                    .requireProofKey((Boolean) settings.getOrDefault("requireProofKey", true))
                     .requireAuthorizationConsent((Boolean) settings.getOrDefault("requireAuthorizationConsent", false))
                     .build();
         } catch (Exception e) {
@@ -176,7 +189,7 @@ public class JwtUtils {
             return TokenSettings.builder()
                     .accessTokenTimeToLive(parseDuration(settings.get("accessTokenTimeToLive"), jwtProperties.getAccessTokenExpiration()))
                     .refreshTokenTimeToLive(parseDuration(settings.get("refreshTokenTimeToLive"), jwtProperties.getRefreshTokenExpiration()))
-                    .reuseRefreshTokens(true)
+                    .reuseRefreshTokens((Boolean) settings.getOrDefault("reuseRefreshTokens", true))
                     .build();
 
         } catch (Exception e) {
@@ -189,7 +202,7 @@ public class JwtUtils {
      */
     public ClientSettings getDefaultClientSettings() {
         return ClientSettings.builder()
-                .requireProofKey(false)
+                .requireProofKey(true)
                 .requireAuthorizationConsent(false)
                 .build();
     }
