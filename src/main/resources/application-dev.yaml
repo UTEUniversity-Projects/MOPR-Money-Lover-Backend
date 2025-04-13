@@ -1,5 +1,8 @@
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      timeout: ${SESSION_TIMEOUT:30m}
 
 spring:
   main:
@@ -10,6 +13,9 @@ spring:
     oauth2:
       authorizationserver:
         issuer: http://localhost:8080
+  session:
+    redis:
+      namespace: com-mobile-api
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -98,17 +104,21 @@ open:
     serverName: Server Test
 
 logging:
+#  level:
+#    root: TRACE
+#    org.springframework: TRACE
   config: classpath:log4j2-dev.xml
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
-  secret-key: ${RECAPTCHA_SECRET_KEY}
-  verify-url: ${RECAPTCHA_VERIFY_URL}
+  api-key: ${RECAPTCHA_API_KEY}
+  project-id: ${RECAPTCHA_PROJECT_ID}
   threshold: ${RECAPTCHA_THRESHOLD}
 
-otp.expiry.minutes: 15
-otp.redis.otp-timeout: 30
-jwt.expiry.minutes: 15
+otp.expiry.minutes: 10
+otp.redis.otp-timeout.minutes: 15
+jwt.expiry.minutes: 10
+redis.cookie.ttl.days: 30
 
 oauth2-config:
   access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}

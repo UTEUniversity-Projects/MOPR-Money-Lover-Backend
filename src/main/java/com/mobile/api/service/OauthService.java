@@ -24,20 +24,19 @@ public class OauthService {
         this.jwtProperties = jwtProperties;
     }
 
-    public void registerClientForUser(String username, String password) {
-        List<String> scopes = List.of("openid", "profile", "email");
+    public void registerClientForUser(String username) {
+        List<String> scopes = List.of("openid", "profile", "email", "offline_access");
 
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(username)
-                .clientSecret(password)
                 .clientIdIssuedAt(Instant.now())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri(jwtProperties.getRedirectUri())
                 .scopes(scope -> scope.addAll(scopes))
                 .clientSettings(ClientSettings.builder()
-                        .requireProofKey(false)
+                        .requireProofKey(true)
                         .requireAuthorizationConsent(false)
                         .build())
                 .tokenSettings(TokenSettings.builder()

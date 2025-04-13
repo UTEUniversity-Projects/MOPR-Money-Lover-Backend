@@ -42,12 +42,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                jwtProperties.getTokenUri(),
-                                jwtProperties.getAuthorizationUri(),
-                                jwtProperties.getTokenIntrospectionUri(),
-                                jwtProperties.getTokenRevocationUri(),
-                                jwtProperties.getRedirectUri(),
-                                jwtProperties.getConsentPageUri(),
                                 "/api/login",
                                 "/api/request-register",
                                 "/api/register",

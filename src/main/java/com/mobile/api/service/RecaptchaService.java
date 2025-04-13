@@ -5,49 +5,68 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class RecaptchaService {
+
     @Value("${recaptcha.site-key}")
     private String siteKey;
 
-    @Value("${recaptcha.secret-key}")
-    private String secretKey;
+    @Value("${recaptcha.api-key}")
+    private String apiKey;
 
-    @Value("${recaptcha.verify-url}")
-    private String verifyUrl;
+    @Value("${recaptcha.project-id}")
+    private String projectId;
 
     @Value("${recaptcha.threshold}")
     private double threshold;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public boolean validateCaptcha(String recaptchaResponse) {
-        // Create request headers
+    public boolean verifyCaptcha(String recaptchaToken) {
+        // Prepare the request URL
+        String url = String.format("https://recaptchaenterprise.googleapis.com/v1/projects/%s/assessments?key=%s", projectId, apiKey);
+
+        // Prepare the request body
+        Map<String, Object> event = new HashMap<>();
+        event.put("token", recaptchaToken);
+        event.put("siteKey", siteKey);
+        event.put("expectedAction", "LOGIN");
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("event", event);
+
+        // Set headers
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // Create request body type x-www-form-urlencoded
-        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("secret", secretKey);
-        requestBody.add("response", recaptchaResponse);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-        // Send POST request
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<Map> response = restTemplate.postForEntity(verifyUrl, requestEntity, Map.class);
+        // Send the request
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, request, Map.class);
 
-        // Check response from Google
-        if (response.getBody() == null || !response.getBody().containsKey("success")) {
+        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
             return false;
         }
 
-        boolean success = (boolean) response.getBody().get("success");
-        double score = response.getBody().get("score") != null ? (double) response.getBody().get("score") : 0.0;
+        Map<String, Object> responseBody = response.getBody();
 
-        return success && score >= threshold;
+        // Extract tokenProperties
+        Map<String, Object> tokenProps = (Map<String, Object>) responseBody.get("tokenProperties");
+        if (tokenProps == null || !(Boolean.TRUE.equals(tokenProps.get("valid")))) {
+            return false;
+        }
+
+        // Extract riskAnalysis
+        Map<String, Object> riskAnalysis = (Map<String, Object>) responseBody.get("riskAnalysis");
+        double score = riskAnalysis != null && riskAnalysis.get("score") instanceof Number
+                ? ((Number) riskAnalysis.get("score")).doubleValue()
+                : 0.0;
+
+        return score >= threshold;
     }
 }
