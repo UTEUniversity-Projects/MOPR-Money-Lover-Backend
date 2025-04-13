@@ -30,7 +30,7 @@ public class CustomUserDetails implements UserDetails {
         Account account = user.getAccount();
         this.id = user.getId();
         this.email = account.getEmail();
-        this.username = account.getEmail();
+        this.username = account.getUsername();
         this.password = account.getPassword();
         this.isSuperAdmin = account.getIsSuperAdmin();
         this.pcodeList = user.getAccount().getGroup().getPermissions().stream()
