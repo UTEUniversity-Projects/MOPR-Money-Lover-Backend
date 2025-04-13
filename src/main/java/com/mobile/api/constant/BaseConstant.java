@@ -51,6 +51,11 @@ public class BaseConstant {
     public static final String FILE_TYPE_ARCHIVE = "ARCHIVE";
 
     /**
+     * FILE_ELEMENTS constants
+     */
+    public static final Integer FILE_ELEMENTS_MAXIMUM = 10;
+
+    /**
      * USER_KIND constants
      */
     public static final Integer USER_KIND_ADMIN = 1;
