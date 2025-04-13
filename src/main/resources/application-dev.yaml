@@ -1,5 +1,8 @@
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      timeout: ${SESSION_TIMEOUT:30m}
 
 spring:
   main:
@@ -10,6 +13,9 @@ spring:
     oauth2:
       authorizationserver:
         issuer: http://localhost:8080
+  session:
+    redis:
+      namespace: com-mobile-api
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -99,8 +105,8 @@ open:
 
 logging:
   level:
-    root: INFO
-    org.springframework.security.oauth2.server.authorization: INFO
+    root: DEBUG
+    org.springframework: TRACE
 #  config: classpath:log4j2-dev.xml
 
 recaptcha:

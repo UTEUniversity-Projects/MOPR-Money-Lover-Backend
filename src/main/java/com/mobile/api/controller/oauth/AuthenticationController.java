@@ -15,6 +15,7 @@ import com.mobile.api.security.jwt.JwtProperties;
 import com.mobile.api.service.TokenService;
 import com.mobile.api.utils.ApiMessageUtils;
 import com.mobile.api.utils.CodeGeneratorUtils;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -52,32 +53,36 @@ public class AuthenticationController extends BaseController {
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<OauthTokenDto> login(@Valid @RequestBody LoginForm loginForm) {
-        try {
-            Account account = accountRepository.findByEmail(loginForm.getEmail())
-                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
+        Account account = accountRepository.findByEmail(loginForm.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-            String sessionId = authenticateViaOAuth2(account.getUsername(), loginForm.getPassword());
+        String sessionId = authenticateViaOAuth2(account.getUsername(), loginForm.getPassword());
 
-            String codeVerifier = CodeGeneratorUtils.generateCodeVerifier();
-            String codeChallenge = CodeGeneratorUtils.generateCodeChallenge(codeVerifier);
-            String state = UUID.randomUUID().toString();
-
-            // Save verifier by state in DB/cache/session if needed
-            String authorizationCode = requestAuthorizationCode(account.getUsername(), sessionId, codeChallenge, state);
-
-            OauthTokenDto tokenResponse = exchangeCodeForToken(account.getUsername(), authorizationCode, codeVerifier);
-
-            return ApiMessageUtils.success(tokenResponse, "Login successfully");
-        } catch (Exception e) {
-            throw new AuthenticationException(ErrorCode.AUTHENTICATION_LOGIN_FAILED);
-        }
+        return ApiMessageUtils.success(runOauthWorkflow(account.getUsername(), account.getEmail(), sessionId), "Login successfully");
     }
 
     @DeleteMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<String> logout() {
-        tokenRepository.deleteAllByEmailAndKind(getCurrentEmail(), BaseConstant.TOKEN_KIND_REFRESH_TOKEN);
+        tokenRepository.deleteAllByEmailAndKind(getCurrentEmail(), BaseConstant.TOKEN_KIND_ACCESS_TOKEN);
         return ApiMessageUtils.success(null, "Logout successfully");
+    }
+
+    @RequestMapping(value = "/refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public OauthTokenDto getAccessToken(HttpSession session) {
+        String formattedSessionCookie = "JSESSIONID=" + session.getId(); // 🔥 Gắn prefix
+        return runOauthWorkflow(getCurrentUsername(), getCurrentEmail(), formattedSessionCookie);
+    }
+
+    private OauthTokenDto runOauthWorkflow(String clientId, String email, String sessionId) {
+        String codeVerifier = CodeGeneratorUtils.generateCodeVerifier();
+        String codeChallenge = CodeGeneratorUtils.generateCodeChallenge(codeVerifier);
+        String state = UUID.randomUUID().toString();
+
+        String authorizationCode = requestAuthorizationCode(clientId, sessionId, codeChallenge, state);
+
+        return exchangeCodeForToken(clientId, authorizationCode, codeVerifier, email);
     }
 
     private String authenticateViaOAuth2(String username, String password) {
@@ -127,7 +132,7 @@ public class AuthenticationController extends BaseController {
         );
 
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            Map<String, Object> body = response.getBody();
+            Map body = response.getBody();
             if (Boolean.TRUE.equals(body.get("success"))) {
                 return body.get("authorization_code").toString();
             }
@@ -136,7 +141,7 @@ public class AuthenticationController extends BaseController {
         throw new AuthenticationException(ErrorCode.AUTHENTICATION_OAUTH2_AUTHORIZATION_CODE);
     }
 
-    private OauthTokenDto exchangeCodeForToken(String client_id, String code, String codeVerifier) {
+    private OauthTokenDto exchangeCodeForToken(String clientId, String authorizationCode, String codeVerifier, String email) {
         String tokenUrl = jwtProperties.getBaseUrl() + jwtProperties.getTokenUri();
 
         HttpHeaders headers = new HttpHeaders();
@@ -144,8 +149,8 @@ public class AuthenticationController extends BaseController {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", client_id);
-        params.add("code", code);
+        params.add("client_id", clientId);
+        params.add("code", authorizationCode);
         params.add("redirect_uri", jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri());
         params.add("code_verifier", codeVerifier);
 
@@ -159,7 +164,21 @@ public class AuthenticationController extends BaseController {
         }
 
         Map<String, Object> body = response.getBody();
-        OauthTokenDto oauthTokenDto = new OauthTokenDto(
+        OauthTokenDto oauthTokenDto = mapToOauthTokenDto(body);
+
+        tokenRepository.deleteAllByEmailAndKind(email, BaseConstant.TOKEN_KIND_ACCESS_TOKEN);
+        tokenService.createToken(
+                email,
+                oauthTokenDto.getAccessToken(),
+                BaseConstant.TOKEN_KIND_ACCESS_TOKEN,
+                Instant.now().plus(oauthTokenDto.getExpiresIn(), ChronoUnit.MINUTES)
+        );
+
+        return oauthTokenDto;
+    }
+
+    private OauthTokenDto mapToOauthTokenDto(Map<String, Object> body) {
+        return new OauthTokenDto(
                 (String) body.get("access_token"),
                 (String) body.get("refresh_token"),
                 (String) body.get("id_token"),
@@ -167,18 +186,5 @@ public class AuthenticationController extends BaseController {
                 ((Number) body.get("expires_in")).longValue(),
                 Arrays.asList(((String) body.get("scope")).split(" "))
         );
-
-        Account account = accountRepository.findByUsername("super_admin")
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        tokenRepository.deleteAllByEmailAndKind(account.getEmail(), BaseConstant.TOKEN_KIND_REFRESH_TOKEN);
-        tokenService.createToken(
-                account.getEmail(),
-                oauthTokenDto.getRefreshToken(),
-                BaseConstant.TOKEN_KIND_REFRESH_TOKEN,
-                Instant.now().plus(oauthTokenDto.getExpiresIn(), ChronoUnit.MINUTES)
-        );
-
-        return oauthTokenDto;
     }
 }
