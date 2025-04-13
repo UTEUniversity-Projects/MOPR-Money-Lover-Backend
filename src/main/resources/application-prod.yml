@@ -1,5 +1,8 @@
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      timeout: ${SESSION_TIMEOUT:30m}
 
 spring:
   main:
@@ -10,6 +13,10 @@ spring:
     oauth2:
       authorization server:
         issuer: https://${RAILWAY_PUBLIC_DOMAIN}
+  session:
+    redis:
+      namespace: com-mobile-api
+      cleanup-cron:
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}

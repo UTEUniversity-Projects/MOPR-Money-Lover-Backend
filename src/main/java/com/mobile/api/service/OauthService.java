@@ -25,7 +25,7 @@ public class OauthService {
     }
 
     public void registerClientForUser(String username) {
-        List<String> scopes = List.of("openid", "profile", "email");
+        List<String> scopes = List.of("openid", "profile", "email", "offline_access");
 
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(username)

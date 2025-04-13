@@ -8,6 +8,7 @@ public class SessionRedis {
     @Id
     private String id;
     private String userId;
+    private String username;
     private Long createdAt;
     private Long expiredAt;
 }
