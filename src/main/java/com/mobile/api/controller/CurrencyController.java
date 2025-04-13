@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class CurrencyController extends BaseController {
     private CurrencyMapper currencyMapper;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAuthority('CUR_LIS')")
+    @PreAuthorize("hasAuthority('CUR_LIS')")
     public ApiMessageDto<PaginationDto<CurrencyAdminDto>> getCurrencyListAdmin(
             @Valid @ModelAttribute CurrencyCriteria currencyCriteria,
             Pageable pageable
@@ -76,7 +77,7 @@ public class CurrencyController extends BaseController {
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAuthority('CUR_CRE')")
+    @PreAuthorize("hasAuthority('CUR_CRE')")
     public ApiMessageDto<Void> createCurrency(
             @Valid @RequestBody CreateCurrencyAdminForm createCurrencyAdminForm
     ) {
@@ -100,7 +101,7 @@ public class CurrencyController extends BaseController {
     }
 
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAuthority('CUR_UPD')")
+    @PreAuthorize("hasAuthority('CUR_UPD')")
     public ApiMessageDto<Void> updateCurrency(
             @Valid @RequestBody UpdateCurrencyAdminForm updateCurrencyAdminForm
     ) {
@@ -130,7 +131,7 @@ public class CurrencyController extends BaseController {
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-//    @PreAuthorize("hasAuthority('CUR_DEL')")
+    @PreAuthorize("hasAuthority('CUR_DEL')")
     public ApiMessageDto<Void> deleteCurrency(@PathVariable Long id) {
         if (!getIsSuperAdmin()) {
             throw new BusinessException(ErrorCode.BUSINESS_PERMISSION_DENIED);

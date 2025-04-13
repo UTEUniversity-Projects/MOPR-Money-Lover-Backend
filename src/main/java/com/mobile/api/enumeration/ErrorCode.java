@@ -33,6 +33,7 @@ public enum ErrorCode {
     BUSINESS_INVALID_TOKEN("ERROR-BUSINESS-0003", "Invalid Token"),
     BUSINESS_INVALID_RECAPTCHA("ERROR-BUSINESS-0004", "Invalid reCAPTCHA"),
     BUSINESS_OTP_RESEND_LIMIT("ERROR-BUSINESS-0005", "OTP resend limit"),
+    BUSINESS_ELEMENTS_EXCEEDED_LIMIT("ERROR-BUSINESS-0006", "Elements exceeded limit"),
 
     /**
      * GROUP error codes
@@ -85,7 +86,7 @@ public enum ErrorCode {
     FILE_SIZE_EXCEEDED("ERROR-FILE-0002", "File size exceeded"),
     FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
     FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error"),
-    FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File download error"),
+    FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0005", "File download error"),
 
     /**
      * CATEGORY error codes

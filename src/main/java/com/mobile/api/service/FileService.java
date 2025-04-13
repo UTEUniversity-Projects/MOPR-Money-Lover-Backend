@@ -81,7 +81,7 @@ public class FileService {
         return allowedExtensions != null && allowedExtensions.contains(extension);
     }
 
-    public File uploadFile(MultipartFile multipartFile, String fileType) throws IOException {
+    public File uploadFile(MultipartFile multipartFile, String fileType, Boolean isSystemFile, String scope) throws IOException {
         if (multipartFile.getSize() > maxFileSize) {
             throw new BusinessException(ErrorCode.FILE_SIZE_EXCEEDED);
         }
@@ -93,18 +93,17 @@ public class FileService {
 
         // Upload file to Cloudinary
         Map uploadResult = cloudinary.uploader().upload(multipartFile.getBytes(), ObjectUtils.emptyMap());
-        String url = (String) uploadResult.get("secure_url");
-        String publicId = (String) uploadResult.get("public_id");
 
-        // Save file information to database
         File file = new File();
         file.setFileName(multipartFile.getOriginalFilename());
-        file.setFileUrl(url);
+        file.setFileUrl((String) uploadResult.get("secure_url"));
         file.setFileType(fileType);
         file.setFileSize(multipartFile.getSize());
-        file.setPublicId(publicId);
+        file.setScope(scope);
+        file.setPublicId((String) uploadResult.get("public_id"));
+        file.setIsSystemFile(isSystemFile);
 
-        return fileRepository.save(file);
+        return file;
     }
 
     public void deleteFile(Long fileId) {

@@ -26,8 +26,11 @@ public class File extends Auditable<String> {
     @Column(name = "file_type")
     private String fileType;
     
-    @Column(name = "file_size", nullable = false)
+    @Column(name = "file_size")
     private Long fileSize;
+
+    @Column(name = "scope")
+    private String scope;
 
     @Column(name = "public_id", nullable = false)
     private String publicId;

@@ -4,6 +4,8 @@ import com.mobile.api.dto.file.FileDto;
 import com.mobile.api.model.entity.File;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {})
@@ -22,4 +24,7 @@ public interface FileMapper {
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToSimpleFileDto")
     FileDto fromEntityToSimpleFileDto(File file);
+
+    @IterableMapping(elementTargetType = FileDto.class, qualifiedByName = "fromEntityToFileDto")
+    List<FileDto> fromEntitiesToFileDto(List<File> files);
 }
