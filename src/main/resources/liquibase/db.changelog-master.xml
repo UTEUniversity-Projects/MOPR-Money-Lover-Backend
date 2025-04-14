@@ -15,4 +15,7 @@
         <sqlFile path="data/data-for-base.sql" relativeToChangelogFile="true"/>
         <sqlFile path="data/virtual-data-0.0.1.sql" relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet id="load-sql-file-2" author="Authentication">
+        <sqlFile path="data/virtual-data-0.0.2.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>
