@@ -11,12 +11,11 @@ spring:
     name: base
   security:
     oauth2:
-      authorization server:
+      authorizationserver:
         issuer: https://${SERVER_PUBLIC_DOMAIN}
   session:
     redis:
       namespace: com-mobile-api
-      cleanup-cron:
   mail:
     host: ${MAIL_HOST}
     port: ${MAIL_PORT}
@@ -51,8 +50,6 @@ spring:
     time-zone: UTC
   config:
     import: optional:file:.env[.properties]
-  jmx:
-    enabled: false
   oauth2:
     client:
       registration:
@@ -106,8 +103,9 @@ open:
 
 logging:
   level:
-    root: INFO
-    org.springframework: INFO
+    root: WARN
+    org.springframework: WARN
+#  config: classpath:log4j2-prod.xml
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
@@ -118,6 +116,7 @@ recaptcha:
 otp.expiry.minutes: 10
 otp.redis.otp-timeout.minutes: 15
 jwt.expiry.minutes: 10
+redis.cookie.ttl.days: 30
 
 oauth2-config:
   access-token-expiration: ${SECURITY_ACCESS_EXPIRATION:86400000}
