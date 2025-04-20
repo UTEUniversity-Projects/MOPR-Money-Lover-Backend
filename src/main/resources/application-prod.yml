@@ -12,7 +12,7 @@ spring:
   security:
     oauth2:
       authorization server:
-        issuer: https://${RAILWAY_PUBLIC_DOMAIN}
+        issuer: https://${SERVER_PUBLIC_DOMAIN}
   session:
     redis:
       namespace: com-mobile-api
@@ -91,7 +91,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    oauth2-redirect-url: https://${RAILWAY_PUBLIC_DOMAIN}/swagger-ui/oauth2-redirect.html
+    oauth2-redirect-url: https://${SERVER_PUBLIC_DOMAIN}/swagger-ui/oauth2-redirect.html
     docExpansion: none
     tags-sorter: alpha
     operations-sorter: alpha
@@ -101,7 +101,7 @@ open:
     title: Money Lover API Documentation
     version: v1.1.0
     description: API documentation for Money Lover
-    serverUrl: https://${RAILWAY_PUBLIC_DOMAIN}
+    serverUrl: https://${SERVER_PUBLIC_DOMAIN}
     serverName: Server Test
 
 logging:
@@ -124,7 +124,7 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: https://${RAILWAY_PUBLIC_DOMAIN}
+  base-url: https://${SERVER_PUBLIC_DOMAIN}
   token-uri: "/api/oauth2/token"
   authorization-uri: "/api/oauth2/authorize"
   token-introspection-uri: "/api/oauth2/introspect"
