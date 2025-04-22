@@ -19,10 +19,6 @@ public class CreateWalletForm {
     @NotNull(message = "Currency ID can not be null")
     private Long currencyId;
 
-    @Schema(description = "Balance", example = "1000000", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeDouble(fieldName = "Balance")
-    private Double balance;
-
     @Schema(description = "Is primary", example = "false", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Is primary can not be null")
     private Boolean isPrimary;

@@ -29,7 +29,7 @@ public class Wallet extends Auditable<String> {
     private Currency currency;
 
     @Column(name = "balance")
-    private Double balance;
+    private Double balance = 0.0;
 
     @Column(name = "is_primary")
     private Boolean isPrimary = false;

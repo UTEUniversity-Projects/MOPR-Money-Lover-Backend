@@ -19,6 +19,12 @@ public class AccountAdminDto extends BaseAdminDto {
     @Schema(description = "phone number")
     private String phone;
 
+    @Schema(description = "is super admin")
+    private Boolean isSuperAdmin;
+
+    @Schema(description = "verified")
+    private Boolean verified;
+
     @Schema(description = "avatar")
     private FileDto avatar;
 

@@ -50,8 +50,6 @@ spring:
     time-zone: UTC
   config:
     import: optional:file:.env[.properties]
-  jmx:
-    enabled: false
   oauth2:
     client:
       registration:

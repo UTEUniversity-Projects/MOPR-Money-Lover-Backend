@@ -13,7 +13,6 @@ import java.util.List;
         uses = {FileMapper.class, CurrencyMapper.class})
 public interface WalletMapper {
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "balance", target = "balance")
     @Mapping(source = "isPrimary", target = "isPrimary")
     @Mapping(source = "turnOnNotifications", target = "turnOnNotifications")
     @Mapping(source = "chargeToTotal", target = "chargeToTotal")
@@ -22,7 +21,6 @@ public interface WalletMapper {
     Wallet fromCreateWalletFormToEntity(CreateWalletForm form);
 
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "balance", target = "balance")
     @Mapping(source = "isPrimary", target = "isPrimary")
     @Mapping(source = "turnOnNotifications", target = "turnOnNotifications")
     @Mapping(source = "chargeToTotal", target = "chargeToTotal")
