@@ -23,6 +23,9 @@ public class Period extends Auditable<String> {
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
+    @Column(name = "balance")
+    private Double balance = 0.0;
+
     @Column(name = "start_date")
     private Instant startDate;
 

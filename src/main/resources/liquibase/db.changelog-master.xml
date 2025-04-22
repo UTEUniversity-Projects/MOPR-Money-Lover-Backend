@@ -6,13 +6,16 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <include file="db.changelog-1.0.1.xml" relativeToChangelogFile="true"/>
-    <include file="20250408031508_changelog.xml" relativeToChangelogFile="true"/>
-    <include file="20250408052730_changelog.xml" relativeToChangelogFile="true"/>
-    <include file="20250408143515_changelog.xml" relativeToChangelogFile="true"/>
-    <include file="20250408151908_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250408031508_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250408052730_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250408143515_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250408151908_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250422061912_changelog.xml" relativeToChangelogFile="true"/>
 
-    <changeSet id="load-sql-file" author="Authentication">
+    <changeSet id="load-sql-file-for-base" author="Authentication">
         <sqlFile path="data/data-for-base.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="load-sql-file-1" author="Authentication">
         <sqlFile path="data/virtual-data-0.0.1.sql" relativeToChangelogFile="true"/>
     </changeSet>
     <changeSet id="load-sql-file-2" author="Authentication">
