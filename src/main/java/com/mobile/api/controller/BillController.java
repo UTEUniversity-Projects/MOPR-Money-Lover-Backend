@@ -110,6 +110,10 @@ public class BillController {
         
         // Save the bill
         billRepository.save(bill);
+        // Update balance in wallet
+        wallet.setBalance(wallet.getBalance() + (category.getIsExpense() ? 1.0 : -1.0) * bill.getAmount());
+        walletRepository.save(wallet);
+
         return ApiMessageUtils.success(null, "Create bill successfully");
     }
 
@@ -153,6 +157,11 @@ public class BillController {
 
         // Save the bill
         billRepository.save(bill);
+        // Update balance in wallet
+        Wallet wallet = bill.getWallet();
+        wallet.setBalance(wallet.getBalance() + (bill.getCategory().getIsExpense() ? 1.0 : -1.0) * bill.getAmount());
+        walletRepository.save(wallet);
+
         return ApiMessageUtils.success(null, "Update bill successfully");
     }
 
