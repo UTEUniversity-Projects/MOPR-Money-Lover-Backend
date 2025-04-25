@@ -29,6 +29,11 @@ public class BaseConstant {
     public static final Integer TOKEN_KIND_UPDATE_EMAIL = 6;
 
     /**
+     * COOKIES_REDIS constants
+     */
+    public static final String COOKIE_KEY_PREFIX = "cookie:";
+    
+    /**
      * CODE_LENGTH constants
      */
     public static final Integer CODE_LENGTH_OTP_CODE = 6;
