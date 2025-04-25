@@ -48,4 +48,8 @@ public class WebClientService {
 
         cookieStore.saveCookies(clientId, cookies);
     }
+
+    public void clearUserCookies(String clientId) {
+        cookieStore.deleteCookies(clientId);
+    }
 }
