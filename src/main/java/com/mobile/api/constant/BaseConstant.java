@@ -32,7 +32,7 @@ public class BaseConstant {
      * COOKIES_REDIS constants
      */
     public static final String COOKIE_KEY_PREFIX = "cookie:";
-    
+
     /**
      * CODE_LENGTH constants
      */
