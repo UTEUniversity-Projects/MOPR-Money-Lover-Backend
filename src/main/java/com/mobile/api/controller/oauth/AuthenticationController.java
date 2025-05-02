@@ -86,9 +86,11 @@ public class AuthenticationController extends BaseController {
                 .exchangeToMono(Mono::just)
                 .block();
 
-        if (response != null) {
-            webClientService.storeUserCookies(username, response);
+        if (response == null || !response.statusCode().is2xxSuccessful()) {
+            throw new AuthenticationException(ErrorCode.AUTHENTICATION_LOGIN_FAILED);
         }
+        webClientService.clearUserCookies(username);
+        webClientService.storeUserCookies(username, response);
     }
 
     private OauthTokenDto runOauthWorkflow(String email, String clientId) {

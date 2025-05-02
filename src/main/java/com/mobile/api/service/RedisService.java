@@ -1,5 +1,6 @@
 package com.mobile.api.service;
 
+import com.mobile.api.constant.BaseConstant;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,20 @@ public class RedisService {
     }
 
     public Map<String, String> getCookies(String clientId) {
-        Map<Object, Object> raw = redisTemplate.opsForHash().entries("cookie:" + clientId);
+        String key = BaseConstant.COOKIE_KEY_PREFIX + clientId;
+        Map<Object, Object> raw = redisTemplate.opsForHash().entries(key);
         Map<String, String> result = new HashMap<>();
         raw.forEach((k, v) -> result.put(String.valueOf(k), String.valueOf(v)));
         return result;
     }
 
     public void saveCookies(String clientId, Map<String, String> cookies) {
-        redisTemplate.opsForHash().putAll("cookie:" + clientId, cookies);
+        String key = BaseConstant.COOKIE_KEY_PREFIX + clientId;
+        redisTemplate.opsForHash().putAll(key, cookies);
+    }
+
+    public void deleteCookies(String clientId) {
+        String key = BaseConstant.COOKIE_KEY_PREFIX + clientId;
+        redisTemplate.delete(key);
     }
 }
