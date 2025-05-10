@@ -23,8 +23,17 @@ public class Period extends Auditable<String> {
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
+    @Column(name = "type")
+    private Integer type;
+
+    @Column(name = "total_amount")
+    private Double totalAmount;
+
+    @Column(name = "total_spent")
+    private Double totalSpent;
+
     @Column(name = "balance")
-    private Double balance = 0.0;
+    private Double balance;
 
     @Column(name = "start_date")
     private Instant startDate;

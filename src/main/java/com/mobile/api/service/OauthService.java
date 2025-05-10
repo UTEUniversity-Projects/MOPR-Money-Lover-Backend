@@ -1,5 +1,6 @@
 package com.mobile.api.service;
 
+import com.mobile.api.constant.JwtConstant;
 import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.security.jwt.JwtProperties;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -33,7 +34,7 @@ public class OauthService {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri(jwtProperties.getRedirectUri())
+                .redirectUri(JwtConstant.OAUTH2_URI_REDIRECT)
                 .scopes(scope -> scope.addAll(scopes))
                 .clientSettings(ClientSettings.builder()
                         .requireProofKey(true)

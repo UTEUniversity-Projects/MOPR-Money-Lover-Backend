@@ -156,6 +156,7 @@ public class BillController {
         }
 
         // Save the bill
+        billMapper.updateFromUpdateBillForm(bill, updateBillForm);
         billRepository.save(bill);
         // Update balance in wallet
         Wallet wallet = bill.getWallet();

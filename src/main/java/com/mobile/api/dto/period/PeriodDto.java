@@ -14,6 +14,15 @@ public class PeriodDto {
     @Schema(description = "wallet")
     private WalletDto wallet;
 
+    @Schema(description = "totalAmount")
+    private Double totalAmount;
+
+    @Schema(description = "totalSpent")
+    private Double totalSpent;
+
+    @Schema(description = "balance")
+    private Double balance;
+
     @Schema(description = "startDate")
     private Instant startDate;
 

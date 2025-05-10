@@ -16,6 +16,9 @@ public class BudgetDto {
     @Schema(description = "category")
     private CategoryDto category;
 
+    @Schema(description = "amount")
+    private Double amount;
+
     @Schema(description = "balance")
     private Double balance;
 }

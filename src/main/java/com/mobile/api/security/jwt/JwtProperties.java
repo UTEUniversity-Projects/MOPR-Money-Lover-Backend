@@ -15,14 +15,4 @@ public class JwtProperties {
     private String privateKey;
     private String publicKey;
     private String baseUrl;
-    private String tokenUri;
-    private String authorizationUri;
-    private String tokenIntrospectionUri;
-    private String tokenRevocationUri;
-    private String redirectUri;
-    private String consentPageUri;
-    private String loginUri;
-    private String logoutUri;
-    private String errorUri;
-    private String callbackUri;
 }

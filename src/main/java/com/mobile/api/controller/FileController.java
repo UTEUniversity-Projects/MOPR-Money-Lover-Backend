@@ -67,6 +67,28 @@ public class FileController extends BaseController {
         return ApiMessageUtils.success(responseDto, "List files successfully");
     }
 
+    @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<PaginationDto<FileDto>> getFileListClient(
+            @Valid @ModelAttribute FileCriteria fileCriteria,
+            Pageable pageable
+    ) {
+        if (!Objects.equals(fileCriteria.getScope(), BaseConstant.FILE_SCOPE_CATEGORY_ICONS)
+                && !Objects.equals(fileCriteria.getScope(), BaseConstant.FILE_SCOPE_INTERNAL_FLAGS)) {
+            throw new BusinessException(ErrorCode.FILE_SCOPE_NOT_SUPPORTED);
+        }
+
+        Specification<File> specification = fileCriteria.getSpecification();
+        Page<File> page = fileRepository.findAll(specification, pageable);
+
+        PaginationDto<FileDto> responseDto = new PaginationDto<>(
+                fileMapper.fromEntitiesToFileDto(page.getContent()),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
+
+        return ApiMessageUtils.success(responseDto, "List files successfully");
+    }
+
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('FIL_GET')")
     public ApiMessageDto<FileDto> getFile(@PathVariable Long id) {

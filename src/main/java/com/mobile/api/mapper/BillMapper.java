@@ -13,6 +13,7 @@ import java.util.List;
         uses = {WalletMapper.class, CategoryMapper.class, TagMapper.class, EventMapper.class, ReminderMapper.class, FileMapper.class})
 public interface BillMapper {
     @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "date", target = "date")
     @Mapping(source = "note", target = "note")
     @Mapping(source = "isIncludedReport", target = "isIncludedReport")
     @BeanMapping(ignoreByDefault = true)
@@ -20,6 +21,7 @@ public interface BillMapper {
     Bill fromCreateBillFormToEntity(CreateBillForm createBillForm);
 
     @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "date", target = "date")
     @Mapping(source = "note", target = "note")
     @Mapping(source = "isIncludedReport", target = "isIncludedReport")
     @BeanMapping(ignoreByDefault = true)
@@ -28,6 +30,7 @@ public interface BillMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "date", target = "date")
     @Mapping(source = "note", target = "note")
     @Mapping(source = "isIncludedReport", target = "isIncludedReport")
     @Mapping(source = "wallet", target = "wallet", qualifiedByName = "fromEntityToSimpleWalletDto")

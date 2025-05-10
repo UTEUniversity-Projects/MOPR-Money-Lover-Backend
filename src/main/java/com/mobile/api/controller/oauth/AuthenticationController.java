@@ -1,6 +1,7 @@
 package com.mobile.api.controller.oauth;
 
 import com.mobile.api.constant.BaseConstant;
+import com.mobile.api.constant.JwtConstant;
 import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.OauthTokenDto;
@@ -106,9 +107,9 @@ public class AuthenticationController extends BaseController {
     private String requestAuthorizationCode(String clientId, String codeChallenge, String state) {
         String authorizeUri = String.format(
                 "%s?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=%s&code_challenge=%s&code_challenge_method=S256",
-                jwtProperties.getAuthorizationUri(),
+                JwtConstant.OAUTH2_URI_AUTHORIZATION,
                 clientId,
-                jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri(),
+                jwtProperties.getBaseUrl() + JwtConstant.OAUTH2_URI_REDIRECT,
                 "openid profile email offline_access",
                 state,
                 codeChallenge
@@ -131,10 +132,10 @@ public class AuthenticationController extends BaseController {
         formData.add("grant_type", "authorization_code");
         formData.add("client_id", clientId);
         formData.add("code", authorizationCode);
-        formData.add("redirect_uri", jwtProperties.getBaseUrl() + jwtProperties.getRedirectUri());
+        formData.add("redirect_uri", jwtProperties.getBaseUrl() + JwtConstant.OAUTH2_URI_REDIRECT);
         formData.add("code_verifier", codeVerifier);
 
-        Map<String, Object> body = webClientService.userPostRequest(baseClient, clientId, jwtProperties.getTokenUri())
+        Map<String, Object> body = webClientService.userPostRequest(baseClient, clientId, JwtConstant.OAUTH2_URI_TOKEN)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(formData))
                 .retrieve()
