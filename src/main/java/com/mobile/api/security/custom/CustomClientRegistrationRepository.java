@@ -1,5 +1,6 @@
 package com.mobile.api.security.custom;
 
+import com.mobile.api.constant.JwtConstant;
 import com.mobile.api.security.jwt.JwtProperties;
 import com.mobile.api.security.jwt.JwtUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,8 +39,8 @@ public class CustomClientRegistrationRepository implements ClientRegistrationRep
                     .clientSecret(rowSet.getString("client_secret"))
                     .redirectUri(jwtProperties.getBaseUrl() + jwtUtils.parseList(rowSet.getString("redirect_uris")).stream().findFirst().orElse(null))
                     .scope(scopes.toArray(new String[0]))
-                    .authorizationUri(jwtProperties.getBaseUrl() + jwtProperties.getAuthorizationUri())
-                    .tokenUri(jwtProperties.getBaseUrl() + jwtProperties.getTokenUri());
+                    .authorizationUri(jwtProperties.getBaseUrl() + JwtConstant.OAUTH2_URI_AUTHORIZATION)
+                    .tokenUri(jwtProperties.getBaseUrl() + JwtConstant.OAUTH2_URI_TOKEN);
 
             grantTypes.forEach(builder::authorizationGrantType);
 

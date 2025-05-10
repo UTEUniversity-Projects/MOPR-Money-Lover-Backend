@@ -87,6 +87,7 @@ public enum ErrorCode {
     FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
     FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error"),
     FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0005", "File download error"),
+    FILE_SCOPE_NOT_SUPPORTED("ERROR-FILE-0006", "File scope not supported"),
 
     /**
      * CATEGORY error codes

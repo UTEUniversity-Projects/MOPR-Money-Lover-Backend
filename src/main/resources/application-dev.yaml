@@ -3,6 +3,7 @@ server:
   servlet:
     session:
       timeout: ${SESSION_TIMEOUT:30m}
+  base-url: http://localhost:8080
 
 spring:
   main:
@@ -12,7 +13,7 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        issuer: http://localhost:8080
+        issuer: ${server.base-url}
   session:
     redis:
       namespace: com-mobile-api
@@ -32,7 +33,6 @@ spring:
     password: ${DATASOURCE_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -88,7 +88,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    oauth2-redirect-url: http://localhost:8080/swagger-ui/oauth2-redirect.html
+    oauth2-redirect-url: ${server.base-url}/swagger-ui/oauth2-redirect.html
     docExpansion: none
     tags-sorter: alpha
     operations-sorter: alpha
@@ -98,7 +98,7 @@ open:
     title: Money Lover API Documentation
     version: v1.1.0
     description: API documentation for Money Lover
-    serverUrl: http://localhost:8080
+    serverUrl: ${server.base-url}
     serverName: Server Test
 
 logging:
@@ -123,14 +123,4 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: http://localhost:8080
-  token-uri: "/api/oauth2/token"
-  authorization-uri: "/api/oauth2/authorize"
-  token-introspection-uri: "/api/oauth2/introspect"
-  token-revocation-uri: "/api/oauth2/revoke"
-  redirect-uri: "/api/oauth2/callback"
-  consent-page-uri: "/api/oauth2/consent"
-  login-uri: "/login"
-  logout-uri: "/logout"
-  error-uri: "/error"
-  callback-uri: "/home"
+  base-url: ${server.base-url}
