@@ -22,7 +22,7 @@ public class UpdateBudgetForm {
     @NotNull(message = "Category ID can not be null")
     private Long categoryId;
 
-    @Schema(description = "Balance", example = "1000.0", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeDouble(fieldName = "Balance")
-    private Double balance;
+    @Schema(description = "Amount", example = "1000.0", requiredMode = Schema.RequiredMode.REQUIRED)
+    @TypeDouble(fieldName = "Amount")
+    private Double amount;
 }

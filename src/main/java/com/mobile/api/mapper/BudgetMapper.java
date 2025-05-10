@@ -12,12 +12,12 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         uses = {PeriodMapper.class, CategoryMapper.class})
 public interface BudgetMapper {
-    @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "amount", target = "amount")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromCreateBudgetFormToEntity")
     Budget fromCreateBudgetFormToEntity(CreateBudgetForm createBudgetForm);
 
-    @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "amount", target = "amount")
     @BeanMapping(ignoreByDefault = true)
     @Named("updateFromUpdateBudgetForm")
     void updateFromUpdateBudgetForm(@MappingTarget Budget budget, UpdateBudgetForm updateBudgetForm);
@@ -25,6 +25,7 @@ public interface BudgetMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "period", target = "period", qualifiedByName = "fromEntityToPeriodDto")
     @Mapping(source = "category", target = "category", qualifiedByName = "fromEntityToCategoryDto")
+    @Mapping(source = "amount", target = "amount")
     @Mapping(source = "balance", target = "balance")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToBudgetDto")

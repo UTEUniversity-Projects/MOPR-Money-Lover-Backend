@@ -1,6 +1,6 @@
 package com.mobile.api.config;
 
-import com.mobile.api.security.jwt.JwtProperties;
+import com.mobile.api.constant.JwtConstant;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +29,9 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
-    private final JwtProperties jwtProperties;
 
-    public SecurityConfig(UserDetailsService userDetailsService, JwtProperties jwtProperties) {
+    public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.jwtProperties = jwtProperties;
     }
 
     @Bean
@@ -59,7 +57,7 @@ public class SecurityConfig {
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .formLogin(login -> login
-                        .loginProcessingUrl(jwtProperties.getLoginUri())
+                        .loginProcessingUrl(JwtConstant.OAUTH2_URI_LOGIN)
                         .successHandler((request, response, authentication) -> {
                             response.setContentType("application/json");
                             response.getWriter().write("{\"message\": \"Login successful\"}");
@@ -70,7 +68,7 @@ public class SecurityConfig {
                         })
                         .permitAll()
                 )
-                .logout(logout -> logout.logoutUrl(jwtProperties.getLogoutUri()).permitAll())
+                .logout(logout -> logout.logoutUrl(JwtConstant.OAUTH2_URI_LOGOUT).permitAll())
                 .oauth2Login(Customizer.withDefaults())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 

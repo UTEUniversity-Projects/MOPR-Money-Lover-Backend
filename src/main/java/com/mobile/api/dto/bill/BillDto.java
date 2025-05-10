@@ -9,6 +9,7 @@ import com.mobile.api.dto.wallet.WalletDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -18,6 +19,9 @@ public class BillDto {
 
     @Schema(description = "amount")
     private Double amount;
+
+    @Schema(description = "date")
+    private Instant date;
 
     @Schema(description = "note")
     private String note;

@@ -1,8 +1,8 @@
 package com.mobile.api.config;
 
+import com.mobile.api.constant.JwtConstant;
 import com.mobile.api.security.custom.CustomUserDetails;
 import com.mobile.api.security.jwt.JwtClaimsUtil;
-import com.mobile.api.security.jwt.JwtProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,10 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class AuthorizationServerConfig {
-    private final JwtProperties jwtProperties;
 
-    public AuthorizationServerConfig(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
+    public AuthorizationServerConfig() {
     }
 
     @Bean
@@ -29,7 +27,7 @@ public class AuthorizationServerConfig {
         http
                 .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults())
-                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.consentPage(jwtProperties.getConsentPageUri()));
+                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.consentPage(JwtConstant.OAUTH2_URI_AUTHORIZATION));
 
         return http.build();
     }
@@ -37,10 +35,10 @@ public class AuthorizationServerConfig {
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
-                .tokenEndpoint(jwtProperties.getTokenUri())
-                .authorizationEndpoint(jwtProperties.getAuthorizationUri())
-                .tokenIntrospectionEndpoint(jwtProperties.getTokenIntrospectionUri())
-                .tokenRevocationEndpoint(jwtProperties.getTokenRevocationUri())
+                .tokenEndpoint(JwtConstant.OAUTH2_URI_TOKEN)
+                .authorizationEndpoint(JwtConstant.OAUTH2_URI_AUTHORIZATION)
+                .tokenIntrospectionEndpoint(JwtConstant.OAUTH2_URI_TOKEN_INTROSPECTION)
+                .tokenRevocationEndpoint(JwtConstant.OAUTH2_URI_TOKEN_REVOCATION)
                 .build();
     }
 
