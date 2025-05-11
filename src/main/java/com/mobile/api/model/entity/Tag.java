@@ -19,7 +19,7 @@ public class Tag extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

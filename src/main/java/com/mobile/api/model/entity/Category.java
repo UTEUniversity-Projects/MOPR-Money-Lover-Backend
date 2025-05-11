@@ -33,7 +33,7 @@ public class Category extends Auditable<String> {
     @Column(name = "ordering")
     private Integer ordering;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }
