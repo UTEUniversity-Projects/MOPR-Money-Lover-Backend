@@ -20,7 +20,7 @@ public class Wallet extends Auditable<String> {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -40,7 +40,7 @@ public class Wallet extends Auditable<String> {
     @Column(name = "charge_to_total")
     private Boolean chargeToTotal = true;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }

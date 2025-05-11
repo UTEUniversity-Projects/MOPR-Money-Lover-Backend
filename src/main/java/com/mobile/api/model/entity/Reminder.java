@@ -19,14 +19,14 @@ public class Reminder extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "time")
     private Instant time;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }

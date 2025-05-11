@@ -1,0 +1,73 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1746955659325-1">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_wallet" constraintName="FKpggbwihp2fwus7b9vy8vtry6x"/>
+        <dropUniqueConstraint constraintName="icon_id" tableName="db_money_lover_wallet"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-2">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_wallet" constraintName="FKpggbwihp2fwus7b9vy8vtry6x" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-3">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_wallet" constraintName="FKg5l26afwvi7uxm4htol8vb8vh"/>
+        <dropUniqueConstraint constraintName="user_id" tableName="db_money_lover_wallet"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-4">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_money_lover_wallet" constraintName="FKg5l26afwvi7uxm4htol8vb8vh" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-5">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_category" constraintName="FKa9kwc2hwchj0r4laedjixhtie"/>
+        <dropUniqueConstraint constraintName="icon_id" tableName="db_money_lover_category"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-6">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_category" constraintName="FKa9kwc2hwchj0r4laedjixhtie" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-7">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_currency" constraintName="FKsy6wutkn8q6h2tx1s0kh6u1n0"/>
+        <dropUniqueConstraint constraintName="icon_id" tableName="db_money_lover_currency"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-8">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_currency" constraintName="FKsy6wutkn8q6h2tx1s0kh6u1n0" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-9">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_event" constraintName="FKijssodmrxirlhhma8idga5glp"/>
+        <dropUniqueConstraint constraintName="user_id" tableName="db_money_lover_event"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-10">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_money_lover_event" constraintName="FKijssodmrxirlhhma8idga5glp" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-11">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_event" constraintName="FK8tlirdt7jdlqd5lowyoiyafa"/>
+        <dropUniqueConstraint constraintName="wallet_id" tableName="db_money_lover_event"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-12">
+        <addForeignKeyConstraint baseColumnNames="wallet_id" baseTableName="db_money_lover_event" constraintName="FK8tlirdt7jdlqd5lowyoiyafa" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_wallet" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-13">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_event" constraintName="FK9l6xm2ful0otlno8dq4erca4f"/>
+        <dropUniqueConstraint constraintName="icon_id" tableName="db_money_lover_event"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-14">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_event" constraintName="FK9l6xm2ful0otlno8dq4erca4f" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-15">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_reminder" constraintName="FKqiputcrp6j9ya046w7t8s88g6"/>
+        <dropUniqueConstraint constraintName="user_id" tableName="db_money_lover_reminder"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-16">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_money_lover_reminder" constraintName="FKqiputcrp6j9ya046w7t8s88g6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_user" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-17">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_reminder" constraintName="FKj11b9oxh17ivlfhuk6e0kdadl"/>
+        <dropUniqueConstraint constraintName="icon_id" tableName="db_money_lover_reminder"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-18">
+        <addForeignKeyConstraint baseColumnNames="icon_id" baseTableName="db_money_lover_reminder" constraintName="FKj11b9oxh17ivlfhuk6e0kdadl" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_file" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-19">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_tag" constraintName="FKfwvynemqnpnei1iapqpxt2lef"/>
+        <dropUniqueConstraint constraintName="user_id" tableName="db_money_lover_tag"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1746955659325-20">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="db_money_lover_tag" constraintName="FKfwvynemqnpnei1iapqpxt2lef" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_money_lover_user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

@@ -153,6 +153,11 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -207,8 +212,8 @@
 				<version>${liquibase.version}</version>
 				<configuration>
 					<changeLogFile>${basedir}src/main/resources/liquibase/${liquibase.changeLogFile}</changeLogFile>
-					<diffChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-					<outputChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_generate.xml</outputChangeLogFile>
+					<diffChangeLogFile>${basedir}/src/main/resources/liquibase/dev/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+					<outputChangeLogFile>${basedir}/src/main/resources/liquibase/dev/${maven.build.timestamp}_generate.xml</outputChangeLogFile>
 					<driver>com.mysql.cj.jdbc.Driver</driver>
 					<url>jdbc:mysql://localhost:3306/db_money_lover?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</url>
 					<username>root</username>
