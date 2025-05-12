@@ -133,7 +133,8 @@ public enum ErrorCode {
     /**
      * BUDGET error codes
      */
-    BUDGET_NOT_FOUND("ERROR-PERIOD-0001", "Period not found"),
+    BUDGET_NOT_FOUND("ERROR-BUDGET-0001", "Period not found"),
+    BUDGET_PERIOD_TYPE_INVALID("ERROR-BUDGET-0002", "Period type custom invalid"),
 
     /**
      * BILL error codes

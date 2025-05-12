@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,11 @@ public class BudgetCriteria extends BaseCriteria<Budget> {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Long periodId;
+    private Long walletId;
     private Long categoryId;
+    private Integer periodType;
+    private Instant startDate;
+    private Instant endDate;
 
     @Override
     public Specification<Budget> getSpecification() {
@@ -29,11 +33,20 @@ public class BudgetCriteria extends BaseCriteria<Budget> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(getBaseSpecification().toPredicate(root, query, cb));
 
-            if (periodId != null) {
-                predicates.add(cb.equal(root.get("period").get("id"), periodId));
+            if (walletId != null) {
+                predicates.add(cb.equal(root.get("wallet").get("id"), walletId));
             }
             if (categoryId != null) {
                 predicates.add(cb.equal(root.get("category").get("id"), categoryId));
+            }
+            if (periodType != null) {
+                predicates.add(cb.equal(root.get("periodType"), periodType));
+            }
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), startDate));
+            }
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("endDate"), endDate));
             }
 
             return cb.and(predicates.toArray(Predicate[]::new));

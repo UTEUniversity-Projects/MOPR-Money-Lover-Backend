@@ -13,8 +13,4 @@ import java.util.List;
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long>, JpaSpecificationExecutor<Budget> {
     void deleteAllByCategoryId(Long id);
-
-    @Modifying
-    @Query("DELETE FROM Budget b WHERE b.period.id IN :periodIds")
-    void deleteAllFollowPeriodIds(@Param("periodIds") List<Long> periodIds);
 }

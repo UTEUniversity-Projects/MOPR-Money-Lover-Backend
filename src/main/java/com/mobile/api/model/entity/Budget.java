@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.Instant;
+
 @Entity
 @Table(name = "db_money_lover_budget")
 @Getter
@@ -18,16 +20,22 @@ public class Budget extends Auditable<String> {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "period_id", nullable = false)
-    private Period period;
-
-    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "wallet_id", nullable = false)
+    private Wallet wallet;
+
+    @Column(name = "period_type")
+    private Integer periodType;
+
+    @Column(name = "start_date")
+    private Instant startDate;
+
+    @Column(name = "end_date")
+    private Instant endDate;
+
     @Column(name = "amount")
     private Double amount;
-
-    @Column(name = "balance")
-    private Double balance;
 }

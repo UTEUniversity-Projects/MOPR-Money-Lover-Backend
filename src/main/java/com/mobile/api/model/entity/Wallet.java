@@ -28,9 +28,6 @@ public class Wallet extends Auditable<String> {
     @JoinColumn(name = "currency_id", nullable = false)
     private Currency currency;
 
-    @Column(name = "balance")
-    private Double balance = 0.0;
-
     @Column(name = "is_primary")
     private Boolean isPrimary = false;
 

@@ -150,6 +150,7 @@ public class CategoryController extends BaseController {
     public ApiMessageDto<Void> deleteCategory(@PathVariable Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
+
         // Delete all bills and budgets associated with the category
         billRepository.deleteAllByCategoryId(category.getId());
         budgetRepository.deleteAllByCategoryId(category.getId());

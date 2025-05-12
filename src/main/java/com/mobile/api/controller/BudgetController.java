@@ -1,5 +1,6 @@
 package com.mobile.api.controller;
 
+import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.PaginationDto;
@@ -12,11 +13,12 @@ import com.mobile.api.mapper.BudgetMapper;
 import com.mobile.api.model.criteria.BudgetCriteria;
 import com.mobile.api.model.entity.Budget;
 import com.mobile.api.model.entity.Category;
-import com.mobile.api.model.entity.Period;
+import com.mobile.api.model.entity.Wallet;
 import com.mobile.api.repository.jpa.BudgetRepository;
 import com.mobile.api.repository.jpa.CategoryRepository;
-import com.mobile.api.repository.jpa.PeriodRepository;
+import com.mobile.api.repository.jpa.WalletRepository;
 import com.mobile.api.utils.ApiMessageUtils;
+import com.mobile.api.utils.DatePeriodValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,9 +38,9 @@ public class BudgetController extends BaseController {
     @Autowired
     private BudgetMapper budgetMapper;
     @Autowired
-    private PeriodRepository periodRepository;
-    @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private WalletRepository walletRepository;
 
     @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<PaginationDto<BudgetDto>> getBudgetList(
@@ -69,13 +71,22 @@ public class BudgetController extends BaseController {
     public ApiMessageDto<Void> createBudget(@Valid @RequestBody CreateBudgetForm createBudgetForm) {
         Budget budget = budgetMapper.fromCreateBudgetFormToEntity(createBudgetForm);
 
-        Period period = periodRepository.findById(createBudgetForm.getPeriodId())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PERIOD_NOT_FOUND));
-        budget.setPeriod(period);
-
+        // Validate category
         Category category = categoryRepository.findById(createBudgetForm.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
         budget.setCategory(category);
+        // Validate wallet
+        Wallet wallet = walletRepository.findById(createBudgetForm.getWalletId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));
+        budget.setWallet(wallet);
+
+        // Validate period type
+        if (DatePeriodValidator.isValidPeriod(createBudgetForm.getPeriodType(), createBudgetForm.getStartDate(), createBudgetForm.getEndDate())) {
+            throw new ResourceNotFoundException(ErrorCode.BUDGET_PERIOD_TYPE_INVALID);
+        }
+        budget.setPeriodType(createBudgetForm.getPeriodType());
+        budget.setStartDate(createBudgetForm.getStartDate());
+        budget.setEndDate(createBudgetForm.getEndDate());
 
         budgetRepository.save(budget);
         return ApiMessageUtils.success(null, "Create budget successfully");
@@ -86,16 +97,27 @@ public class BudgetController extends BaseController {
         Budget budget = budgetRepository.findById(updateBudgetForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BUDGET_NOT_FOUND));
 
-        if (!Objects.equals(budget.getPeriod().getId(), updateBudgetForm.getPeriodId())) {
-            Period period = periodRepository.findById(updateBudgetForm.getPeriodId())
-                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.PERIOD_NOT_FOUND));
-            budget.setPeriod(period);
-        }
-
+        // Validate category
         if (!Objects.equals(budget.getCategory().getId(), updateBudgetForm.getCategoryId())) {
             Category category = categoryRepository.findById(updateBudgetForm.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
             budget.setCategory(category);
+        }
+        // Validate wallet
+        if (!Objects.equals(budget.getWallet().getId(), updateBudgetForm.getWalletId())) {
+            Wallet wallet = walletRepository.findById(updateBudgetForm.getWalletId())
+                    .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));
+            budget.setWallet(wallet);
+        }
+
+        // Validate period type
+        if (!Objects.equals(budget.getPeriodType(), updateBudgetForm.getPeriodType())) {
+            if (DatePeriodValidator.isValidPeriod(updateBudgetForm.getPeriodType(), updateBudgetForm.getStartDate(), updateBudgetForm.getEndDate())) {
+                throw new ResourceNotFoundException(ErrorCode.BUDGET_PERIOD_TYPE_INVALID);
+            }
+            budget.setPeriodType(updateBudgetForm.getPeriodType());
+            budget.setStartDate(updateBudgetForm.getStartDate());
+            budget.setEndDate(updateBudgetForm.getEndDate());
         }
 
         budgetRepository.save(budget);

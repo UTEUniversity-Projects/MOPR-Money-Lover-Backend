@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class BillCriteria extends BaseCriteria<Bill> {
 
     private Double minAmount;
     private Double maxAmount;
+    private Instant startDate;
+    private Instant endDate;
     private String note;
     private Boolean isIncludedReport;
     private Long walletId;
@@ -43,6 +46,12 @@ public class BillCriteria extends BaseCriteria<Bill> {
             }
             if (maxAmount != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get("amount"), maxAmount));
+            }
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("date"), startDate));
+            }
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("date"), endDate));
             }
             if (StringUtils.hasText(note)) {
                 predicates.add(cb.like(root.get("note"), "%" + note + "%"));

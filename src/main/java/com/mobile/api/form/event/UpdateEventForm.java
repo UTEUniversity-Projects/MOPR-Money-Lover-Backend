@@ -30,7 +30,7 @@ public class UpdateEventForm {
     @NotNull(message = "Start date can not be null")
     private Instant startDate;
 
-    @Schema(description = "End Date", example = "2023-10-01T00:00:00Z", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "End Date", example = "2023-10-31T23:59:59Z", requiredMode = Schema.RequiredMode.REQUIRED)
     @Future(message = "End date must be in the future")
     @NotNull(message = "End date can not be null")
     private Instant endDate;

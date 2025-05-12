@@ -47,8 +47,6 @@ public class WalletController extends BaseController {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
-    private PeriodRepository periodRepository;
-    @Autowired
     private BudgetRepository budgetRepository;
     @Autowired
     private WalletMapper walletMapper;
@@ -145,12 +143,6 @@ public class WalletController extends BaseController {
         // Delete all bills and events associated with the wallet
         billRepository.deleteAllByWalletId(wallet.getId());
         eventRepository.deleteAllByWalletId(wallet.getId());
-        // Delete all periods and budgets associated with the wallet
-        List<Long> periodIds = periodRepository.getIdsByWalletId(wallet.getId());
-        if (!periodIds.isEmpty()) {
-            budgetRepository.deleteAllFollowPeriodIds(periodIds);
-            periodRepository.deleteAllByWalletId(wallet.getId());
-        }
         // Delete the wallet
         walletRepository.delete(wallet);
         return ApiMessageUtils.success(null, "Delete wallet successfully");
