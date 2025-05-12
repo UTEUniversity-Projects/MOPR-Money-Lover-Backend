@@ -15,6 +15,7 @@ public enum ErrorCode {
     SYSTEM_AUTHENTICATION_ERROR("ERROR-SYSTEM-0006", "Authentication error"),
     SYSTEM_ACCESS_DENIED("ERROR-SYSTEM-0007", "Access denied"),
     SYSTEM_UNKNOWN_ERROR("ERROR-SYSTEM-0008", "Unknown error"),
+    SYSTEM_INVALID_PARAMETER("ERROR-SYSTEM-0009", "Invalid parameter"),
 
     /**
      * AUTHENTICATION error codes

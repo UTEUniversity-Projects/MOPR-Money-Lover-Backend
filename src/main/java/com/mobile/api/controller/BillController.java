@@ -1,8 +1,10 @@
 package com.mobile.api.controller;
 
+import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.PaginationDto;
 import com.mobile.api.dto.bill.BillDto;
+import com.mobile.api.dto.bill.BillStatisticsDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.form.bill.CreateBillForm;
@@ -11,6 +13,7 @@ import com.mobile.api.mapper.BillMapper;
 import com.mobile.api.model.criteria.BillCriteria;
 import com.mobile.api.model.entity.*;
 import com.mobile.api.repository.jpa.*;
+import com.mobile.api.service.BillStatisticsService;
 import com.mobile.api.service.FileService;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,9 +31,11 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/v1/bill")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class BillController {
+public class BillController extends BaseController {
     @Autowired
     private FileService fileService;
+    @Autowired
+    private BillStatisticsService billStatisticsService;
     @Autowired
     private BillRepository billRepository;
     @Autowired
@@ -53,6 +58,7 @@ public class BillController {
             @Valid @ModelAttribute BillCriteria billCriteria,
             Pageable pageable
     ) {
+        billCriteria.setUserId(getCurrentUserId());
         Specification<Bill> specification = billCriteria.getSpecification();
         Page<Bill> page = billRepository.findAll(specification, pageable);
 
@@ -63,6 +69,18 @@ public class BillController {
         );
 
         return ApiMessageUtils.success(responseDto, "List bills successfully");
+    }
+
+    @GetMapping(value = "/client/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApiMessageDto<BillStatisticsDto> billStatisticsClient(
+            @Valid @ModelAttribute BillCriteria billCriteria,
+            Pageable pageable
+    ) {
+        billCriteria.setUserId(getCurrentUserId());
+        return ApiMessageUtils.success(
+                billStatisticsService.getStatistics(billCriteria, pageable),
+                "Get bill statistics successfully"
+        );
     }
 
     @GetMapping(value = "/client/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

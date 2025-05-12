@@ -1,6 +1,6 @@
 package com.mobile.api.dto.budget;
 
-import com.mobile.api.dto.category.CategoryDto;
+import com.mobile.api.dto.category.CategoryStatisticsDto;
 import com.mobile.api.dto.wallet.WalletDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -10,8 +10,8 @@ public class BudgetDto {
     @Schema(description = "id")
     private Long id;
 
-    @Schema(description = "category")
-    private CategoryDto category;
+    @Schema(description = "categoryStatistics")
+    private CategoryStatisticsDto categoryStatistics;
 
     @Schema(description = "wallet")
     private WalletDto wallet;

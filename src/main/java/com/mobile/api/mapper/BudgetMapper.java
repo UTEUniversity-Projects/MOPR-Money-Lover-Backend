@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {WalletMapper.class, CategoryMapper.class})
+        uses = {WalletMapper.class})
 public interface BudgetMapper {
     @Mapping(source = "amount", target = "amount")
     @BeanMapping(ignoreByDefault = true)
@@ -23,7 +23,6 @@ public interface BudgetMapper {
     void updateFromUpdateBudgetForm(@MappingTarget Budget budget, UpdateBudgetForm updateBudgetForm);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "category", target = "category", qualifiedByName = "fromEntityToSimpleCategory")
     @Mapping(source = "wallet", target = "wallet", qualifiedByName = "fromEntityToSimpleWalletDto")
     @Mapping(source = "periodType", target = "periodType")
     @Mapping(source = "startDate", target = "startDate")

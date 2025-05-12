@@ -1,22 +1,24 @@
 package com.mobile.api.controller;
 
-import com.mobile.api.constant.BaseConstant;
 import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.PaginationDto;
 import com.mobile.api.dto.budget.BudgetDto;
+import com.mobile.api.dto.category.CategoryStatisticsDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.form.budget.CreateBudgetForm;
 import com.mobile.api.form.budget.UpdateBudgetForm;
 import com.mobile.api.mapper.BudgetMapper;
 import com.mobile.api.model.criteria.BudgetCriteria;
+import com.mobile.api.model.criteria.CategoryCriteria;
 import com.mobile.api.model.entity.Budget;
 import com.mobile.api.model.entity.Category;
 import com.mobile.api.model.entity.Wallet;
 import com.mobile.api.repository.jpa.BudgetRepository;
 import com.mobile.api.repository.jpa.CategoryRepository;
 import com.mobile.api.repository.jpa.WalletRepository;
+import com.mobile.api.service.CategoryStatisticsService;
 import com.mobile.api.utils.ApiMessageUtils;
 import com.mobile.api.utils.DatePeriodValidator;
 import jakarta.validation.Valid;
@@ -34,6 +36,8 @@ import java.util.Objects;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BudgetController extends BaseController {
     @Autowired
+    private CategoryStatisticsService categoryStatisticsService;
+    @Autowired
     private BudgetRepository budgetRepository;
     @Autowired
     private BudgetMapper budgetMapper;
@@ -47,6 +51,7 @@ public class BudgetController extends BaseController {
             @Valid @ModelAttribute BudgetCriteria budgetCriteria,
             Pageable pageable
     ) {
+        budgetCriteria.setUserId(getCurrentUserId());
         Specification<Budget> specification = budgetCriteria.getSpecification();
         Page<Budget> page = budgetRepository.findAll(specification, pageable);
 
@@ -64,7 +69,15 @@ public class BudgetController extends BaseController {
         Budget budget = budgetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REMINDER_NOT_FOUND));
 
-        return ApiMessageUtils.success(budgetMapper.fromEntityToBudgetDto(budget), "Get budget successfully");
+        BudgetDto budgetDto = budgetMapper.fromEntityToBudgetDto(budget);
+        // Get category statistics
+        CategoryCriteria categoryCriteria = new CategoryCriteria();
+        categoryCriteria.setId(budget.getCategory().getId());
+        categoryCriteria.setUserId(getCurrentUserId());
+        CategoryStatisticsDto categoryStatisticsDto = categoryStatisticsService.getStatistics(categoryCriteria, budget.getStartDate(), budget.getEndDate());
+        budgetDto.setCategoryStatistics(categoryStatisticsDto);
+
+        return ApiMessageUtils.success(budgetDto, "Get budget successfully");
     }
 
     @PostMapping(value = "/client/create", produces = MediaType.APPLICATION_JSON_VALUE)

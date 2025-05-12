@@ -25,7 +25,7 @@ public @interface TypeDouble {
 
     double max() default Double.POSITIVE_INFINITY;
 
-    int precision() default 15;
+    int precision() default 12;
 
     int scale() default 6;
 }

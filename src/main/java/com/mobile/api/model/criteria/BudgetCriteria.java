@@ -22,6 +22,7 @@ public class BudgetCriteria extends BaseCriteria<Budget> {
     private static final long serialVersionUID = 1L;
 
     private Long walletId;
+    private Long userId;
     private Long categoryId;
     private Integer periodType;
     private Instant startDate;
@@ -35,6 +36,9 @@ public class BudgetCriteria extends BaseCriteria<Budget> {
 
             if (walletId != null) {
                 predicates.add(cb.equal(root.get("wallet").get("id"), walletId));
+            }
+            if (userId != null) {
+                predicates.add(cb.equal(root.get("user").get("id"), userId));
             }
             if (categoryId != null) {
                 predicates.add(cb.equal(root.get("category").get("id"), categoryId));

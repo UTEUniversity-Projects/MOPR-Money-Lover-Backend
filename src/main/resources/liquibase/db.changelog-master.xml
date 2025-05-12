@@ -15,6 +15,7 @@
     <include file="dev/20250511092710_changelog.xml" relativeToChangelogFile="true"/>
     <include file="dev/20250512013727_changelog.xml" relativeToChangelogFile="true"/>
     <include file="dev/20250512020845_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250512111925_changelog.xml" relativeToChangelogFile="true"/>
 
     <changeSet id="load-sql-file-for-base" author="Authentication">
         <sqlFile path="data/data-for-base.sql" relativeToChangelogFile="true"/>

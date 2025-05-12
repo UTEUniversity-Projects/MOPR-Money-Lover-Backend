@@ -90,6 +90,11 @@ public class BaseConstant {
     public static final Integer PERIOD_TYPE_CUSTOM = 5;
 
     /**
+     * Bây giờ, tôi cần bạn viết CategoryStatisticsService để lọc cho 1 category cụ thể trong đoạn [startDate, endDate], kết quả trả về cần có các thông tin: 1. CategoryDto (dto của category) 2. Tổng cộng (dựa theo các bill thuộc về category này trong đoạn [startDate, endDate]) 3. Trung bình hàng ngày (lấy tổng cộng chia đều cho số ngày trong [startDate, endDate]) 4. Tiến hành phân chia, ví dụ periodType nhận được là PERIOD_TYPE_WEEK thì chia theo ngày (7 ngày), PERIOD_TYPE_MONTH thì chia theo tuần, PERIOD_TYPE_QUARTER chia theo tháng, PERIOD_TYPE_YEAR chia theo quý, PERIOD_TYPE_CUSTOM thì chia theo khoảng cận gần nó nhấn, ví dụ nó > 1 năm thì chia theo năm, nếu chỉ hơn 1 quý thì theo quý, hơn 1 tháng thì chia theo tháng, hơn 1 tuần thì theo tuần, ... Kèm với mỗi đoạn phân chia là tổng theo đoạn đó Yêu cầu này khá phức tạp, hãy làm cẩn thận
+     *
+     */
+
+    /**
      * NOTIFICATION_TYPE constants
      */
     public static final Integer NOTIFICATION_TYPE_BUDGET = 1;

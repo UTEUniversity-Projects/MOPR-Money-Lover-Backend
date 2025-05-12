@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class CategoryCriteria extends BaseCriteria<Category> {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private Long id;
     private Long userId;
     private String name;
     private String description;
@@ -32,6 +34,9 @@ public class CategoryCriteria extends BaseCriteria<Category> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(getBaseSpecification().toPredicate(root, query, cb));
 
+            if (id != null) {
+                predicates.add(cb.equal(root.get("id"), id));
+            }
             if (userId != null) {
                 predicates.add(cb.equal(root.get("user").get("id"), userId));
             }
