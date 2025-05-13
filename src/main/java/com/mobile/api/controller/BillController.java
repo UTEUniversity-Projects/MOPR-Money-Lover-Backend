@@ -23,8 +23,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -92,6 +94,7 @@ public class BillController extends BaseController {
     }
 
     @PostMapping(value = "/client/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ApiMessageDto<Void> createBill(@Valid @RequestBody CreateBillForm createBillForm) {
         Bill bill = billMapper.fromCreateBillFormToEntity(createBillForm);
 
@@ -125,17 +128,31 @@ public class BillController extends BaseController {
                     .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
             bill.setPicture(picture);
         }
-        
+
         // Save the bill
         billRepository.save(bill);
+        // Update wallet balance
+        if (bill.getCategory().getIsExpense()) {
+            wallet.setBalance(wallet.getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+        } else {
+            wallet.setBalance(wallet.getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+        }
 
         return ApiMessageUtils.success(null, "Create bill successfully");
     }
 
     @PutMapping(value = "/client/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
     public ApiMessageDto<Void> updateBill(@Valid @RequestBody UpdateBillForm updateBillForm) {
         Bill bill = billRepository.findById(updateBillForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.BILL_NOT_FOUND));
+
+        // Remove old amount from wallet
+        if (bill.getCategory().getIsExpense()) {
+            bill.getWallet().setBalance(bill.getWallet().getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+        } else {
+            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+        }
 
         // Update category
         if (!Objects.equals(bill.getCategory().getId(), updateBillForm.getCategoryId())) {
@@ -176,8 +193,15 @@ public class BillController extends BaseController {
             bill.setPicture(picture);
         }
 
-        // Save the bill
+        // Update bill details
         billMapper.updateFromUpdateBillForm(bill, updateBillForm);
+        // Update wallet balance
+        if (bill.getCategory().getIsExpense()) {
+            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+        } else {
+            bill.getWallet().setBalance(bill.getWallet().getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+        }
+        // Save the updated bill
         billRepository.save(bill);
 
         return ApiMessageUtils.success(null, "Update bill successfully");

@@ -21,11 +21,11 @@ public @interface TypeDouble {
 
     Class<? extends Payload>[] payload() default {};
 
-    double min() default Double.NEGATIVE_INFINITY;
+    double min() default 0.0D;
 
-    double max() default Double.POSITIVE_INFINITY;
+    double max() default 999_999_999_999.0D;
 
-    int precision() default 12;
+    int scale() default 3;
 
-    int scale() default 6;
+    boolean exactScale() default false;
 }

@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -127,6 +128,14 @@ public class WalletController extends BaseController {
 
         walletRepository.save(wallet);
         return ApiMessageUtils.success(null, "Update wallet successfully");
+    }
+
+    @PutMapping(value = "/recalculate-balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GRO_CRE')")
+    @Transactional
+    public ApiMessageDto<Void> recalculateWalletBalances() {
+        int updatedCount = walletRepository.recalculateAllWalletBalancesJpql();
+        return ApiMessageUtils.success(null, "Recalculate wallet balances successfully: " + updatedCount);
     }
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

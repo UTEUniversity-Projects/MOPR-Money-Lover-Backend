@@ -3,14 +3,16 @@ package com.mobile.api.model.entity;
 import com.mobile.api.model.audit.Auditable;
 import com.mobile.api.service.id.IdGenerator;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "db_money_lover_wallet")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Wallet extends Auditable<String> {
     @Id
     @GeneratedValue(generator = "idGenerator")
@@ -19,6 +21,9 @@ public class Wallet extends Auditable<String> {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "balance")
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -40,4 +45,15 @@ public class Wallet extends Auditable<String> {
     @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
+
+    public Wallet(String name, User user, Currency currency,
+                  boolean isPrimary, boolean turnOnNotifications, boolean chargeToTotal, File icon) {
+        this.name = name;
+        this.user = user;
+        this.currency = currency;
+        this.isPrimary = isPrimary;
+        this.turnOnNotifications = turnOnNotifications;
+        this.chargeToTotal = chargeToTotal;
+        this.icon = icon;
+    }
 }
