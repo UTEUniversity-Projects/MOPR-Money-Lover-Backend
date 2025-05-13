@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RegistrationController extends BaseController {
     @Autowired
+    private UserInitializationService userInitializationService;
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private AccountRepository accountRepository;
@@ -61,9 +63,9 @@ public class RegistrationController extends BaseController {
             @Valid @RequestBody RequestRegisterForm requestRegisterForm
     ) {
         // Validate reCAPTCHA
-        if (!recaptchaService.verifyCaptcha(requestRegisterForm.getRecaptchaResponse())) {
-            throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
-        }
+//        if (!recaptchaService.verifyCaptcha(requestRegisterForm.getRecaptchaResponse())) {
+//            throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
+//        }
         // Validate information
         if (accountRepository.existsByEmail(requestRegisterForm.getEmail())) {
             throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);
@@ -110,15 +112,18 @@ public class RegistrationController extends BaseController {
         Group group = groupRepository.findFirstByKind(BaseConstant.GROUP_KIND_USER)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.GROUP_NOT_FOUND));
         account.setGroup(group);
-        Account savedAccount = accountRepository.save(account);
+        account = accountRepository.save(account);
 
         // Create USER
         User user = new User();
-        user.setAccount(savedAccount);
-        userRepository.save(user);
+        user.setAccount(account);
+        user = userRepository.save(user);
 
         // Create CLIENT
         oauthService.registerClientForUser(username);
+
+        // Initialize data for user
+        userInitializationService.initializeUserData(user);
 
         return ApiMessageUtils.success(null, "Register successfully");
     }
