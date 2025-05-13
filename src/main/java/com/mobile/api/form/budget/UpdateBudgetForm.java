@@ -2,11 +2,13 @@ package com.mobile.api.form.budget;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mobile.api.validation.PeriodType;
+import com.mobile.api.validation.TypeBigDecimal;
 import com.mobile.api.validation.TypeDouble;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
@@ -39,6 +41,6 @@ public class UpdateBudgetForm {
     private Instant endDate;
 
     @Schema(description = "Amount", example = "1000.0", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeDouble(fieldName = "Amount")
-    private Double amount;
+    @TypeBigDecimal(fieldName = "Amount")
+    private BigDecimal amount;
 }

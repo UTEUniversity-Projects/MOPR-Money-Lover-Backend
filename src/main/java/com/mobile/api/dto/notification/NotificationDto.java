@@ -1,5 +1,6 @@
 package com.mobile.api.dto.notification;
 
+import com.mobile.api.dto.wallet.WalletDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -9,6 +10,9 @@ import java.time.Instant;
 public class NotificationDto {
     @Schema(description = "id")
     private Long id;
+
+    @Schema(description = "wallet")
+    private WalletDto wallet;
 
     @Schema(description = "content")
     private String content;
@@ -22,6 +26,6 @@ public class NotificationDto {
     @Schema(description = "scope")
     private Integer scope;
 
-    @Schema(description = "createdAt")
-    private Instant createdAt;
+    @Schema(description = "createdDate")
+    private Instant createdDate;
 }

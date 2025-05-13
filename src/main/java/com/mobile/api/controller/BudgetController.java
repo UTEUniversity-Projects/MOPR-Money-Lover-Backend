@@ -20,7 +20,7 @@ import com.mobile.api.repository.jpa.CategoryRepository;
 import com.mobile.api.repository.jpa.WalletRepository;
 import com.mobile.api.service.CategoryStatisticsService;
 import com.mobile.api.utils.ApiMessageUtils;
-import com.mobile.api.utils.DatePeriodValidator;
+import com.mobile.api.utils.PeriodUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,16 +68,7 @@ public class BudgetController extends BaseController {
     public ApiMessageDto<BudgetDto> getBudget(@PathVariable Long id) {
         Budget budget = budgetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REMINDER_NOT_FOUND));
-
-        BudgetDto budgetDto = budgetMapper.fromEntityToBudgetDto(budget);
-        // Get category statistics
-        CategoryCriteria categoryCriteria = new CategoryCriteria();
-        categoryCriteria.setId(budget.getCategory().getId());
-        categoryCriteria.setUserId(getCurrentUserId());
-        CategoryStatisticsDto categoryStatisticsDto = categoryStatisticsService.getStatistics(categoryCriteria, budget.getStartDate(), budget.getEndDate());
-        budgetDto.setCategoryStatistics(categoryStatisticsDto);
-
-        return ApiMessageUtils.success(budgetDto, "Get budget successfully");
+        return ApiMessageUtils.success(budgetMapper.fromEntityToBudgetDto(budget), "Get budget successfully");
     }
 
     @PostMapping(value = "/client/create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,7 +85,7 @@ public class BudgetController extends BaseController {
         budget.setWallet(wallet);
 
         // Validate period type
-        if (DatePeriodValidator.isValidPeriod(createBudgetForm.getPeriodType(), createBudgetForm.getStartDate(), createBudgetForm.getEndDate())) {
+        if (PeriodUtils.isValidPeriod(createBudgetForm.getPeriodType(), createBudgetForm.getStartDate(), createBudgetForm.getEndDate())) {
             throw new ResourceNotFoundException(ErrorCode.BUDGET_PERIOD_TYPE_INVALID);
         }
         budget.setPeriodType(createBudgetForm.getPeriodType());
@@ -125,7 +116,7 @@ public class BudgetController extends BaseController {
 
         // Validate period type
         if (!Objects.equals(budget.getPeriodType(), updateBudgetForm.getPeriodType())) {
-            if (DatePeriodValidator.isValidPeriod(updateBudgetForm.getPeriodType(), updateBudgetForm.getStartDate(), updateBudgetForm.getEndDate())) {
+            if (PeriodUtils.isValidPeriod(updateBudgetForm.getPeriodType(), updateBudgetForm.getStartDate(), updateBudgetForm.getEndDate())) {
                 throw new ResourceNotFoundException(ErrorCode.BUDGET_PERIOD_TYPE_INVALID);
             }
             budget.setPeriodType(updateBudgetForm.getPeriodType());

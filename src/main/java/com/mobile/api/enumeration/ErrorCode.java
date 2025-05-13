@@ -141,6 +141,11 @@ public enum ErrorCode {
      * BILL error codes
      */
     BILL_NOT_FOUND("ERROR-BILL-0001", "Bill not found"),
+
+    /**
+     * NOTIFICATION error codes
+     */
+    NOTIFICATION_NOT_FOUND("ERROR-NOTIFICATION-0001", "Notification not found"),
     ;
 
     private final String code;

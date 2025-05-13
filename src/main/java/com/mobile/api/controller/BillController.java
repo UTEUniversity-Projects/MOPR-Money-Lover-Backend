@@ -13,20 +13,25 @@ import com.mobile.api.mapper.BillMapper;
 import com.mobile.api.model.criteria.BillCriteria;
 import com.mobile.api.model.entity.*;
 import com.mobile.api.repository.jpa.*;
+import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.service.BillStatisticsService;
 import com.mobile.api.service.FileService;
+import com.mobile.api.service.NotificationService;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +41,8 @@ import java.util.Objects;
 public class BillController extends BaseController {
     @Autowired
     private FileService fileService;
+    @Autowired
+    private NotificationService notificationService;
     @Autowired
     private BillStatisticsService billStatisticsService;
     @Autowired
@@ -54,12 +61,24 @@ public class BillController extends BaseController {
     private ReminderRepository reminderRepository;
     @Autowired
     private FileRepository fileRepository;
+    @Autowired
+    private BudgetRepository budgetRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<PaginationDto<BillDto>> getBillList(
             @Valid @ModelAttribute BillCriteria billCriteria,
             Pageable pageable
     ) {
+        if (pageable.getSort().isUnsorted()) {
+            pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "date")
+            );
+        }
+
         billCriteria.setUserId(getCurrentUserId());
         Specification<Bill> specification = billCriteria.getSpecification();
         Page<Bill> page = billRepository.findAll(specification, pageable);
@@ -78,6 +97,14 @@ public class BillController extends BaseController {
             @Valid @ModelAttribute BillCriteria billCriteria,
             Pageable pageable
     ) {
+        if (pageable.getSort().isUnsorted()) {
+            pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.DESC, "date")
+            );
+        }
+
         billCriteria.setUserId(getCurrentUserId());
         return ApiMessageUtils.success(
                 billStatisticsService.getStatistics(billCriteria, pageable),
@@ -131,11 +158,24 @@ public class BillController extends BaseController {
 
         // Save the bill
         billRepository.save(bill);
+
         // Update wallet balance
         if (bill.getCategory().getIsExpense()) {
             wallet.setBalance(wallet.getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
         } else {
             wallet.setBalance(wallet.getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+        }
+
+        // Update budget
+        List<Budget> budgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), category.getId(), bill.getDate());
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        if (budgets != null && !budgets.isEmpty()) {
+            for (Budget budget : budgets) {
+                budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
+                notificationService.scanToCreateNotification(user, budget);
+            }
+            budgetRepository.saveAll(budgets);
         }
 
         return ApiMessageUtils.success(null, "Create bill successfully");
@@ -152,6 +192,15 @@ public class BillController extends BaseController {
             bill.getWallet().setBalance(bill.getWallet().getBalance().add(BigDecimal.valueOf(bill.getAmount())));
         } else {
             bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+        }
+
+        // Remove old amount from budget
+        List<Budget> oldBudgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), bill.getCategory().getId(), bill.getDate());
+        if (oldBudgets != null && !oldBudgets.isEmpty()) {
+            for (Budget budget : oldBudgets) {
+                budget.setSpentAmount(budget.getSpentAmount().subtract(BigDecimal.valueOf(bill.getAmount())));
+            }
+            budgetRepository.saveAll(oldBudgets);
         }
 
         // Update category
@@ -203,6 +252,18 @@ public class BillController extends BaseController {
         }
         // Save the updated bill
         billRepository.save(bill);
+
+        // Update budgets spent amount
+        List<Budget> newBudgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), bill.getCategory().getId(), bill.getDate());
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        if (newBudgets != null && !newBudgets.isEmpty()) {
+            for (Budget budget : newBudgets) {
+                budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
+                notificationService.scanToCreateNotification(user, budget);
+            }
+            budgetRepository.saveAll(newBudgets);
+        }
 
         return ApiMessageUtils.success(null, "Update bill successfully");
     }

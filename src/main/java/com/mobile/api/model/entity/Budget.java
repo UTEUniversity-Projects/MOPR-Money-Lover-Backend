@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -41,5 +42,8 @@ public class Budget extends Auditable<String> {
     private Instant endDate;
 
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
+
+    @Column(name = "spent_amount")
+    private BigDecimal spentAmount;
 }

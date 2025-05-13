@@ -5,4 +5,14 @@
             <column name="balance" type="decimal(38, 9)"/>
         </addColumn>
     </changeSet>
+    <changeSet author="Authentication" id="1747100192456-4">
+        <addColumn tableName="db_money_lover_notification">
+            <column name="wallet_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1747100192456-5">
+        <addForeignKeyConstraint baseColumnNames="wallet_id" baseTableName="db_money_lover_notification" constraintName="FKmyqlwww8gy5t9y62mothut8rc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_money_lover_wallet" validate="true"/>
+    </changeSet>
 </databaseChangeLog>

@@ -28,6 +28,7 @@ public interface BudgetMapper {
     @Mapping(source = "startDate", target = "startDate")
     @Mapping(source = "endDate", target = "endDate")
     @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "spentAmount", target = "spentAmount")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToBudgetDto")
     BudgetDto fromEntityToBudgetDto(Budget budget);

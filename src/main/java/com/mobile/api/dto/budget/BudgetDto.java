@@ -5,6 +5,8 @@ import com.mobile.api.dto.wallet.WalletDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class BudgetDto {
     @Schema(description = "id")
@@ -26,8 +28,8 @@ public class BudgetDto {
     private String endDate;
 
     @Schema(description = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
-    @Schema(description = "balance")
-    private Double balance;
+    @Schema(description = "spentAmount")
+    private BigDecimal spentAmount;
 }

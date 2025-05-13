@@ -63,9 +63,9 @@ public class RegistrationController extends BaseController {
             @Valid @RequestBody RequestRegisterForm requestRegisterForm
     ) {
         // Validate reCAPTCHA
-//        if (!recaptchaService.verifyCaptcha(requestRegisterForm.getRecaptchaResponse())) {
-//            throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
-//        }
+        if (!recaptchaService.verifyCaptcha(requestRegisterForm.getRecaptchaResponse())) {
+            throw new BusinessException(ErrorCode.BUSINESS_INVALID_RECAPTCHA);
+        }
         // Validate information
         if (accountRepository.existsByEmail(requestRegisterForm.getEmail())) {
             throw new BusinessException(ErrorCode.ACCOUNT_EMAIL_EXISTED);

@@ -9,20 +9,28 @@ import java.time.temporal.ChronoUnit;
  * Utility class for validating date ranges based on budget period types.
  * Works directly with UTC time (Instant objects).
  */
-public final class DatePeriodValidator {
+public final class PeriodUtils {
 
-    public DatePeriodValidator() {
+    public PeriodUtils() {
         // Prevent instantiation
     }
 
-    /**
-     * Validates if the start and end dates match the requirements for the given period type.
-     *
-     * @param periodType the selected period type from BaseConstant
-     * @param startDate the start date as Instant (in UTC)
-     * @param endDate the end date as Instant (in UTC)
-     * @return true if the date range is valid for the given period type, false otherwise
-     */
+    public static String definePeriodName(Integer periodType) {
+        if (periodType.equals(BaseConstant.PERIOD_TYPE_WEEK)) {
+            return BaseConstant.PERIOD_NAME_WEEK;
+        } else if (periodType.equals(BaseConstant.PERIOD_TYPE_MONTH)) {
+            return BaseConstant.PERIOD_NAME_MONTH;
+        } else if (periodType.equals(BaseConstant.PERIOD_TYPE_QUARTER)) {
+            return BaseConstant.PERIOD_NAME_QUARTER;
+        } else if (periodType.equals(BaseConstant.PERIOD_TYPE_YEAR)) {
+            return BaseConstant.PERIOD_NAME_YEAR;
+        } else if (periodType.equals(BaseConstant.PERIOD_TYPE_CUSTOM)) {
+            return BaseConstant.PERIOD_NAME_CUSTOM;
+        } else {
+            return null;
+        }
+    }
+
     public static boolean isValidPeriod(Integer periodType, Instant startDate, Instant endDate) {
         if (startDate == null || endDate == null || periodType == null) {
             return false;
