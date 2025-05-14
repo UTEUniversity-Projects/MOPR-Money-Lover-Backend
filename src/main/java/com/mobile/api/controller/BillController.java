@@ -13,7 +13,6 @@ import com.mobile.api.mapper.BillMapper;
 import com.mobile.api.model.criteria.BillCriteria;
 import com.mobile.api.model.entity.*;
 import com.mobile.api.repository.jpa.*;
-import com.mobile.api.security.custom.CustomRegisteredClientRepository;
 import com.mobile.api.service.BillStatisticsService;
 import com.mobile.api.service.FileService;
 import com.mobile.api.service.NotificationService;
@@ -31,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -125,7 +123,10 @@ public class BillController extends BaseController {
     public ApiMessageDto<Void> createBill(@Valid @RequestBody CreateBillForm createBillForm) {
         Bill bill = billMapper.fromCreateBillFormToEntity(createBillForm);
 
-        // Validate wallet and category
+        // Validate user, wallet and category
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        bill.setUser(user);
         Wallet wallet = walletRepository.findById(createBillForm.getWalletId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));
         bill.setWallet(wallet);
@@ -168,8 +169,6 @@ public class BillController extends BaseController {
 
         // Update budget
         List<Budget> budgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), category.getId(), bill.getDate());
-        User user = userRepository.findById(getCurrentUserId())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         if (budgets != null && !budgets.isEmpty()) {
             for (Budget budget : budgets) {
                 budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
@@ -255,12 +254,10 @@ public class BillController extends BaseController {
 
         // Update budgets spent amount
         List<Budget> newBudgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), bill.getCategory().getId(), bill.getDate());
-        User user = userRepository.findById(getCurrentUserId())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         if (newBudgets != null && !newBudgets.isEmpty()) {
             for (Budget budget : newBudgets) {
                 budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
-                notificationService.scanToCreateNotification(user, budget);
+                notificationService.scanToCreateNotification(bill.getUser(), budget);
             }
             budgetRepository.saveAll(newBudgets);
         }

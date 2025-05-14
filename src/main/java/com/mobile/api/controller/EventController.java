@@ -83,14 +83,15 @@ public class EventController extends BaseController {
         event.setStartDate(createEventForm.getStartDate());
         event.setEndDate(createEventForm.getEndDate());
 
+        // Validate user
         User user = userRepository.findById(getCurrentUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         event.setUser(user);
-
+        // Validate wallet
         Wallet wallet = walletRepository.findById(createEventForm.getWalletId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));
         event.setWallet(wallet);
-
+        // Validate icon
         File icon = fileRepository.findById(createEventForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
         event.setIcon(icon);
@@ -112,7 +113,7 @@ public class EventController extends BaseController {
             event.setStartDate(updateEventForm.getStartDate());
             event.setEndDate(updateEventForm.getEndDate());
         }
-
+        // Validate icon
         File icon = fileRepository.findById(updateEventForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
         event.setIcon(icon);

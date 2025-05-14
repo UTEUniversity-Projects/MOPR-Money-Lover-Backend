@@ -152,12 +152,12 @@ public class UserInitializationService {
                 new Category(InitConstant.CATEGORY_DEBT_PAYMENT, user, true, 35, iconCache.get(InitConstant.ICON_CATEGORY_DEBT_PAYMENT)),
 
                 // INCOME CATEGORIES
-                new Category(InitConstant.CATEGORY_SALARY, user, false, 1, iconCache.get(InitConstant.ICON_CATEGORY_SALARY)),
-                new Category(InitConstant.CATEGORY_PROFIT, user, false, 2, iconCache.get(InitConstant.ICON_CATEGORY_PROFIT)),
-                new Category(InitConstant.CATEGORY_OTHER_INCOME, user, false, 3, iconCache.get(InitConstant.ICON_CATEGORY_OTHER_INCOME)),
-                new Category(InitConstant.CATEGORY_RECEIVED_MONEY, user, false, 4, iconCache.get(InitConstant.ICON_CATEGORY_RECEIVED_MONEY)),
-                new Category(InitConstant.CATEGORY_DEBT_COLLECTION, user, false, 5, iconCache.get(InitConstant.ICON_CATEGORY_DEBT_COLLECTION)),
-                new Category(InitConstant.CATEGORY_BORROW, user, false, 6, iconCache.get(InitConstant.ICON_CATEGORY_BORROW))
+                new Category(InitConstant.CATEGORY_SALARY, user, false, 36, iconCache.get(InitConstant.ICON_CATEGORY_SALARY)),
+                new Category(InitConstant.CATEGORY_PROFIT, user, false, 37, iconCache.get(InitConstant.ICON_CATEGORY_PROFIT)),
+                new Category(InitConstant.CATEGORY_OTHER_INCOME, user, false, 38, iconCache.get(InitConstant.ICON_CATEGORY_OTHER_INCOME)),
+                new Category(InitConstant.CATEGORY_RECEIVED_MONEY, user, false, 39, iconCache.get(InitConstant.ICON_CATEGORY_RECEIVED_MONEY)),
+                new Category(InitConstant.CATEGORY_DEBT_COLLECTION, user, false, 40, iconCache.get(InitConstant.ICON_CATEGORY_DEBT_COLLECTION)),
+                new Category(InitConstant.CATEGORY_BORROW, user, false, 41, iconCache.get(InitConstant.ICON_CATEGORY_BORROW))
         );
 
         // Save all categories to database

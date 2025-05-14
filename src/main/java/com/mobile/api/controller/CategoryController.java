@@ -14,10 +14,8 @@ import com.mobile.api.mapper.CategoryMapper;
 import com.mobile.api.model.criteria.CategoryCriteria;
 import com.mobile.api.model.entity.Category;
 import com.mobile.api.model.entity.File;
-import com.mobile.api.repository.jpa.BillRepository;
-import com.mobile.api.repository.jpa.BudgetRepository;
-import com.mobile.api.repository.jpa.CategoryRepository;
-import com.mobile.api.repository.jpa.FileRepository;
+import com.mobile.api.model.entity.User;
+import com.mobile.api.repository.jpa.*;
 import com.mobile.api.utils.ApiMessageUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -49,6 +47,8 @@ public class CategoryController extends BaseController {
     private BudgetRepository budgetRepository;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<PaginationDto<CategoryDto>> getCategoryList(
@@ -80,9 +80,15 @@ public class CategoryController extends BaseController {
     public ApiMessageDto<Void> createCategory(@Valid @RequestBody CreateCategoryForm createCategoryForm) {
         Category category = categoryMapper.fromCreateCategoryFormToEntity(createCategoryForm);
 
+        // Validate user
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        category.setUser(user);
+        // Validate icon
         File icon = fileRepository.findById(createCategoryForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
         category.setIcon(icon);
+        // Save category
         categoryRepository.save(category);
 
         return ApiMessageUtils.success(null, "Create category successfully");

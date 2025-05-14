@@ -28,7 +28,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -47,8 +46,6 @@ public class WalletController extends BaseController {
     private BillRepository billRepository;
     @Autowired
     private EventRepository eventRepository;
-    @Autowired
-    private BudgetRepository budgetRepository;
     @Autowired
     private WalletMapper walletMapper;
 
@@ -83,8 +80,7 @@ public class WalletController extends BaseController {
     public ApiMessageDto<Void> createWallet(@Valid @RequestBody CreateWalletForm createWalletForm) {
         Wallet wallet = walletMapper.fromCreateWalletFormToEntity(createWalletForm);
 
-        Long userId = getCurrentUserId();
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(getCurrentUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         wallet.setUser(user);
 
@@ -97,7 +93,7 @@ public class WalletController extends BaseController {
         wallet.setIcon(icon);
 
         if (createWalletForm.getIsPrimary()) {
-            walletRepository.resetPrimaryWalletByUserId(userId);
+            walletRepository.resetPrimaryWalletByUserId(getCurrentUserId());
         }
 
         walletRepository.save(wallet);

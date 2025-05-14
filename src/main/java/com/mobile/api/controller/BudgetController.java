@@ -4,19 +4,19 @@ import com.mobile.api.controller.base.BaseController;
 import com.mobile.api.dto.ApiMessageDto;
 import com.mobile.api.dto.PaginationDto;
 import com.mobile.api.dto.budget.BudgetDto;
-import com.mobile.api.dto.category.CategoryStatisticsDto;
 import com.mobile.api.enumeration.ErrorCode;
 import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.form.budget.CreateBudgetForm;
 import com.mobile.api.form.budget.UpdateBudgetForm;
 import com.mobile.api.mapper.BudgetMapper;
 import com.mobile.api.model.criteria.BudgetCriteria;
-import com.mobile.api.model.criteria.CategoryCriteria;
 import com.mobile.api.model.entity.Budget;
 import com.mobile.api.model.entity.Category;
+import com.mobile.api.model.entity.User;
 import com.mobile.api.model.entity.Wallet;
 import com.mobile.api.repository.jpa.BudgetRepository;
 import com.mobile.api.repository.jpa.CategoryRepository;
+import com.mobile.api.repository.jpa.UserRepository;
 import com.mobile.api.repository.jpa.WalletRepository;
 import com.mobile.api.service.CategoryStatisticsService;
 import com.mobile.api.utils.ApiMessageUtils;
@@ -36,8 +36,6 @@ import java.util.Objects;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BudgetController extends BaseController {
     @Autowired
-    private CategoryStatisticsService categoryStatisticsService;
-    @Autowired
     private BudgetRepository budgetRepository;
     @Autowired
     private BudgetMapper budgetMapper;
@@ -45,6 +43,8 @@ public class BudgetController extends BaseController {
     private CategoryRepository categoryRepository;
     @Autowired
     private WalletRepository walletRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<PaginationDto<BudgetDto>> getBudgetList(
@@ -75,6 +75,10 @@ public class BudgetController extends BaseController {
     public ApiMessageDto<Void> createBudget(@Valid @RequestBody CreateBudgetForm createBudgetForm) {
         Budget budget = budgetMapper.fromCreateBudgetFormToEntity(createBudgetForm);
 
+        // Validate user
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
+        budget.setUser(user);
         // Validate category
         Category category = categoryRepository.findById(createBudgetForm.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CATEGORY_NOT_FOUND));
