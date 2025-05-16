@@ -1,12 +1,14 @@
 package com.mobile.api.form.bill;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mobile.api.validation.TypeBigDecimal;
 import com.mobile.api.validation.TypeDouble;
 import com.mobile.api.validation.TypeString;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -15,8 +17,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateBillForm {
     @Schema(description = "Amount", example = "100000", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TypeDouble(fieldName = "Amount")
-    private Double amount;
+    @TypeBigDecimal(fieldName = "Amount")
+    private BigDecimal amount;
 
     @Schema(description = "Date", example = "2023-10-01T00:00:00Z", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Date can not be null")

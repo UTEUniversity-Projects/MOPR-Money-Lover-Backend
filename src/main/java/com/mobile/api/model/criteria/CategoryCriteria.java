@@ -47,7 +47,7 @@ public class CategoryCriteria extends BaseCriteria<Category> {
                 predicates.add(cb.like(cb.lower(root.get("description")), "%" + description.toLowerCase() + "%"));
             }
             if (isExpense != null) {
-                predicates.add(cb.equal(root.get("account").get("isExpense"), isExpense));
+                predicates.add(cb.equal(root.get("isExpense"), isExpense));
             }
 
             return cb.and(predicates.toArray(Predicate[]::new));

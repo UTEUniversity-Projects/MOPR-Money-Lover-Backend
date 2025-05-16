@@ -42,8 +42,8 @@ public class Budget extends Auditable<String> {
     private Instant endDate;
 
     @Column(name = "amount")
-    private BigDecimal amount;
+    private BigDecimal amount = BigDecimal.ZERO;
 
     @Column(name = "spent_amount")
-    private BigDecimal spentAmount;
+    private BigDecimal spentAmount = BigDecimal.ZERO;
 }
