@@ -1,14 +1,11 @@
 package com.mobile.api.service;
 
 import com.mobile.api.constant.BaseConstant;
-import com.mobile.api.enumeration.ErrorCode;
-import com.mobile.api.exception.ResourceNotFoundException;
 import com.mobile.api.model.entity.Budget;
 import com.mobile.api.model.entity.Notification;
 import com.mobile.api.model.entity.User;
 import com.mobile.api.model.entity.Wallet;
 import com.mobile.api.repository.jpa.NotificationRepository;
-import com.mobile.api.repository.jpa.UserRepository;
 import com.mobile.api.utils.PeriodUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +17,6 @@ import java.math.RoundingMode;
 public class NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     public void scanToCreateNotification(User user, Budget budget) {
         String categoryName = budget.getCategory().getName();

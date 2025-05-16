@@ -18,7 +18,6 @@ import com.mobile.api.repository.jpa.BudgetRepository;
 import com.mobile.api.repository.jpa.CategoryRepository;
 import com.mobile.api.repository.jpa.UserRepository;
 import com.mobile.api.repository.jpa.WalletRepository;
-import com.mobile.api.service.CategoryStatisticsService;
 import com.mobile.api.utils.ApiMessageUtils;
 import com.mobile.api.utils.PeriodUtils;
 import jakarta.validation.Valid;

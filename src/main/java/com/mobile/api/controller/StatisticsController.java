@@ -27,6 +27,7 @@ public class StatisticsController extends BaseController {
 
     @GetMapping(value = "/bill-detail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<BillDetailStatisticsDto> getBillDetailStatistics(@Valid @ModelAttribute BillCriteria billCriteria) {
+        billCriteria.setIsIncludedReport(true);
         return ApiMessageUtils.success(
                 billStatisticsService.getDetailStatistics(billCriteria),
                 "Bill detail statistics"

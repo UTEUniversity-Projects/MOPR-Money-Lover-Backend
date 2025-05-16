@@ -175,7 +175,8 @@ public class CategoryStatisticsService {
         Predicate finalPredicate = cb.and(
                 categoryPredicate,
                 userPredicate,
-                dateRangePredicate
+                dateRangePredicate,
+                cb.equal(root.get("isIncludedReport"), true)
         );
 
         // Sum the amount
