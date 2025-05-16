@@ -56,6 +56,12 @@ public class BaseConstant {
     public static final String FILE_TYPE_ARCHIVE = "ARCHIVE";
 
     /**
+     * FILE_SCOPE constants
+     */
+    public static final String FILE_SCOPE_CATEGORY_ICONS = "category_icons";
+    public static final String FILE_SCOPE_INTERNAL_FLAGS = "international_flags";
+
+    /**
      * FILE_ELEMENTS constants
      */
     public static final Integer FILE_ELEMENTS_MAXIMUM = 10;
@@ -73,6 +79,24 @@ public class BaseConstant {
     public static final Integer USER_GENDER_MALE = 1;
     public static final Integer USER_GENDER_FEMALE = 2;
     public static final Integer USER_GENDER_UNKNOWN = 3;
+
+    /**
+     * PERIOD_TYPE constants
+     */
+    public static final Integer PERIOD_TYPE_WEEK = 1;
+    public static final Integer PERIOD_TYPE_MONTH = 2;
+    public static final Integer PERIOD_TYPE_QUARTER = 3;
+    public static final Integer PERIOD_TYPE_YEAR = 4;
+    public static final Integer PERIOD_TYPE_CUSTOM = 5;
+
+    /**
+     * PERIOD_NAME constants
+     */
+    public static final String PERIOD_NAME_WEEK = "Tuần này";
+    public static final String PERIOD_NAME_MONTH = "Tháng này";
+    public static final String PERIOD_NAME_QUARTER = "Quý này";
+    public static final String PERIOD_NAME_YEAR = "Năm này";
+    public static final String PERIOD_NAME_CUSTOM = "Đợt này";
 
     /**
      * NOTIFICATION_TYPE constants

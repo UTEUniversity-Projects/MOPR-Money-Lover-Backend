@@ -23,7 +23,7 @@ public class Currency extends Auditable<String> {
     @Column(name = "code")
     private String code;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 }

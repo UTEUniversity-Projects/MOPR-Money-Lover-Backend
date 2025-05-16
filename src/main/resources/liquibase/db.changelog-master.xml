@@ -11,6 +11,13 @@
     <include file="dev/20250408143515_changelog.xml" relativeToChangelogFile="true"/>
     <include file="dev/20250408151908_changelog.xml" relativeToChangelogFile="true"/>
     <include file="dev/20250422061912_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250502024512_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250511092710_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250512013727_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250512020845_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250512111925_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250513013607_changelog.xml" relativeToChangelogFile="true"/>
+    <include file="dev/20250513075132_changelog.xml" relativeToChangelogFile="true"/>
 
     <changeSet id="load-sql-file-for-base" author="Authentication">
         <sqlFile path="data/data-for-base.sql" relativeToChangelogFile="true"/>

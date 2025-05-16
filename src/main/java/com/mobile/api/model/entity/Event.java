@@ -20,11 +20,11 @@ public class Event extends Auditable<String> {
     @GenericGenerator(name = "idGenerator", type = IdGenerator.class)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 
@@ -43,7 +43,7 @@ public class Event extends Auditable<String> {
     @Column(name = "is_completed")
     private Boolean isCompleted = false;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id", nullable = false)
     private File icon;
 

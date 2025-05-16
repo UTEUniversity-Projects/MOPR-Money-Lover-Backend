@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -21,6 +22,10 @@ public class UpdateBillForm {
     @TypeDouble(fieldName = "Amount")
     private Double amount;
 
+    @Schema(description = "Date", example = "2023-10-01T00:00:00Z", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "Date can not be null")
+    private Instant date;
+
     @Schema(description = "Note", example = "Grocery shopping", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @TypeString(fieldName = "Note", allowNull = true)
     private String note;
@@ -28,6 +33,10 @@ public class UpdateBillForm {
     @Schema(description = "Is Included in Report", example = "true", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Is Included in Report cannot be null")
     private Boolean isIncludedReport;
+
+    @Schema(description = "Wallet ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "Wallet ID cannot be null")
+    private Long walletId;
 
     @Schema(description = "Category ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Category ID cannot be null")

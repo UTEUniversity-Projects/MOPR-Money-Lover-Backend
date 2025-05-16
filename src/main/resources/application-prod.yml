@@ -3,6 +3,7 @@ server:
   servlet:
     session:
       timeout: ${SESSION_TIMEOUT:30m}
+  domain: ${SERVER_PUBLIC_DOMAIN}
 
 spring:
   main:
@@ -12,7 +13,7 @@ spring:
   security:
     oauth2:
       authorizationserver:
-        issuer: https://${SERVER_PUBLIC_DOMAIN}
+        issuer: https://${server.domain}
   session:
     redis:
       namespace: com-mobile-api
@@ -32,7 +33,6 @@ spring:
     password: ${DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
@@ -88,7 +88,7 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
-    oauth2-redirect-url: https://${SERVER_PUBLIC_DOMAIN}/swagger-ui/oauth2-redirect.html
+    oauth2-redirect-url: https://${server.domain}/swagger-ui/oauth2-redirect.html
     docExpansion: none
     tags-sorter: alpha
     operations-sorter: alpha
@@ -98,14 +98,13 @@ open:
     title: Money Lover API Documentation
     version: v1.1.0
     description: API documentation for Money Lover
-    serverUrl: https://${SERVER_PUBLIC_DOMAIN}
+    serverUrl: https://${server.domain}
     serverName: Server Test
 
 logging:
   level:
     root: WARN
     org.springframework: WARN
-#  config: classpath:log4j2-prod.xml
 
 recaptcha:
   site-key: ${RECAPTCHA_SITE_KEY}
@@ -123,14 +122,4 @@ oauth2-config:
   refresh-token-expiration: ${SECURITY_REFRESH_EXPIRATION:2592000000}
   private-key: ${SECURITY_PRIVATE_KEY}
   public-key: ${SECURITY_PUBLIC_KEY}
-  base-url: https://${SERVER_PUBLIC_DOMAIN}
-  token-uri: "/api/oauth2/token"
-  authorization-uri: "/api/oauth2/authorize"
-  token-introspection-uri: "/api/oauth2/introspect"
-  token-revocation-uri: "/api/oauth2/revoke"
-  redirect-uri: "/api/oauth2/callback"
-  consent-page-uri: "/api/oauth2/consent"
-  login-uri: "/login"
-  logout-uri: "/logout"
-  error-uri: "/error"
-  callback-uri: "/home"
+  base-url: https://${server.domain}

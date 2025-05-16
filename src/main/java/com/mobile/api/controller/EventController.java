@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -82,14 +83,15 @@ public class EventController extends BaseController {
         event.setStartDate(createEventForm.getStartDate());
         event.setEndDate(createEventForm.getEndDate());
 
+        // Validate user
         User user = userRepository.findById(getCurrentUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         event.setUser(user);
-
+        // Validate wallet
         Wallet wallet = walletRepository.findById(createEventForm.getWalletId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.WALLET_NOT_FOUND));
         event.setWallet(wallet);
-
+        // Validate icon
         File icon = fileRepository.findById(createEventForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
         event.setIcon(icon);
@@ -111,7 +113,7 @@ public class EventController extends BaseController {
             event.setStartDate(updateEventForm.getStartDate());
             event.setEndDate(updateEventForm.getEndDate());
         }
-
+        // Validate icon
         File icon = fileRepository.findById(updateEventForm.getIconId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.FILE_NOT_FOUND));
         event.setIcon(icon);
@@ -137,13 +139,14 @@ public class EventController extends BaseController {
     }
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Attention", description = "This API will delete the event and detach it from all bills")
+    @Transactional
+    @Operation(summary = "Attention", description = "This API will delete the event and its associated bills")
     public ApiMessageDto<Void> deleteEvent(@PathVariable Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.EVENT_NOT_FOUND));
 
         // Detach event from all bills
-        billRepository.detachEventFromBills(event.getId());
+        billRepository.deleteAllByEventId(event.getId());
         // Delete event
         eventRepository.delete(event);
         return ApiMessageUtils.success(null, "Delete event successfully");

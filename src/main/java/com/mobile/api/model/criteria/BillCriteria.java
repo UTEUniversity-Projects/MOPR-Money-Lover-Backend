@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import java.io.Serial;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +25,12 @@ public class BillCriteria extends BaseCriteria<Bill> {
 
     private Double minAmount;
     private Double maxAmount;
+    private Instant startDate;
+    private Instant endDate;
     private String note;
     private Boolean isIncludedReport;
     private Long walletId;
+    private Long userId;
     private Long categoryId;
     private Long tagId;
     private Long eventId;
@@ -44,6 +48,12 @@ public class BillCriteria extends BaseCriteria<Bill> {
             if (maxAmount != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get("amount"), maxAmount));
             }
+            if (startDate != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("date"), startDate));
+            }
+            if (endDate != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("date"), endDate));
+            }
             if (StringUtils.hasText(note)) {
                 predicates.add(cb.like(root.get("note"), "%" + note + "%"));
             }
@@ -52,6 +62,9 @@ public class BillCriteria extends BaseCriteria<Bill> {
             }
             if (walletId != null) {
                 predicates.add(cb.equal(root.get("wallet").get("id"), walletId));
+            }
+            if (userId != null) {
+                predicates.add(cb.equal(root.get("user").get("id"), userId));
             }
             if (categoryId != null) {
                 predicates.add(cb.equal(root.get("category").get("id"), categoryId));

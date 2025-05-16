@@ -15,6 +15,7 @@ public enum ErrorCode {
     SYSTEM_AUTHENTICATION_ERROR("ERROR-SYSTEM-0006", "Authentication error"),
     SYSTEM_ACCESS_DENIED("ERROR-SYSTEM-0007", "Access denied"),
     SYSTEM_UNKNOWN_ERROR("ERROR-SYSTEM-0008", "Unknown error"),
+    SYSTEM_INVALID_PARAMETER("ERROR-SYSTEM-0009", "Invalid parameter"),
 
     /**
      * AUTHENTICATION error codes
@@ -87,6 +88,7 @@ public enum ErrorCode {
     FILE_TYPE_NOT_SUPPORTED("ERROR-FILE-0003", "File type not supported"),
     FILE_DELETE_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0004", "File delete error"),
     FILE_DOWNLOAD_ERROR_WITH_THIRD_PARTY("ERROR-FILE-0005", "File download error"),
+    FILE_SCOPE_NOT_SUPPORTED("ERROR-FILE-0006", "File scope not supported"),
 
     /**
      * CATEGORY error codes
@@ -132,12 +134,18 @@ public enum ErrorCode {
     /**
      * BUDGET error codes
      */
-    BUDGET_NOT_FOUND("ERROR-PERIOD-0001", "Period not found"),
+    BUDGET_NOT_FOUND("ERROR-BUDGET-0001", "Period not found"),
+    BUDGET_PERIOD_TYPE_INVALID("ERROR-BUDGET-0002", "Period type custom invalid"),
 
     /**
      * BILL error codes
      */
     BILL_NOT_FOUND("ERROR-BILL-0001", "Bill not found"),
+
+    /**
+     * NOTIFICATION error codes
+     */
+    NOTIFICATION_NOT_FOUND("ERROR-NOTIFICATION-0001", "Notification not found"),
     ;
 
     private final String code;

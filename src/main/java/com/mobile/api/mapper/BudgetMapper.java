@@ -10,22 +10,25 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {PeriodMapper.class, CategoryMapper.class})
+        uses = {WalletMapper.class})
 public interface BudgetMapper {
-    @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "amount", target = "amount")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromCreateBudgetFormToEntity")
     Budget fromCreateBudgetFormToEntity(CreateBudgetForm createBudgetForm);
 
-    @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "amount", target = "amount")
     @BeanMapping(ignoreByDefault = true)
     @Named("updateFromUpdateBudgetForm")
     void updateFromUpdateBudgetForm(@MappingTarget Budget budget, UpdateBudgetForm updateBudgetForm);
 
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "period", target = "period", qualifiedByName = "fromEntityToPeriodDto")
-    @Mapping(source = "category", target = "category", qualifiedByName = "fromEntityToCategoryDto")
-    @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "wallet", target = "wallet", qualifiedByName = "fromEntityToSimpleWalletDto")
+    @Mapping(source = "periodType", target = "periodType")
+    @Mapping(source = "startDate", target = "startDate")
+    @Mapping(source = "endDate", target = "endDate")
+    @Mapping(source = "amount", target = "amount")
+    @Mapping(source = "spentAmount", target = "spentAmount")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToBudgetDto")
     BudgetDto fromEntityToBudgetDto(Budget budget);
