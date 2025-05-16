@@ -1,283 +1,228 @@
-# Money Lover Application
-> Developed by **Lê Hồng Phúc**.
-> © 2025 All rights reserved.
+# Money Lover API
+> A comprehensive personal finance management API system built with Spring Boot.
 
-## 🚀 Technologies Used
+## 🌟 Overview
+Money Lover API is a robust backend service that powers a personal finance tracking application. It allows users to monitor expenses, track budgets, analyze spending patterns, and manage multiple wallets and currencies.
 
-### 🏗 **Build & Dependency Management**
+## 🚀 Key Features
+- User authentication with OAuth2 and JWT tokens
+- Account management with group-based permissions
+- Multi-wallet tracking with different currencies
+- Categorization for income and expenses
+- Budget planning and monitoring
+- Expense tracking with detailed reporting
+- Statistics and data analysis for spending patterns
+- Tag-based filtering for expenses
+- Event-based expense tracking
+- Reminders for recurring expenses or payments
+- File management for receipts and documentation
+- Notification system for budget alerts
+
+## 🏗️ Technical Stack
+
+### Core Technologies
 - **Java 17**
-- **Maven** (Dependency Management & Build Tool)
+- **Spring Boot 3.2.12**
+- **Maven** for dependency management and build
 
-### 📦 **Frameworks & Libraries**
-#### 🔹 **Spring Boot & Spring Cloud**
-- `spring-boot-starter-web` → RESTful API development
-- `spring-boot-starter-data-jpa` → ORM & database interaction
-- `spring-boot-starter-validation` → Input validation
-- `spring-boot-starter-security` → Application security
-- `spring-boot-starter-mail` → Email handling
-- `spring-cloud-starter-openfeign` → Inter-service communication
+### Frameworks & Libraries
+#### Spring Ecosystem
+- **Spring Web** for RESTful API development
+- **Spring Data JPA** with Hibernate for ORM
+- **Spring Security** with OAuth2 for authentication
+- **Spring Validation** for input validation
+- **Spring Mail** for email notifications
+- **Spring Cloud OpenFeign** for service communication
+- **Spring Data Redis** for caching and session management
 
-#### 🔹 **OAuth2 & JWT (Authentication & Authorization)**
-- `spring-boot-starter-oauth2-authorization-server` → OAuth2 authorization server
-- `spring-boot-starter-oauth2-client` → OAuth2 client setup
-- `spring-boot-starter-oauth2-resource-server` → Secure APIs using OAuth2
-- `io.jsonwebtoken:jjwt` → JWT token handling
-- `com.nimbusds:nimbus-jose-jwt` → JWT & JOSE processing
+#### Authentication & Security
+- **Spring OAuth2 Authorization Server**
+- **Spring OAuth2 Client**
+- **Spring OAuth2 Resource Server**
+- **JJWT** for JWT token handling
+- **Nimbus JOSE+JWT** for JWT and JOSE processing
 
-#### 🔹 **Database & ORM**
-- `mysql-connector-java` → MySQL database connection
-- `spring-boot-starter-data-jpa` → JPA/Hibernate for ORM
-- `liquibase-core` → Database schema versioning
-- `liquibase-hibernate5` → Hibernate integration with Liquibase
+#### Database & Storage
+- **MySQL** for primary data storage
+- **Redis** for caching and session management
+- **Liquibase** for database migration and schema versioning
 
-#### 🔹 **Code Generation & Utilities**
-- `lombok` → Reduce boilerplate code
-- `mapstruct` → DTO ↔ Entity mapping
+#### Cloud Services
+- **Cloudinary** for file storage and management
+- **Azure Web Apps** for deployment
 
-#### 🔹 **API Documentation**
-- `springdoc-openapi-starter-webmvc-ui` → Auto-generate API documentation
+#### Developer Tools
+- **Lombok** for reducing boilerplate code
+- **MapStruct** for DTO-Entity mapping
+- **SpringDoc OpenAPI** for API documentation
 
-#### 🔹 **Testing**
-- `spring-boot-starter-test` → JUnit, Mockito, and AssertJ for testing
+## 📂 Project Structure
 
----
+The project follows a standard Spring Boot architecture with the following key components:
 
-## ⚙️ Configuration (`application.yml`)
-- **Server Port:** `server.port`
-- **OAuth2 Authorization Server** configuration
-- **Email SMTP** settings
+- **Controllers**: Handle HTTP requests and responses
+- **Services**: Implement business logic
+- **Repositories**: Data access layer
+- **Models**: Domain entities, DTOs, and forms
+- **Security**: Authentication and authorization
+- **Configuration**: Application and bean configuration
+- **Utilities**: Helper classes
 
----
+## 🔄 Key Workflows
 
-## 📌 How to Run in Development Environment
-```sh
+### 🔐 User Registration Process
+
+#### 1. Request Registration
+```http
+POST /api/request-register
+```
+- Validates reCAPTCHA
+- Sends OTP to user's email
+- Returns token for verification
+
+#### 2. Verify OTP & Complete Registration
+```http
+POST /api/register
+```
+- Verifies OTP and token
+- Creates user account
+- Initializes default data (categories, wallet)
+
+#### 3. Resend OTP (if needed)
+```http
+POST /api/resend-otp
+```
+- Resends OTP to registered email
+
+### 💰 Expense Management
+
+- Create, read, update, and delete expenses
+- Categorize expenses
+- Tag expenses for better organization
+- Associate expenses with events
+- Attach receipts as images
+- Track expenses across different wallets
+
+### 📊 Budget Planning
+
+- Create budgets for specific categories
+- Set spending limits for different time periods
+- Monitor budget usage
+- Receive notifications for budget thresholds
+
+### 📈 Statistics and Analysis
+
+- View spending patterns by category
+- Analyze expenses over different time periods
+- Compare income vs expense
+- Generate detailed reports
+
+## 🛡️ Security Features
+
+- OAuth2 with JWT for authentication
+- Role-based access control
+- Permission-based authorization
+- Secure password management
+- OTP for sensitive operations
+- reCAPTCHA integration for bot protection
+
+## 🛠️ Development Setup
+
+### Prerequisites
+- JDK 17
+- Maven
+- MySQL
+- Redis
+
+### Configuration
+Create a `.env` file based on the provided `.env.example`:
+```properties
+# Spring Server Url
+SPRING_SERVER_URL=http://localhost:8080
+
+# Spring Security Default User
+SECURITY_USER_NAME=
+SECURITY_USER_PASSWORD=
+SECURITY_REDIRECT_URI=
+
+# Spring Datasource
+DATASOURCE_URL=
+DATASOURCE_NAME=
+DATASOURCE_PASSWORD=
+
+# Spring Mail
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_PROTOCOL=
+
+# Srping Security RSA
+SECURITY_PRIVATE_KEY=
+SECURITY_PUBLIC_KEY=
+```
+
+### Building the Project
+```bash
 # Clone the repository
-git clone git@github.com:UTEUniversity-Projects/Money-Lover-Backend.git
-cd Money-Lover-Backend
+git clone https://github.com/your-username/money-lover-api.git
+cd money-lover-api
 
-# Build & Run
+# Build the project
 mvn clean install
+
+# Run the application
 mvn spring-boot:run
 ```
 
-### 📝 Notes
-- Ensure **MySQL is running** and properly configured.
-- Modify `application.yml` for your database and email settings.
+### Using Docker
+```bash
+# Build and run with Docker Compose
+docker-compose -f docker-compose.dev.yml up -d
 
----
-
-## 🔐 User Registration Process
-
-### 1️⃣ Request Registration
-User sends a request to register an account.
-
-#### 📌 Endpoint:
-```http
-POST http://localhost:8080/api/request-register
+# Check logs
+docker-compose logs -f money-lover-api-dev
 ```
 
-#### 📤 Request:
-```json
-{
-  "email": "<string>",
-  "username": "<string>",
-  "password": "<string>",
-  "recaptchaResponse": "<string>"
-}
+## 🚢 Deployment
+
+The project is configured for deployment to Azure Web Apps:
+
+```bash
+# Using the provided GitHub Action workflow
+git push origin dev  # Triggers the CI/CD pipeline
 ```
 
-#### 📥 Headers:
-```http
-Content-Type: application/json
-Accept: application/json
-Authorization: No Auth
+## 📦 Database Schema
+
+The application uses several key entities:
+- User / Account
+- Wallet
+- Category
+- Bill (Expense/Income)
+- Budget
+- Tag
+- Event
+- Notification
+- File
+
+## 📞 API Endpoints
+
+The API is documented using SpringDoc OpenAPI, available at:
+```
+http://localhost:8080/swagger-ui.html
 ```
 
-#### ✅ Success Response:
-```json
-{
-  "result": "<boolean>",
-  "code": "<string>",
-  "data": {
-    "token": "<string>",
-    "kind": "<integer>"
-  },
-  "message": "<string>"
-}
-```
+Key endpoints include:
+- Authentication: `/api/login`, `/api/register`
+- User: `/api/v1/user/*`
+- Wallet: `/api/v1/wallet/*`
+- Category: `/api/v1/category/*`
+- Bill: `/api/v1/bill/*`
+- Budget: `/api/v1/budget/*`
+- Tag: `/api/v1/tag/*`
+- Event: `/api/v1/event/*`
+- Statistics: `/api/v1/statistics/*`
 
----
-
-### 2️⃣ Verify OTP & Complete Registration
-FE sends the received token and OTP code to confirm registration.
-
-#### 📌 Endpoint:
-```http
-POST http://localhost:8080/api/register
-```
-
-#### 📤 Request:
-```json
-{
-  "otp": "<string>",
-  "token": "<string>"
-}
-```
-
-#### 📥 Headers:
-```http
-Content-Type: application/json
-Accept: application/json
-Authorization: No Auth
-```
-
-#### ✅ Success Response:
-```json
-{
-  "result": "<boolean>",
-  "code": "<string>",
-  "data": "<string>",
-  "message": "<string>"
-}
-```
-
----
-
-### 3️⃣ Resend OTP
-User can request to resend the OTP code.
-
-#### 📌 Endpoint:
-```http
-POST http://localhost:8080/api/resend-otp
-```
-
-#### 📤 Request:
-```json
-{
-  "token": "<string>"
-}
-```
-- `token`: this is token received in the first step.
-
-#### 📥 Headers:
-```http
-Content-Type: application/json
-Accept: application/json
-Authorization: No Auth
-```
-
-#### ✅ Success Response:
-```json
-{
-  "result": "<boolean>",
-  "code": "<string>",
-  "data": "<string>",
-  "message": "<string>"
-}
-```
-
----
-
-### 📝 Notes:
-- You can only request to resend the OTP within the **token's lifetime**. 
-- If the token expires, you are required to **go back** to the previous step to retrieve the information and **receive a new token**.
-
----
-
-## 🔑 How to Get reCAPTCHA v3 Token
-
-To obtain a reCAPTCHA v3 token, follow these steps:
-
-### 1️⃣ Run the JavaScript Code
-Create an HTML file and copy the following code. This will generate a simple webpage where you can retrieve a reCAPTCHA v3 token.
-
-```html
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test reCAPTCHA v3</title>
-    <script src="https://www.google.com/recaptcha/api.js?render=SITE_KEY"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #tokenDisplay {
-            margin-top: 20px;
-            padding: 10px;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 80%;
-            word-break: break-word;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <h1>Test reCAPTCHA v3</h1>
-    <button id="submitBtn">Get Token</button>
-    <p id="tokenDisplay">Token will appear here ...</p>
-
-    <script>
-        document.getElementById("submitBtn").addEventListener("click", function() {
-            grecaptcha.ready(function() {
-                grecaptcha.execute('SITE_KEY', { action: 'submit' }).then(function(token) {
-                    document.getElementById("tokenDisplay").innerText = token;
-                    console.log("reCAPTCHA Token:", token);
-                });
-            });
-        });
-    </script>
-</body>
-</html>
-```
-- Replace `SITE_KEY` with actual **Site Key** from [Google reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin) - Development Team will give it to you.
-
-### 2️⃣ Run the HTML File
-- Save the file as `recaptcha_test.html`.
-- Open the file in a web browser.
-
-### 3️⃣ Get the reCAPTCHA v3 Token
-- Click the **“Get Token”** button.
-- The generated reCAPTCHA token will appear on the screen.
-- Check the browser console (`F12` → Console) to see the token.
-- You can try in [phucle0809.github.io/recaptcha-v3-client-site](https://phucle0809.github.io/recaptcha-v3-client-site/)
-
----
-
-### ⏳ Lifespan of reCAPTCHA v3 Token
-- The token is **valid for one-time use only** and must be sent to the server immediately for verification.
-- After **2 minutes**, if the token is not used, a new token must be generated.
-- If an expired token is used, Google will reject the authentication with an appropriate error.
-
----
-
-## 📚 References
-- [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/)
-- [Spring Cloud Documentation](https://spring.io/projects/spring-cloud)
-- [OAuth2 Authorization Server](https://spring.io/projects/spring-authorization-server)
+## 👨‍💻 Developed by
+Lê Hồng Phúc © 2025 All rights reserved.
