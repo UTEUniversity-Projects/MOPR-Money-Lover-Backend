@@ -10,6 +10,7 @@ import com.mobile.api.form.budget.CreateBudgetForm;
 import com.mobile.api.form.budget.UpdateBudgetForm;
 import com.mobile.api.mapper.BudgetMapper;
 import com.mobile.api.model.criteria.BudgetCriteria;
+import com.mobile.api.model.criteria.CategoryCriteria;
 import com.mobile.api.model.entity.Budget;
 import com.mobile.api.model.entity.Category;
 import com.mobile.api.model.entity.User;
@@ -18,6 +19,7 @@ import com.mobile.api.repository.jpa.BudgetRepository;
 import com.mobile.api.repository.jpa.CategoryRepository;
 import com.mobile.api.repository.jpa.UserRepository;
 import com.mobile.api.repository.jpa.WalletRepository;
+import com.mobile.api.service.CategoryStatisticsService;
 import com.mobile.api.utils.ApiMessageUtils;
 import com.mobile.api.utils.PeriodUtils;
 import jakarta.validation.Valid;
@@ -28,7 +30,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/budget")
@@ -44,6 +49,8 @@ public class BudgetController extends BaseController {
     private WalletRepository walletRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryStatisticsService categoryStatisticsService;
 
     @GetMapping(value = "/client/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiMessageDto<PaginationDto<BudgetDto>> getBudgetList(
@@ -54,8 +61,31 @@ public class BudgetController extends BaseController {
         Specification<Budget> specification = budgetCriteria.getSpecification();
         Page<Budget> page = budgetRepository.findAll(specification, pageable);
 
+        // Map Budget entities to BudgetDto and enrich them with category statistics
+        CategoryCriteria categoryCriteria = new CategoryCriteria();
+        categoryCriteria.setUserId(getCurrentUserId());
+        List<BudgetDto> budgetDtoList = page.getContent().stream()
+                .map(budget -> {
+                    // Map the basic fields
+                    BudgetDto budgetDto = budgetMapper.fromEntityToBudgetDto(budget);
+
+                    // Enrich with category statistics
+                    categoryCriteria.setId(budget.getCategory().getId());
+                    budgetDto.setCategoryStatistics(
+                            categoryStatisticsService.getStatistics(
+                                    categoryCriteria,
+                                    budget.getStartDate(),
+                                    budget.getEndDate()
+                            )
+                    );
+
+                    return budgetDto;
+                })
+                .collect(Collectors.toList());
+
+        // Create pagination response
         PaginationDto<BudgetDto> responseDto = new PaginationDto<>(
-                budgetMapper.fromEntitiesToBudgetDtoList(page.getContent()),
+                budgetDtoList,
                 page.getTotalElements(),
                 page.getTotalPages()
         );
@@ -67,7 +97,18 @@ public class BudgetController extends BaseController {
     public ApiMessageDto<BudgetDto> getBudget(@PathVariable Long id) {
         Budget budget = budgetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.REMINDER_NOT_FOUND));
-        return ApiMessageUtils.success(budgetMapper.fromEntityToBudgetDto(budget), "Get budget successfully");
+        BudgetDto budgetDto = budgetMapper.fromEntityToBudgetDto(budget);
+        CategoryCriteria categoryCriteria = new CategoryCriteria();
+        categoryCriteria.setId(budget.getCategory().getId());
+        categoryCriteria.setUserId(getCurrentUserId());
+        budgetDto.setCategoryStatistics(
+                categoryStatisticsService.getStatistics(
+                        categoryCriteria,
+                        budget.getStartDate(),
+                        budget.getEndDate()
+                )
+        );
+        return ApiMessageUtils.success(budgetDto, "Get budget successfully");
     }
 
     @PostMapping(value = "/client/create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,6 +136,7 @@ public class BudgetController extends BaseController {
         budget.setStartDate(createBudgetForm.getStartDate());
         budget.setEndDate(createBudgetForm.getEndDate());
 
+        budget.setSpentAmount(BigDecimal.ZERO);
         budgetRepository.save(budget);
         return ApiMessageUtils.success(null, "Create budget successfully");
     }

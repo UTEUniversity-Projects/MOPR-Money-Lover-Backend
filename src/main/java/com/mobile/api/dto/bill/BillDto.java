@@ -9,6 +9,7 @@ import com.mobile.api.dto.wallet.WalletDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class BillDto {
     private Long id;
 
     @Schema(description = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
     @Schema(description = "date")
     private Instant date;

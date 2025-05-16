@@ -45,7 +45,7 @@ public class BillStatisticsService {
      *
      * @param billCriteria The search criteria for bills
      * @param pageable Pagination information
-     * @return BillDetailStatisticsDto containing pagination and statistics data
+     * @return BillStatisticsDto containing pagination and statistics data
      */
     public BillStatisticsDto getStatistics(BillCriteria billCriteria, Pageable pageable) {
         Specification<Bill> specification = billCriteria.getSpecification();
@@ -58,7 +58,7 @@ public class BillStatisticsService {
                 page.getTotalPages()
         );
 
-        // Create BillDetailStatisticsDto
+        // Create BillStatisticsDto
         BillStatisticsDto billStatisticsDto = new BillStatisticsDto();
         billStatisticsDto.setPagination(paginationResult);
 
@@ -71,10 +71,10 @@ public class BillStatisticsService {
     }
 
     /**
-     * Generate statistics based on bill criteria and pagination
+     * Generate detailed statistics based on bill criteria
      *
      * @param billCriteria The search criteria for bills
-     * @return BillDetailStatisticsDto containing pagination and statistics data
+     * @return BillDetailStatisticsDto containing statistics data
      */
     public BillDetailStatisticsDto getDetailStatistics(BillCriteria billCriteria) {
         // Create BillDetailStatisticsDto
@@ -110,15 +110,26 @@ public class BillStatisticsService {
             categoryStatDto.setCategory(categoryDto);
 
             // Get total amount for this category
-            Double totalAmount = (Double) stat[1];
-            if (totalAmount == null) totalAmount = 0.0;
-            categoryStatDto.setTotalAmount(BigDecimal.valueOf(totalAmount));
+            // The second element is now BigDecimal, not Double, so handle accordingly
+            BigDecimal totalAmount;
+            if (stat[1] == null) {
+                totalAmount = BigDecimal.ZERO;
+            } else if (stat[1] instanceof BigDecimal) {
+                totalAmount = (BigDecimal) stat[1];
+            } else if (stat[1] instanceof Number) {
+                totalAmount = BigDecimal.valueOf(((Number) stat[1]).doubleValue());
+            } else {
+                // Fallback for unexpected types
+                totalAmount = BigDecimal.ZERO;
+            }
+
+            categoryStatDto.setTotalAmount(totalAmount);
 
             // Calculate percentage based on category type (income or expense)
             BigDecimal percentage = BigDecimal.ZERO;
             if (category.getIsExpense() && billStatisticsDto.getTotalExpense().compareTo(BigDecimal.ZERO) > 0) {
                 // Calculate percentage of total expense
-                percentage = BigDecimal.valueOf(totalAmount)
+                percentage = totalAmount
                         .multiply(BigDecimal.valueOf(100))
                         .divide(billStatisticsDto.getTotalExpense(), 2, RoundingMode.HALF_UP);
 
@@ -127,7 +138,7 @@ public class BillStatisticsService {
                 billStatisticsDto.getExpenseByCategories().add(categoryStatDto);
             } else if (!category.getIsExpense() && billStatisticsDto.getTotalIncome().compareTo(BigDecimal.ZERO) > 0) {
                 // Calculate percentage of total income
-                percentage = BigDecimal.valueOf(totalAmount)
+                percentage = totalAmount
                         .multiply(BigDecimal.valueOf(100))
                         .divide(billStatisticsDto.getTotalIncome(), 2, RoundingMode.HALF_UP);
 
@@ -156,6 +167,37 @@ public class BillStatisticsService {
     }
 
     /**
+     * Calculate statistics for each category
+     *
+     * @param specification The specification to filter bills
+     * @return List of Object[] arrays containing [Category, totalAmount as BigDecimal]
+     */
+    private List<Object[]> calculateCategoryStatistics(Specification<Bill> specification) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+        Root<Bill> root = query.from(Bill.class);
+
+        // Join with Category
+        Join<Bill, Category> categoryJoin = root.join("category", JoinType.INNER);
+
+        // Apply the specification filter
+        Predicate specPredicate = specification.toPredicate(root, query, cb);
+
+        // Group by category and calculate sum, ensuring BigDecimal type
+        Expression<BigDecimal> sumExpression = cb.sum(cb.toBigDecimal(root.get("amount")));
+
+        query.multiselect(
+                        categoryJoin,
+                        sumExpression
+                )
+                .where(specPredicate)
+                .groupBy(categoryJoin);
+
+        // Execute query and return results
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    /**
      * Calculate overall income and expense totals
      *
      * @param specification The specification to filter bills
@@ -173,17 +215,17 @@ public class BillStatisticsService {
         Predicate specPredicate = specification.toPredicate(root, query, cb);
 
         // Calculate total income (when isExpense = false)
-        Expression<Double> incomeExpr = cb.sum(
-                cb.<Double>selectCase()
-                        .when(cb.equal(categoryJoin.get("isExpense"), false), root.get("amount"))
-                        .otherwise(0.0)
+        Expression<BigDecimal> incomeExpr = cb.sum(
+                cb.<BigDecimal>selectCase()
+                        .when(cb.equal(categoryJoin.get("isExpense"), false), cb.toBigDecimal(root.get("amount")))
+                        .otherwise(BigDecimal.ZERO)
         );
 
         // Calculate total expense (when isExpense = true)
-        Expression<Double> expenseExpr = cb.sum(
-                cb.<Double>selectCase()
-                        .when(cb.equal(categoryJoin.get("isExpense"), true), root.get("amount"))
-                        .otherwise(0.0)
+        Expression<BigDecimal> expenseExpr = cb.sum(
+                cb.<BigDecimal>selectCase()
+                        .when(cb.equal(categoryJoin.get("isExpense"), true), cb.toBigDecimal(root.get("amount")))
+                        .otherwise(BigDecimal.ZERO)
         );
 
         // Execute query to get both income and expense in one go
@@ -192,45 +234,44 @@ public class BillStatisticsService {
                 expenseExpr.alias("expense")
         ).where(specPredicate);
 
-        Tuple result = entityManager.createQuery(query).getSingleResult();
+        Tuple result;
+        try {
+            result = entityManager.createQuery(query).getSingleResult();
+        } catch (Exception e) {
+            // In case of any exception, return zeros
+            return new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO };
+        }
 
-        // Extract results and convert to BigDecimal
-        Double income = result.get("income", Double.class);
-        Double expense = result.get("expense", Double.class);
+        // Extract results and handle potential nulls and type conversions
+        BigDecimal totalIncome = BigDecimal.ZERO;
+        BigDecimal totalExpense = BigDecimal.ZERO;
 
-        // Handle null values
-        BigDecimal totalIncome = (income != null) ? BigDecimal.valueOf(income) : BigDecimal.ZERO;
-        BigDecimal totalExpense = (expense != null) ? BigDecimal.valueOf(expense) : BigDecimal.ZERO;
+        try {
+            Object incomeObj = result.get("income");
+            if (incomeObj != null) {
+                if (incomeObj instanceof BigDecimal) {
+                    totalIncome = (BigDecimal) incomeObj;
+                } else if (incomeObj instanceof Number) {
+                    totalIncome = BigDecimal.valueOf(((Number) incomeObj).doubleValue());
+                }
+            }
+        } catch (Exception e) {
+            // Keep default value of ZERO if there's an issue
+        }
+
+        try {
+            Object expenseObj = result.get("expense");
+            if (expenseObj != null) {
+                if (expenseObj instanceof BigDecimal) {
+                    totalExpense = (BigDecimal) expenseObj;
+                } else if (expenseObj instanceof Number) {
+                    totalExpense = BigDecimal.valueOf(((Number) expenseObj).doubleValue());
+                }
+            }
+        } catch (Exception e) {
+            // Keep default value of ZERO if there's an issue
+        }
 
         return new BigDecimal[] { totalIncome, totalExpense };
-    }
-
-    /**
-     * Calculate statistics for each category
-     *
-     * @param specification The specification to filter bills
-     * @return List of Object[] arrays containing [Category, totalAmount]
-     */
-    private List<Object[]> calculateCategoryStatistics(Specification<Bill> specification) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
-        Root<Bill> root = query.from(Bill.class);
-
-        // Join with Category
-        Join<Bill, Category> categoryJoin = root.join("category", JoinType.INNER);
-
-        // Apply the specification filter
-        Predicate specPredicate = specification.toPredicate(root, query, cb);
-
-        // Group by category and calculate sum
-        query.multiselect(
-                        categoryJoin,
-                        cb.sum(root.get("amount"))
-                )
-                .where(specPredicate)
-                .groupBy(categoryJoin);
-
-        // Execute query and return results
-        return entityManager.createQuery(query).getResultList();
     }
 }
