@@ -160,7 +160,7 @@ public class CategoryStatisticsService {
      */
     private BigDecimal calculateTotalAmount(Long categoryId, Long userId, Instant startDate, Instant endDate) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Double> query = cb.createQuery(Double.class);
+        CriteriaQuery<BigDecimal> query = cb.createQuery(BigDecimal.class);
         Root<Bill> root = query.from(Bill.class);
 
         // Join to Category to check userId
@@ -175,15 +175,15 @@ public class CategoryStatisticsService {
         Predicate finalPredicate = cb.and(
                 categoryPredicate,
                 userPredicate,
-                dateRangePredicate,
-                cb.equal(root.get("isIncludedReport"), true)
+                dateRangePredicate
         );
 
-        // Sum the amount
-        query.select(cb.sum(root.get("amount"))).where(finalPredicate);
+        // Sum the amount and convert to BigDecimal
+        Expression<BigDecimal> sumExpression = cb.sum(cb.toBigDecimal(root.get("amount")));
+        query.select(sumExpression).where(finalPredicate);
 
-        Double result = entityManager.createQuery(query).getSingleResult();
-        return (result != null) ? BigDecimal.valueOf(result) : BigDecimal.ZERO;
+        BigDecimal result = entityManager.createQuery(query).getSingleResult();
+        return (result != null) ? result : BigDecimal.ZERO;
     }
 
     /**

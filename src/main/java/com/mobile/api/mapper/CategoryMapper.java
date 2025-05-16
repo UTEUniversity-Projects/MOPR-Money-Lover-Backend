@@ -38,6 +38,7 @@ public interface CategoryMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
+    @Mapping(source = "isExpense", target = "isExpense")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToSimpleCategory")
     CategoryDto fromEntityToSimpleCategory(Category category);

@@ -162,16 +162,16 @@ public class BillController extends BaseController {
 
         // Update wallet balance
         if (bill.getCategory().getIsExpense()) {
-            wallet.setBalance(wallet.getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+            wallet.setBalance(wallet.getBalance().subtract(bill.getAmount()));
         } else {
-            wallet.setBalance(wallet.getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+            wallet.setBalance(wallet.getBalance().add(bill.getAmount()));
         }
 
         // Update budget
         List<Budget> budgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), category.getId(), bill.getDate());
         if (budgets != null && !budgets.isEmpty()) {
             for (Budget budget : budgets) {
-                budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
+                budget.setSpentAmount(budget.getSpentAmount().add(bill.getAmount()));
                 notificationService.scanToCreateNotification(user, budget);
             }
             budgetRepository.saveAll(budgets);
@@ -188,16 +188,16 @@ public class BillController extends BaseController {
 
         // Remove old amount from wallet
         if (bill.getCategory().getIsExpense()) {
-            bill.getWallet().setBalance(bill.getWallet().getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+            bill.getWallet().setBalance(bill.getWallet().getBalance().add(bill.getAmount()));
         } else {
-            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(bill.getAmount()));
         }
 
         // Remove old amount from budget
         List<Budget> oldBudgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), bill.getCategory().getId(), bill.getDate());
         if (oldBudgets != null && !oldBudgets.isEmpty()) {
             for (Budget budget : oldBudgets) {
-                budget.setSpentAmount(budget.getSpentAmount().subtract(BigDecimal.valueOf(bill.getAmount())));
+                budget.setSpentAmount(budget.getSpentAmount().subtract(bill.getAmount()));
             }
             budgetRepository.saveAll(oldBudgets);
         }
@@ -245,9 +245,9 @@ public class BillController extends BaseController {
         billMapper.updateFromUpdateBillForm(bill, updateBillForm);
         // Update wallet balance
         if (bill.getCategory().getIsExpense()) {
-            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(BigDecimal.valueOf(bill.getAmount())));
+            bill.getWallet().setBalance(bill.getWallet().getBalance().subtract(bill.getAmount()));
         } else {
-            bill.getWallet().setBalance(bill.getWallet().getBalance().add(BigDecimal.valueOf(bill.getAmount())));
+            bill.getWallet().setBalance(bill.getWallet().getBalance().add(bill.getAmount()));
         }
         // Save the updated bill
         billRepository.save(bill);
@@ -256,7 +256,7 @@ public class BillController extends BaseController {
         List<Budget> newBudgets = budgetRepository.findAllBudgetByUserAndPeriod(getCurrentUserId(), bill.getCategory().getId(), bill.getDate());
         if (newBudgets != null && !newBudgets.isEmpty()) {
             for (Budget budget : newBudgets) {
-                budget.setSpentAmount(budget.getSpentAmount().add(BigDecimal.valueOf(bill.getAmount())));
+                budget.setSpentAmount(budget.getSpentAmount().add(bill.getAmount()));
                 notificationService.scanToCreateNotification(bill.getUser(), budget);
             }
             budgetRepository.saveAll(newBudgets);
