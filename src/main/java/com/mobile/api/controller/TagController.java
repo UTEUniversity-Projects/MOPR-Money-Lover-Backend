@@ -15,6 +15,8 @@ import com.mobile.api.model.entity.User;
 import com.mobile.api.repository.jpa.TagRepository;
 import com.mobile.api.repository.jpa.UserRepository;
 import com.mobile.api.utils.ApiMessageUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -88,6 +90,8 @@ public class TagController extends BaseController {
     }
 
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    @Operation(summary = "Attention", description = "This API will delete tag and all its associated bills")
     public ApiMessageDto<Void> deleteTag(@PathVariable Long id) {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.TAG_NOT_FOUND));

@@ -24,10 +24,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -46,10 +46,6 @@ public class WalletController extends BaseController {
     private BillRepository billRepository;
     @Autowired
     private EventRepository eventRepository;
-    @Autowired
-    private PeriodRepository periodRepository;
-    @Autowired
-    private BudgetRepository budgetRepository;
     @Autowired
     private WalletMapper walletMapper;
 
@@ -84,8 +80,7 @@ public class WalletController extends BaseController {
     public ApiMessageDto<Void> createWallet(@Valid @RequestBody CreateWalletForm createWalletForm) {
         Wallet wallet = walletMapper.fromCreateWalletFormToEntity(createWalletForm);
 
-        Long userId = getCurrentUserId();
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(getCurrentUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.USER_NOT_FOUND));
         wallet.setUser(user);
 
@@ -98,7 +93,7 @@ public class WalletController extends BaseController {
         wallet.setIcon(icon);
 
         if (createWalletForm.getIsPrimary()) {
-            walletRepository.resetPrimaryWalletByUserId(userId);
+            walletRepository.resetPrimaryWalletByUserId(getCurrentUserId());
         }
 
         walletRepository.save(wallet);
@@ -131,6 +126,14 @@ public class WalletController extends BaseController {
         return ApiMessageUtils.success(null, "Update wallet successfully");
     }
 
+    @PutMapping(value = "/recalculate-balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GRO_CRE')")
+    @Transactional
+    public ApiMessageDto<Void> recalculateWalletBalances() {
+        int updatedCount = walletRepository.recalculateAllWalletBalancesJpql();
+        return ApiMessageUtils.success(null, "Recalculate wallet balances successfully: " + updatedCount);
+    }
+
     @DeleteMapping(value = "/client/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     @Operation(summary = "Attention", description = "This API will delete the wallet and all its associated bills, events, periods, and budgets")
@@ -145,12 +148,6 @@ public class WalletController extends BaseController {
         // Delete all bills and events associated with the wallet
         billRepository.deleteAllByWalletId(wallet.getId());
         eventRepository.deleteAllByWalletId(wallet.getId());
-        // Delete all periods and budgets associated with the wallet
-        List<Long> periodIds = periodRepository.getIdsByWalletId(wallet.getId());
-        if (!periodIds.isEmpty()) {
-            budgetRepository.deleteAllFollowPeriodIds(periodIds);
-            periodRepository.deleteAllByWalletId(wallet.getId());
-        }
         // Delete the wallet
         walletRepository.delete(wallet);
         return ApiMessageUtils.success(null, "Delete wallet successfully");

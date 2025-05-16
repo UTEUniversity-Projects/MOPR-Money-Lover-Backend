@@ -90,6 +90,15 @@ public class BaseConstant {
     public static final Integer PERIOD_TYPE_CUSTOM = 5;
 
     /**
+     * PERIOD_NAME constants
+     */
+    public static final String PERIOD_NAME_WEEK = "Tuần này";
+    public static final String PERIOD_NAME_MONTH = "Tháng này";
+    public static final String PERIOD_NAME_QUARTER = "Quý này";
+    public static final String PERIOD_NAME_YEAR = "Năm này";
+    public static final String PERIOD_NAME_CUSTOM = "Đợt này";
+
+    /**
      * NOTIFICATION_TYPE constants
      */
     public static final Integer NOTIFICATION_TYPE_BUDGET = 1;

@@ -33,6 +33,10 @@ public class Bill extends Auditable<String> {
     private Boolean isIncludedReport = true;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "wallet_id", nullable = false)
     private Wallet wallet;
 

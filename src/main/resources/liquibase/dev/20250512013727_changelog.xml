@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1747013871801-1">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_period" constraintName="FKgkukp7g96ab8smcot7ees0blr"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1747013871801-2">
+        <dropForeignKeyConstraint baseTableName="db_money_lover_budget" constraintName="FKnt04analnou2xkkgqfafme1r6"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1747013871801-3">
+        <dropTable tableName="db_money_lover_period"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1747013871801-4">
+        <dropColumn columnName="period_id" tableName="db_money_lover_budget"/>
+    </changeSet>
+</databaseChangeLog>

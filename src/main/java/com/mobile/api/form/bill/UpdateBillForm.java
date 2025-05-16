@@ -34,6 +34,10 @@ public class UpdateBillForm {
     @NotNull(message = "Is Included in Report cannot be null")
     private Boolean isIncludedReport;
 
+    @Schema(description = "Wallet ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "Wallet ID cannot be null")
+    private Long walletId;
+
     @Schema(description = "Category ID", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Category ID cannot be null")
     private Long categoryId;

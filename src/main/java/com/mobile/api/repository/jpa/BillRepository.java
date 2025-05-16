@@ -10,11 +10,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BillRepository extends JpaRepository<Bill, Long>, JpaSpecificationExecutor<Bill> {
-    @Modifying
-    @Query("UPDATE Bill b SET b.event = NULL WHERE b.event.id = :eventId")
-    void detachEventFromBills(@Param("eventId") Long eventId);
+    void deleteAllByEventId(Long eventId);
 
-    void deleteAllByCategoryId(Long id);
+    void deleteAllByCategoryId(Long categoryId);
 
-    void deleteAllByWalletId(Long id);
+    void deleteAllByWalletId(Long walletId);
 }

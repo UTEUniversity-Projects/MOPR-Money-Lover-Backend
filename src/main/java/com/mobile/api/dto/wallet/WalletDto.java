@@ -5,6 +5,7 @@ import com.mobile.api.dto.file.FileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
@@ -15,11 +16,11 @@ public class WalletDto {
     @Schema(description = "name")
     private String name;
 
+    @Schema(description = "balance")
+    private BigDecimal balance;
+
     @Schema(description = "currency")
     private CurrencyDto currency;
-
-    @Schema(description = "balance")
-    private Double balance;
 
     @Schema(description = "isPrimary")
     private Boolean isPrimary = false;

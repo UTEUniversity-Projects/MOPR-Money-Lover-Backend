@@ -69,7 +69,7 @@ public class AuthenticationController extends BaseController {
         return ApiMessageUtils.success(null, "Logout successfully");
     }
 
-    @GetMapping(value = "/refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/refresh-token", produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ApiMessageDto<OauthTokenDto> getAccessToken() {
         return ApiMessageUtils.success(runOauthWorkflow(getCurrentEmail(), getCurrentUsername()), "Get access token successfully");

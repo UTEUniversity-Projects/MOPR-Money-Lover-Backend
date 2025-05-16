@@ -30,8 +30,8 @@ public interface WalletMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "currency", target = "currency", qualifiedByName = "fromEntityToCurrencyDto")
     @Mapping(source = "balance", target = "balance")
+    @Mapping(source = "currency", target = "currency", qualifiedByName = "fromEntityToCurrencyDto")
     @Mapping(source = "isPrimary", target = "isPrimary")
     @Mapping(source = "turnOnNotifications", target = "turnOnNotifications")
     @Mapping(source = "chargeToTotal", target = "chargeToTotal")
@@ -43,6 +43,7 @@ public interface WalletMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "balance", target = "balance")
     @Mapping(source = "icon", target = "icon", qualifiedByName = "fromEntityToSimpleFileDto")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToSimpleWalletDto")
